@@ -74,7 +74,7 @@
                     <ul aria-expanded="false" class="collapse">
                         <li><a href="#" class="has-arrow">Users </a>
                             <ul aria-expanded="false" class="collapse">
-                                <li><a href="pages-login.html">Add new user </a></li>
+                                <li><a href="{{ route('show_add_user') }}">Add new user </a></li>
                                 <li><a href="pages-login-2.html">View all users </a></li>
                             </ul>
                         </li>

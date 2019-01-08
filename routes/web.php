@@ -18,3 +18,11 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
+
+Route::group(
+    ['prefix'=>'user'], function(){
+        Route::get('/showAddUser', 'UserController@showAdduser')->name('show_add_user');
+        Route::post('/addnewuser', 'UserController@addnewuser')->name('add_new_user');
+        Route::get('/showAllUser', 'UserController@showAlluser')->name('show_all_user');
+    }
+);
