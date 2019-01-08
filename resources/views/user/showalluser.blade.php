@@ -44,9 +44,9 @@
                                 <td>{{ $item['role'] }}</td>
                                 <td>{{ $item['created_at'] }}</td>
                                 <td>
-                                <a class="btn btn-circle btn-sm btn-info"><i class="fa fa-pencil"></i></a>
+                                <a class="btn btn-circle btn-sm btn-info" href="{{ route('show_edit_user',['id' => $item['id']]) }}"><i class="fa fa-pencil"></i></a>
                                 <a class="btn btn-circle btn-sm btn-success"><i class="fa fa-lock"></i></a>
-                                <a class="btn btn-circle btn-sm btn-danger"><i class="fa fa-times"></i></a></td>
+                                <a class="btn btn-circle btn-sm btn-danger" href="{{ route('delete_user',['id' => $item['id']]) }}"><i class="fa fa-times"></i></a></td>
                             </tr>
                             @endforeach
                             </tbody>

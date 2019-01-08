@@ -55,9 +55,50 @@ class UserController extends Controller
         return redirect('/user/showAllUser');
     }
 
+    public function updateUser(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'fullname' => ['required', 'string', 'max:255'],
+            'username' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:6', 'confirmed'],
+        ]);
+
+        if ($validator->fails())
+        {
+            return redirect()->back()->withErrors($validator->messages())->withInput();
+            // The given data did not pass validation
+        }
+
+        $user = User::find($request->input('selid'));
+        $user->fullname = $request->input('fullname');
+        $user->username = $request->input('username');
+        $user->password = Hash::make($request->input('password'));
+        $user->email = $request->input('email');
+        $user->ui_language = $request->input('ui_language');
+        $user->role = $request->input('role');
+        $user->user_group = $request->input('user_group');
+        $user->isactive = $request->input('isactive');
+        $user->update();
+        return redirect('/user/showAllUser');
+    }
+
     public function showAllUser()
     {
         $users = User::all();
         return view('user.showalluser',compact('users'));
+    }
+
+    public function deleteUser($id)
+    {
+        User::find($id)->delete();
+        $users = User::all();
+        return redirect('/user/showAllUser');
+    }
+
+    public function showeditUser($id)
+    {
+        $seluser = User::find($id);
+        return view('user.edituser',compact('seluser'));
     }
 }

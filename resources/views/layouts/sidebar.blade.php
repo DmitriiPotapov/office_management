@@ -4,7 +4,7 @@
         <!-- User profile -->
         <div class="user-profile">
             <!-- User profile image -->
-            <div class="profile-img"> <img src="../assets/images/users/1.jpg" alt="user" /> </div>
+            <div class="profile-img"> <img src="{{ asset('assets/images/users/1.jpg')}}" alt="user" /> </div>
             <!-- User profile text-->
             <div class="profile-text"> <a href="#" class="dropdown-toggle link u-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"> {{ Auth::user()->username }} <span class="caret"></span></a>
                 <div class="dropdown-menu animated flipInY">
@@ -75,7 +75,7 @@
                         <li><a href="#" class="has-arrow">Users </a>
                             <ul aria-expanded="false" class="collapse">
                                 <li><a href="{{ route('show_add_user') }}">Add new user </a></li>
-                                <li><a href="pages-login-2.html">View all users </a></li>
+                                <li><a href="{{ route('show_all_user') }}">View all users </a></li>
                             </ul>
                         </li>
                         <li><a href="app-chat.html">User groups </a></li>
