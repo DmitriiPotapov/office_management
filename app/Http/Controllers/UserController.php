@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use Auth;
 use Illuminate\Support\Facades\Hash;
 use App\User;
+use App\Models\BaseUserGroups;
+use App\Models\BasePermissions;
+use App\Models\BaseRoles;
+use App\Models\DataPermissions;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
@@ -22,7 +26,10 @@ class UserController extends Controller
 
     public function showAddUser()
     {
-        return view('user.adduser');
+        $roles = BaseRoles::where('inuse', 1)->get()->toArray();
+        $groups = BaseUserGroups::where('inuse', 1)->get()->toArray();
+        $permissions = BasePermissions::where('inuse', 1)->get()->toArray();
+        return view('user.adduser', compact('roles','groups','permissions'));
     }
 
     public function addnewuser(Request $request)
@@ -30,15 +37,10 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'fullname' => ['required', 'string', 'max:255'],
             'username' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'email' => ['required', 'string', 'email', 'max:255'],
             'password' => ['required', 'string', 'min:6', 'confirmed'],
         ]);
 
-        if ($validator->fails())
-        {
-            return redirect()->back()->withErrors($validator->messages())->withInput();
-            // The given data did not pass validation
-        }
 
         $user = new user();
         $user->fullname = $request->input('fullname');
@@ -49,9 +51,33 @@ class UserController extends Controller
         $user->role = $request->input('role');
         $user->user_group = $request->input('user_group');
         $user->isactive = $request->input('isactive');
+
+        for ($i = 0 ; $i < 31; $i ++)
+        {
+            $str1 = 'checkbox'.$i;
+            $str2 = 'label'.$i;
+            $value[$i] = $request->input($str1);
+            $labelstr[$i] = $request->input($str2);
+            if($value[$i] == "")
+                $value[$i] = "off";
+        }
     //    $user->created_at = date('M d, Y');
     //    $user->updated_at = date('M d, Y');
         $user->save();
+
+        $permissions = BasePermissions::where('inuse', 1)->get()->toArray();
+
+        for ($i = 0 ; $i < 31 ; $i ++)
+        {
+            $permissiondata = new DataPermissions();
+            $permissiondata->user_id = $user->id;
+            $permissiondata->permission_id = BasePermissions::where('permission_name', $labelstr[$i])->first()->id;
+            $permissiondata->value = $value[$i];
+
+            $permissiondata->save();
+        }
+
+
         return redirect('/user/showAllUser');
     }
 
@@ -60,15 +86,9 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'fullname' => ['required', 'string', 'max:255'],
             'username' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'email' => ['required', 'string', 'email', 'max:255'],
             'password' => ['required', 'string', 'min:6', 'confirmed'],
         ]);
-
-        if ($validator->fails())
-        {
-            return redirect()->back()->withErrors($validator->messages())->withInput();
-            // The given data did not pass validation
-        }
 
         $user = User::find($request->input('selid'));
         $user->fullname = $request->input('fullname');
@@ -85,20 +105,158 @@ class UserController extends Controller
 
     public function showAllUser()
     {
-        $users = User::all();
+        $users = User::where('inuse', 1)->get()->toArray();
         return view('user.showalluser',compact('users'));
     }
 
     public function deleteUser($id)
     {
-        User::find($id)->delete();
-        $users = User::all();
+        $user = User::find($id);
+        $user->inuse = 0;
+        $user->update();
         return redirect('/user/showAllUser');
     }
 
     public function showeditUser($id)
     {
         $seluser = User::find($id);
-        return view('user.edituser',compact('seluser'));
+        $roles = BaseRoles::where('inuse', 1)->get()->toArray();
+        $groups = BaseUserGroups::where('inuse', 1)->get()->toArray();
+        $permissions = BasePermissions::where('inuse', 1)->get()->toArray();
+        $dataPermission = DataPermissions::where('user_id', $id)->get()->toArray();
+
+        return view('user.edituser',compact('seluser','roles','groups','permissions','dataPermission'));
+    }
+
+    public function showAddUsergroup()
+    {
+        return view('user.addusergroup');
+    }
+
+    public function addnewusergroup(Request $request)
+    {
+
+        $group = new BaseUserGroups();
+        $group->group_name = $request->input('group_name');
+        
+        $group->save();
+        return redirect('/user/showAllUsergroup');
+    }
+
+    public function updateUsergroup(Request $request)
+    {
+        
+        $group = BaseUserGroups::find($request->input('selid'));
+        $group->group_name = $request->input('group_name');
+        $group->update();
+        return redirect('/user/showAllUsergroup');
+    }
+
+    public function showAllUsergroup()
+    {
+        $groups = BaseUserGroups::where('inuse', 1)->get()->toArray();
+        return view('user.showallusergroup',compact('groups'));
+    }
+
+    public function deleteUsergroup($id)
+    {
+        $group = BaseUserGroups::find($id);
+        $group->inuse = 0;
+        $group->update();
+        return redirect('/user/showAllUsergroup');
+    }
+
+    public function showeditUsergroup($id)
+    {
+        $selgroup = BaseUserGroups::find($id);
+        return view('user.editusergroup',compact('selgroup'));
+    }
+
+    public function showAddPermission()
+    {
+        return view('user.addPermission');
+    }
+
+    public function addnewPermission(Request $request)
+    {
+
+        $permission = new BasePermissions();
+        $permission->permission_name = $request->input('permission_name');
+        
+        $permission->save();
+        return redirect('/user/showAllPermission');
+    }
+
+    public function updatePermission(Request $request)
+    {
+        
+        $permission = BasePermissions::find($request->input('selid'));
+        $permission->permission_name = $request->input('permission_name');
+        $permission->update();
+        return redirect('/user/showAllPermission');
+    }
+
+    public function showAllPermission()
+    {
+        $permissions = BasePermissions::where('inuse', 1)->get()->toArray();
+        return view('user.showallPermission',compact('permissions'));
+    }
+
+    public function deletePermission($id)
+    {
+        $permission = BasePermissions::find($id);
+        $permission->inuse = 0;
+        $permission->update();
+        return redirect('/user/showAllPermission');
+    }
+
+    public function showeditPermission($id)
+    {
+        $selpermission = BasePermissions::find($id);
+        return view('user.editPermission',compact('selpermission'));
+    }
+
+    public function showAddrole()
+    {
+        return view('user.addrole');
+    }
+
+    public function addnewrole(Request $request)
+    {
+
+        $role = new BaseRoles();
+        $role->role_name = $request->input('role_name');
+        
+        $role->save();
+        return redirect('/user/showAllrole');
+    }
+
+    public function updaterole(Request $request)
+    {
+        
+        $role = BaseRoles::find($request->input('selid'));
+        $role->role_name = $request->input('role_name');
+        $role->update();
+        return redirect('/user/showAllrole');
+    }
+
+    public function showAllrole()
+    {
+        $roles = BaseRoles::where('inuse', 1)->get()->toArray();
+        return view('user.showallrole',compact('roles'));
+    }
+
+    public function deleterole($id)
+    {
+        $role = BaseRoles::find($id);
+        $role->inuse = 0;
+        $role->update();
+        return redirect('/user/showAllrole');
+    }
+
+    public function showeditrole($id)
+    {
+        $selrole = BaseRoles::find($id);
+        return view('user.editrole',compact('selrole'));
     }
 }

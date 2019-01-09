@@ -25,7 +25,7 @@
         <div class="col-lg-12">
             <div class="card card-outline-info">
                 <div class="card-body">
-                    <form method="POST" action="{{ route('update_user') }}">
+                    <form method="POST" action="{{ URL::to('/user/updateUser') }}">
                     @csrf
                         <input type="hidden" name="selid" value="{{ $seluser->id }}">
                         <div class="form-body">
@@ -89,11 +89,9 @@
                                     <div class="form-group ">
                                         <label class="control-label">Role</label>
                                         <select class="form-control custom-select" id="role" name="role">
-                                            <option value=""></option>
-                                            <option value="SuperAdmin" {{ ($seluser->role == 'SuperAdmin') ? 'selected' : '' }}>SuperAdmin</option>
-                                            <option value="Engineer" {{ ($seluser->role == 'Engineer') ? 'selected' : '' }}>Engineer</option>
-                                            <option value="Sales" {{ ($seluser->role == 'Sales') ? 'selected' : '' }}>Sales</option>
-                                            <option value="Dealer" {{ ($seluser->role == 'Dealer') ? 'selected' : '' }}>Dealer</option>
+                                            @foreach($roles as $item)
+                                            <option value="{{ $item['role_name'] }}" {{ ($seluser->role == $item['role_name']) ? 'selected' : '' }}>{{ $item['role_name'] }}</option>
+                                            @endforeach
                                         </select>
                                         <small class="form-control-feedback"> </small> </div>
                                 </div>
@@ -102,10 +100,9 @@
                                     <div class="form-group">
                                         <label class="control-label">User group</label>
                                         <select class="form-control custom-select" id="user_group" value="{{ $seluser->user_group }}" name="user_group">
-                                            <option value=""></option>
-                                            <option value="Company" {{ ($seluser->user_group == 'Company') ? 'selected' : '' }}>Company</option>
-                                            <option value="Managers" {{ ($seluser->user_group == 'Managers') ? 'selected' : '' }}>Managers</option>
-                                            <option value="Crew" {{ ($seluser->user_group == 'Crew') ? 'selected' : '' }}>Crew</option>
+                                            @foreach($groups as $item)
+                                            <option value="{{ $item['group_name'] }}" {{ ($seluser->user_group == $item['group_name']) ? 'selected' : '' }}>{{ $item['group_name'] }}</option>
+                                            @endforeach
                                         </select>
                                         <small class="form-control-feedback"> </small> </div>
                                     </div>
@@ -131,71 +128,43 @@
                                 <div class="col-md-4">
                                     <div class="input-group">
                                         <ul class="icheck-list">
+                                            @for ($i = 0; $i < count($permissions) ; $i += 3)
                                             <li>
-                                                <input type="checkbox" class="check" id="minimal-checkbox-1">
-                                                <label for="minimal-checkbox-1">Checkbox 1</label>
+                                                <input type="checkbox" class="check" id="{{ 'minimal-checkbox-'.$i }}"  name="{{ 'checkbox'.$i }}" >
+                                                <input type="hidden" name="{{ 'label'.$i }}" value="{{ $permissions[$i]['permission_name'] }}">
+                                                <label for="{{ 'minimal-checkbox-'.$i }}" >{{ $permissions[$i]['permission_name'] }}</label>
                                             </li>
-                                            <li>
-                                                <input type="checkbox" class="check" id="minimal-checkbox-2">
-                                                <label for="minimal-checkbox-2">Checkbox 1</label>
-                                            </li>
-                                            <li>
-                                                <input type="checkbox" class="check" id="minimal-checkbox-3">
-                                                <label for="minimal-checkbox-3">Checkbox 1</label>
-                                            </li>
-                                            <li>
-                                                <input type="checkbox" class="check" id="minimal-checkbox-4">
-                                                <label for="minimal-checkbox-4">Checkbox 1</label>
-                                            </li>
+                                            @endfor
                                         </ul>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="input-group">
                                         <ul class="icheck-list">
+                                            @for ($i = 1; $i < count($permissions) ; $i += 3)
                                             <li>
-                                                <input type="checkbox" class="check" id="minimal-checkbox-5">
-                                                <label for="minimal-checkbox-5">Checkbox 1</label>
+                                                <input type="checkbox" class="check" id="{{ 'minimal-checkbox-'.$i }}"  name="{{ 'checkbox'.$i }}">
+                                                <input type="hidden" name="{{ 'label'.$i }}" value="{{ $permissions[$i]['permission_name'] }}">
+                                                <label for="{{ 'minimal-checkbox-'.$i }}" >{{ $permissions[$i]['permission_name'] }}</label>
                                             </li>
-                                            <li>
-                                                <input type="checkbox" class="check" id="minimal-checkbox-6">
-                                                <label for="minimal-checkbox-6">Checkbox 1</label>
-                                            </li>
-                                            <li>
-                                                <input type="checkbox" class="check" id="minimal-checkbox-7">
-                                                <label for="minimal-checkbox-7">Checkbox 1</label>
-                                            </li>
-                                            <li>
-                                                <input type="checkbox" class="check" id="minimal-checkbox-8">
-                                                <label for="minimal-checkbox-8">Checkbox 1</label>
-                                            </li>
+                                            @endfor
                                         </ul>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="input-group">
                                         <ul class="icheck-list">
+                                            @for ($i = 2; $i < count($permissions) ; $i += 3)
                                             <li>
-                                                <input type="checkbox" class="check" id="minimal-checkbox-9">
-                                                <label for="minimal-checkbox-9">Checkbox 1</label>
+                                                <input type="checkbox" class="check" id="{{ 'minimal-checkbox-'.$i }}"  name="{{ 'checkbox'.$i }}">
+                                                <input type="hidden" name="{{ 'label'.$i }}" value="{{ $permissions[$i]['permission_name'] }}">
+                                                <label for="{{ 'minimal-checkbox-'.$i }}" >{{ $permissions[$i]['permission_name'] }}</label>
                                             </li>
-                                            <li>
-                                                <input type="checkbox" class="check" id="minimal-checkbox-10">
-                                                <label for="minimal-checkbox-10">Checkbox 1</label>
-                                            </li>
-                                            <li>
-                                                <input type="checkbox" class="check" id="minimal-checkbox-11">
-                                                <label for="minimal-checkbox-11">Checkbox 1</label>
-                                            </li>
-                                            <li>
-                                                <input type="checkbox" class="check" id="minimal-checkbox-12">
-                                                <label for="minimal-checkbox-12">Checkbox 1</label>
-                                            </li>
+                                            @endfor
                                         </ul>
                                     </div>
                                 </div>
                             </div>
-                            
                         </div>
                         <div class="form-actions">
                             <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Save</button>

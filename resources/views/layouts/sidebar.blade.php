@@ -2,23 +2,7 @@
         <!-- Sidebar scroll-->
     <div class="scroll-sidebar">
         <!-- User profile -->
-        <div class="user-profile">
-            <!-- User profile image -->
-            <div class="profile-img"> <img src="{{ asset('assets/images/users/1.jpg')}}" alt="user" /> </div>
-            <!-- User profile text-->
-            <div class="profile-text"> <a href="#" class="dropdown-toggle link u-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"> {{ Auth::user()->username }} <span class="caret"></span></a>
-                <div class="dropdown-menu animated flipInY">
-                    <a href="#" class="dropdown-item"><i class="ti-wallet"></i> My Balance</a>
-                    <a href="#" class="dropdown-item"><i class="ti-email"></i> Inbox</a>
-                    <div class="dropdown-divider"></div> <a href="#" class="dropdown-item"><i class="ti-settings"></i> Account Setting</a>
-                    <div class="dropdown-divider"></div> <a href="{{ route('logout') }}" class="dropdown-item" onclick="event.preventDefault();
-                                    document.getElementById('logout-form').submit();"><i class="fa fa-power-off"></i> Logout</a>
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                            @csrf
-                    </form>
-                </div>
-            </div>
-        </div>
+        
         <!-- End User profile text-->
         <!-- Sidebar navigation-->
         <nav class="sidebar-nav">
@@ -78,14 +62,24 @@
                                 <li><a href="{{ route('show_all_user') }}">View all users </a></li>
                             </ul>
                         </li>
-                        <li><a href="app-chat.html">User groups </a></li>
-                        <li><a href="#" class="has-arrow">Permissions </a>
+                        <li><a href="#" class="has-arrow">User Groups </a>
                             <ul aria-expanded="false" class="collapse">
-                                <li><a href="pages-login.html">Define new permission </a></li>
-                                <li><a href="pages-login-2.html">View all permissions </a></li>
+                                <li><a href="{{ route('show_add_user_group') }}">Add new user group</a></li>
+                                <li><a href="{{ route('show_all_user_group') }}">View all user groups </a></li>
                             </ul>
                         </li>
-                        <li><a href="app-contact.html">Roles </a></li>
+                        <li><a href="#" class="has-arrow">Permissions </a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li><a href="{{ route('show_add_Permission') }}">Define new permission </a></li>
+                                <li><a href="{{ route('show_all_Permission') }}">View all permissions </a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#" class="has-arrow">Roles </a>
+                            <ul aria-expanded="false" class="collapse">
+                                <li><a href="{{ route('show_add_role') }}">Define new role </a></li>
+                                <li><a href="{{ route('show_all_role') }}">View all roles </a></li>
+                            </ul>
+                        </li>
                     </ul>
                 </li>
                 <li>
