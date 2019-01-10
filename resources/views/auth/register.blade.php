@@ -43,10 +43,22 @@
             <div class="card-body">
                 <form class="form-horizontal form-material" id="loginform" method="POST" action="{{ route('register') }}">
                     @csrf
-                    <h3 class="box-title m-b-20">Sign Up</h3>                     
+                    <h3 class="box-title m-b-20">Sign Up</h3>
+
                     <div class="form-group">
                         <div class="col-xs-12">
-                            <input id="username" type="text" class="form-control" name="username" placeholder="Name" value="{{ old('uesrname') }}" required autofocus>
+                            <input id="fullname" type="text" class="form-control" name="fullname" placeholder="FullName" value="{{ old('uesrname') }}" required>
+                            @if ($errors->has('name'))
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $errors->first('name') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <input id="username" type="text" class="form-control" name="username" placeholder="UserName" value="{{ old('uesrname') }}" required autofocus>
                             @if ($errors->has('name'))
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $errors->first('name') }}</strong>
