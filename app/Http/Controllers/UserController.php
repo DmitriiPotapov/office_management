@@ -100,6 +100,28 @@ class UserController extends Controller
         $user->user_group = $request->input('user_group');
         $user->isactive = $request->input('isactive');
         $user->update();
+
+        for ($i = 0 ; $i < 31; $i ++)
+        {
+            $str1 = 'checkbox'.$i;
+            $str2 = 'label'.$i;
+            $value[$i] = $request->input($str1);
+            $labelstr[$i] = $request->input($str2);
+            if($value[$i] == "")
+                $value[$i] = "off";
+        }
+        
+        $permissions = BasePermissions::where('inuse', 1)->get()->toArray();
+
+        for ($i = 0 ; $i < 31 ; $i ++)
+        {
+            $permission_id = BasePermissions::where('permission_name', $labelstr[$i])->first()->id;
+            $permissiondata = DataPermissions::where('user_id', $user->id)->where('permission_id', $permission_id)->first();
+            $permissiondata->value = $value[$i];
+
+            $permissiondata->update();
+        }
+
         return redirect('/user/showAllUser');
     }
 
@@ -124,8 +146,15 @@ class UserController extends Controller
         $groups = BaseUserGroups::where('inuse', 1)->get()->toArray();
         $permissions = BasePermissions::where('inuse', 1)->get()->toArray();
         $dataPermission = DataPermissions::where('user_id', $id)->get()->toArray();
+        
+        $permissionarray = array();
+        foreach($dataPermission as $item) {
+            $id = $item['permission_id'];
+            $val = $item['value'];
+            $permissionarray[$id] =  $val;
+        }
 
-        return view('user.edituser',compact('seluser','roles','groups','permissions','dataPermission'));
+        return view('user.edituser',compact('seluser','roles','groups','permissions','permissionarray', 'dataPermission'));
     }
 
     public function showAddUsergroup()

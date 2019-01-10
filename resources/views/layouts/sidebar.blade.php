@@ -13,9 +13,9 @@
                 <li>
                     <a class="has-arrow " href="#" aria-expanded="false"><i class="icon-layers"></i><span class="hide-menu">Jobs </span></a>
                     <ul aria-expanded="false" class="collapse">
-                        <li><a href="app-calendar.html">New job </a></li>
-                        <li><a href="app-chat.html">View all jobs </a></li>
-                        <li><a href="app-ticket.html">View priority jobs </a></li>
+                        <li><a href="{{ route('show_add_job') }}">New job </a></li>
+                        <li><a href="{{ route('show_all_job') }}">View all jobs </a></li>
+                        <li><a href="{{ route('show_all_priority_job') }}">View priority jobs </a></li>
                         <li><a href="app-contact.html">Overview </a></li>
                     </ul>
                 </li>
@@ -25,10 +25,10 @@
                 <li>
                     <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-bullseye"></i><span class="hide-menu">Inventory </span></a>
                     <ul aria-expanded="false" class="collapse">
-                        <li><a href="app-calendar.html">New inventory item </a></li>
-                        <li><a href="app-chat.html">View all items </a></li>
-                        <li><a href="app-ticket.html">Release from jobs </a></li>
-                        <li><a href="app-contact.html">Disks in use </a></li>
+                        <li><a href="{{ route('show_add_inventory') }}">New inventory item </a></li>
+                        <li><a href="{{ route('show_all_inventory') }}">View all items </a></li>
+                        <li><a href="{{ route('show_release_from_job') }}">Release from jobs </a></li>
+                        <li><a href="{{ route('show_inventory_use') }}">Disks in use </a></li>
                     </ul>
                 </li>
                 <li>

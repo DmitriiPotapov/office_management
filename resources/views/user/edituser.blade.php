@@ -130,9 +130,11 @@
                                         <ul class="icheck-list">
                                             @for ($i = 0; $i < count($permissions) ; $i += 3)
                                             <li>
-                                                <input type="checkbox" class="check" id="{{ 'minimal-checkbox-'.$i }}"  name="{{ 'checkbox'.$i }}" >
+                                                @if($i < count($permissions))
+                                                <input type="checkbox" class="check" id="{{ 'minimal-checkbox-'.$i }}"  name="{{ 'checkbox'.$i }}" {{ ($permissionarray[$permissions[$i]['id'] ] == "on") ? 'checked' : '' }}>
                                                 <input type="hidden" name="{{ 'label'.$i }}" value="{{ $permissions[$i]['permission_name'] }}">
-                                                <label for="{{ 'minimal-checkbox-'.$i }}" >{{ $permissions[$i]['permission_name'] }}</label>
+                                                <label for="{{ 'minimal-checkbox-'.$i }}" > {{ $permissions[$i]['permission_name'] }} </label>
+                                                @endif
                                             </li>
                                             @endfor
                                         </ul>
@@ -141,11 +143,13 @@
                                 <div class="col-md-4">
                                     <div class="input-group">
                                         <ul class="icheck-list">
-                                            @for ($i = 1; $i < count($permissions) ; $i += 3)
+                                            @for ($i = 1; $i < count($permissions) - 1 ; $i += 3)
                                             <li>
-                                                <input type="checkbox" class="check" id="{{ 'minimal-checkbox-'.$i }}"  name="{{ 'checkbox'.$i }}">
+                                                @if($i < count($permissions))
+                                                <input type="checkbox" class="check" id="{{ 'minimal-checkbox-'.$i }}"  name="{{ 'checkbox'.$i }}" {{ ($permissionarray[$permissions[$i]['id'] ] == "on") ? 'checked' : '' }}>
                                                 <input type="hidden" name="{{ 'label'.$i }}" value="{{ $permissions[$i]['permission_name'] }}">
                                                 <label for="{{ 'minimal-checkbox-'.$i }}" >{{ $permissions[$i]['permission_name'] }}</label>
+                                                @endif
                                             </li>
                                             @endfor
                                         </ul>
@@ -156,9 +160,11 @@
                                         <ul class="icheck-list">
                                             @for ($i = 2; $i < count($permissions) ; $i += 3)
                                             <li>
-                                                <input type="checkbox" class="check" id="{{ 'minimal-checkbox-'.$i }}"  name="{{ 'checkbox'.$i }}">
+                                                @if($i < count($permissions))
+                                                <input type="checkbox" class="check" id="{{ 'minimal-checkbox-'.$i }}"  name="{{ 'checkbox'.$i }}" {{ ($permissionarray[$permissions[$i]['id'] ] == "on") ? 'checked' : '' }}>
                                                 <input type="hidden" name="{{ 'label'.$i }}" value="{{ $permissions[$i]['permission_name'] }}">
                                                 <label for="{{ 'minimal-checkbox-'.$i }}" >{{ $permissions[$i]['permission_name'] }}</label>
+                                                @endif
                                             </li>
                                             @endfor
                                         </ul>

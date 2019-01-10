@@ -51,3 +51,30 @@ Route::group(
 
     }
 );
+
+Route::group(
+    ['prefix'=>'job'], function(){
+        Route::get('/showAddJob', 'JobController@showAddJob')->name('show_add_job');
+        Route::post('/addNewJob', 'JobController@addNewJob')->name('add_new_job');
+        Route::get('/showAllJob', 'JobController@showAllJob')->name('show_all_job');
+        Route::get('/showAllPriorityJob', 'JobController@showAllPriorityJob')->name('show_all_priority_job');
+        Route::get('/showOverview', 'JobController@showOverview')->name('show_overview');
+        Route::get('/editJob/{id}', 'JobController@showEditJob')->name('show_edit_job');
+        Route::get('/deleteJob/{id}', 'JobController@deleteJob')->name('delete_job');
+        Route::post('/updateJob', 'JobController@updateJob');
+    }
+);
+
+Route::group(
+    ['prefix'=>'inventory'], function(){
+        Route::get('/showAddInventory', 'InventoryController@showAddInventory')->name('show_add_inventory');
+        Route::post('/addNewInventory', 'InventoryController@addNewInventory')->name('add_new_inventory');
+        Route::get('/showAllInventory', 'InventoryController@showAllInventory')->name('show_all_inventory');
+        Route::get('/showReleaseFrom', 'InventoryController@showReleaseFrom')->name('show_release_from_job');
+        Route::get('/showInventoryUse', 'InventoryController@showInventoryUse')->name('show_inventory_use');
+        Route::get('/editInventory/{id}', 'InventoryController@showEditInventory')->name('show_edit_inventory');
+        Route::get('/deleteInventory/{id}', 'InventoryController@deleteInventory')->name('delete_inventory');
+        Route::post('/updateInventory', 'InventoryController@updateInventory');
+    }
+);
+
