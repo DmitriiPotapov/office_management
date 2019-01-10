@@ -4,7 +4,7 @@
         <!-- User profile -->
         <div class="user-profile">
             <!-- User profile image -->
-            <div class="profile-img"> <img src="../assets/images/users/1.jpg" alt="user" /> </div>
+            <div class="profile-img"> <img src="{{ asset('assets/images/users/1.jpg') }}" alt="user" /> </div>
             <!-- User profile text-->
             <div class="profile-text"> <a href="#" class="dropdown-toggle link u-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"> {{ Auth::user()->username }} <span class="caret"></span></a>
                 <div class="dropdown-menu animated flipInY">
@@ -57,7 +57,7 @@
                 <li>
                     <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-cart-outline"></i><span class="hide-menu">Stock </span></a>
                     <ul aria-expanded="false" class="collapse">
-                        <li><a href="app-calendar.html">New stock item </a></li>
+                        <li><a href="{{URL::to('stock/create')}}">New stock item </a></li>
                         <li><a href="app-chat.html">View all items </a></li>
                     </ul>
                 </li>
@@ -96,11 +96,11 @@
                         <li><a href="app-ticket.html">Languages </a></li>
                         <li><a href="#" class="has-arrow">Lists </a>
                             <ul aria-expanded="false" class="collapse">
-                                <li><a href="pages-login.html">Job statuses </a></li>
-                                <li><a href="pages-login-2.html">Device types </a></li>
-                                <li><a href="pages-login-2.html">Job priorities </a></li>
-                                <li><a href="pages-login-2.html">Device diagnosis </a></li>
-                                <li><a href="pages-login-2.html">Services </a></li>
+                                <li><a href="{{URL::to('/settings/lists/basejobstatues')}}">Job statuses </a></li>
+                                <li><a href="{{URL::to('/settings/lists/devicetypes')}}">Device types </a></li>
+                                <li><a href="{{URL::to('/settings/lists/jobpriorities')}}">Job priorities </a></li>
+                                <li><a href="{{URL::to('/settings/lists/devicediagnosis')}}">Device diagnosis </a></li>
+                                <li><a href="{{URL::to('/settings/lists/services')}}">Services </a></li>
                             </ul>
                         </li>
                         <li><a href="app-ticket.html">Diller settings </a></li>
