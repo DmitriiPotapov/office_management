@@ -39,8 +39,9 @@
                         <hr>
                         <div class="tab-content">
                             <div class="tab-pane active" id="general" role="tabpanel">
-                            <form method="POST" action="{{ route('add_new_Permission') }}">
+                            <form method="POST" action="{{ route('update_Job') }}">
                             @csrf
+                                <input type="hidden" name="seljob_id" value="{{ $job['job_id'] }}">
                                 <div class="form-body">
                                 <div class="row">
                                     <div class="col-lg-5">
@@ -48,15 +49,18 @@
                                             <div class="card-body">
                                                 <div class="form-group row">
                                                     <label class="col-lg-4 control-label"><b>Services:</b></label>
-                                                    <label class="col-lg-4 control-label">Data Recovery</label>
+                                                    <input type="hidden" name="services" value="{{ $job['services'] }}">
+                                                    <label class="col-lg-4 control-label" >{{ $job['services'] }}</label>
                                                 </div>
                                                 <div class="form-group row">
                                                     <label class="col-lg-4 control-label"><b>File list password:</b></label>
-                                                    <label class="col-lg-4 control-label">8456451654 &nbsp;<a href="javascript:void(0)"><i class="fa fa-refresh"></i></a></label>
+                                                    <input type="hidden" name="job_password" value="{{ $job['job_password'] }}">
+                                                    <label class="col-lg-4 control-label">{{ $job['job_password'] }}<a href="javascript:void(0)"><i class="fa fa-refresh"></i></a></label>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label class="col-lg-4 control-label"><b>Assigned to engineer:</b></label>
-                                                    <label class="col-lg-4 control-label">Joe</label>
+                                                    <label class="col-lg-5 control-label"><b>Assigned to engineer:</b></label>
+                                                    <input type="hidden" name="assigned_engineer" value="{{ $job['assigned_engineer'] }}">
+                                                    <label class="col-lg-4 control-label" >{{ $job['assigned_engineer'] }}</label>
                                                 </div>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
@@ -64,7 +68,7 @@
                                                             Price
                                                         </span>
                                                     </div>
-                                                    <input type="text" class="form-control" id="exampleInputuname" placeholder="0">
+                                                    <input type="text" class="form-control" id="price" name="price" value="{{ $job['price'] }}">
                                                 </div>
                                                 <hr>
                                                 <div class="input-group">
@@ -74,10 +78,9 @@
                                                         </span>
                                                     </div>
                                                     <select class="form-control custom-select" id="status" name="status">
-                                                        <option value="Received">Received</option>
-                                                        <option value="In process">In process</option>
-                                                        <option value="Waiting for parts">Waiting for parts</option>
-                                                        <option value="Paid">Paid</option>
+                                                        <@foreach($statuses as $item)
+                                                        <option value="{{ $item['status_name'] }}" {{ ($item['status_name'] == $job['status']) ? 'selected' : '' }}> {{ $item['status_name']}}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
                                                 <hr>
@@ -88,40 +91,30 @@
                                                         </span>
                                                     </div>
                                                     <select class="form-control custom-select" id="priority" name="priority">
-                                                        <option value="Priority 1+">Priority 1+</option>
-                                                        <option value="Priority 1">Priority 1</option>
-                                                        <option value="Priority 2">Priority 2</option>
-                                                        <option value="RAID">RAID</option>
+                                                        @foreach($priorities as $item)
+                                                        <option value="{{ $item['job_priority_name'] }}" {{ ($item['job_priority_name'] == $job['priority']) ? 'selected' : '' }}> {{ $item['job_priority_name']}}</option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
                                                 <hr>
                                                 <div class="form-group row has-success">
                                                     <h4 class="card-title">Job info</h4>
-                                                    <textarea class="form-control" rows="3"></textarea>
+                                                    <textarea class="form-control" rows="3" name="device_malfunc_info">{{ $job['device_malfunc_info'] }}</textarea>
                                                 </div>
                                                 <hr>
                                                 <div class="form-group row has-info">
                                                     <h4 class="card-title">Important data</h4>
-                                                    <textarea class="form-control" rows="3"></textarea>
+                                                    <textarea class="form-control" rows="3" name="important_data">{{ $job['important_data'] }}</textarea>
                                                 </div>
                                                 <hr>
                                                 <div class="form-group row has-danger">
                                                     <h4 class="card-title">Cleint note</h4>
-                                                    <textarea class="form-control" rows="3"></textarea>
+                                                    <textarea class="form-control" rows="3" name="notes">{{ $job['notes'] }}</textarea>
                                                 </div>
                                                 <div class="form-actions">
                                                     <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Save</button>
                                                 </div>
                                                 <hr>
-                                                <div class="input-group">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text" id="basic-addon3">
-                                                            Comment
-                                                        </span>
-                                                    </div>
-                                                    <textarea type="text" class="form-control" rows="3" id="comment" placeholder=""></textarea>
-                                                    <button class="btn btn-success"> <i class="fa fa-comment"></i> Send comment</button>
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -164,15 +157,19 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
+                                                            @foreach($devices as $item)
+                                                            @if($item['role'] == 'Patient')
                                                             <tr>
-                                                                <td>Laptop</td>
-                                                                <td>HP</td>
-                                                                <td>HP LNDF</td>
-                                                                <td>SDFE1248</td>
-                                                                <td></td>
-                                                                <td>Not set</td>
-                                                                <td></td>
+                                                                <td>{{ $item['type'] }}</td>
+                                                                <td>{{ $item['manufacturer'] }}</td>
+                                                                <td>{{ $item['model'] }}</td>
+                                                                <td>{{ $item['serial'] }}</td>
+                                                                <td>{{ $item['location'] }}</td>
+                                                                <td>{{ $item['diagnosis'] }}</td>
+                                                                <td>{{ $item['note'] }}</td>
                                                             </tr>
+                                                            @endif
+                                                            @endforeach
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -192,15 +189,19 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
+                                                            @foreach($devices as $item)
+                                                            @if($item['role'] == 'Clone')
                                                             <tr>
-                                                                <td></td>
-                                                                <td></td>
-                                                                <td></td>
-                                                                <td></td>
-                                                                <td></td>
-                                                                <td></td>
-                                                                <td></td>
+                                                                <td>{{ $item['id'] }}</td>
+                                                                <td>{{ $item['type'] }}</td>
+                                                                <td>{{ $item['manufacturer'] }}</td>
+                                                                <td>{{ $item['model'] }}</td>
+                                                                <td>{{ $item['serial'] }}</td>
+                                                                <td>{{ $item['location'] }}</td>
+                                                                <td>{{ $item['note'] }}</td>
                                                             </tr>
+                                                            @endif
+                                                            @endforeach
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -220,46 +221,49 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
+                                                            @foreach($devices as $item)
+                                                            @if($item['role'] == 'Donor')
                                                             <tr>
-                                                                <td></td>
-                                                                <td></td>
-                                                                <td></td>
-                                                                <td></td>
-                                                                <td></td>
-                                                                <td></td>
-                                                                <td></td>
+                                                                <td>{{ $item['id'] }}</td>
+                                                                <td>{{ $item['type'] }}</td>
+                                                                <td>{{ $item['manufacturer'] }}</td>
+                                                                <td>{{ $item['model'] }}</td>
+                                                                <td>{{ $item['serial'] }}</td>
+                                                                <td>{{ $item['location'] }}</td>
+                                                                <td>{{ $item['note'] }}</td>
                                                             </tr>
+                                                            @endif
+                                                            @endforeach
                                                         </tbody>
                                                     </table>
                                                 </div>
                                                 <hr>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <div class="table-responsive m-t-40">
-                                                    <table id="example23" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
+                                                <h4 class="card-title">Other client devices</h4>
+                                                <div class="table-responsive">
+                                                    <table class="table color-bordered-table info-bordered-table">
                                                         <thead>
                                                             <tr>
-                                                                <th>User</th>
-                                                                <th>Time</th>
+                                                                <th>Type</th>
+                                                                <th>Manufacturer</th>
+                                                                <th>Model</th>
+                                                                <th>Serial</th>
+                                                                <th>Location</th>
                                                                 <th>Note</th>
-                                                                <th></th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                        <tr>
-                                                            <td>Joe</td>
-                                                            <td>2019:01:10</td>
-                                                            <td>SSSS</td>
-                                                            <td>
-                                                            <a class="btn btn-circle btn-sm btn-info" href=""><i class="fa fa-pencil"></i></a>
-                                                            <a class="btn btn-circle btn-sm btn-danger" href=""><i class="fa fa-trash"></i></a></td>
-                                                        </tr>
+                                                            @foreach($devices as $item)
+                                                            @if($item['role'] == 'Other')
+                                                            <tr>
+                                                                <td>{{ $item['type'] }}</td>
+                                                                <td>{{ $item['manufacturer'] }}</td>
+                                                                <td>{{ $item['model'] }}</td>
+                                                                <td>{{ $item['serial'] }}</td>
+                                                                <td>{{ $item['location'] }}</td>
+                                                                <td>{{ $item['note'] }}</td>
+                                                            </tr>
+                                                            @endif
+                                                            @endforeach
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -267,21 +271,155 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- Row -->
                                 </div>
-                                
                             </form>
+                            <div class="row">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon3">
+                                            Comment
+                                        </span>
+                                    </div>
+                                    <form action="{{ route('send_comment') }}" method="POST">
+                                    @csrf
+                                    <textarea type="text" class="form-control" rows="3" id="comment" name="comment" placeholder="">{{ $job['last_comment'] }}</textarea>
+                                    <input type="hidden" name="comjob_id" value="{{ $job['job_id'] }}">
+                                    <button type="submit" class="btn btn-success" > <i class="fa fa-comment"></i> Send comment</button>
+                                    </form>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="table-responsive m-t-40">
+                                                <table id="example23" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>User</th>
+                                                            <th>Time</th>
+                                                            <th>Note</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    @foreach($comments as $item)
+                                                    <tr>
+                                                        <td>{{ $item['user'] }}</td>
+                                                        <td>{{ $item['created_at']}}</td>
+                                                        <td>{{ $item['note'] }}</td>
+                                                        <td>
+                                                        <a class="btn btn-circle btn-sm btn-danger" href=""><i class="fa fa-trash"></i></a></td>
+                                                    </tr>
+                                                    </tbody>
+                                                    @endforeach
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>                                
                             </div>
                             <div class="tab-pane p-20" id="jobdevices" role="tabpanel">
                                 <div class="row button-group">
                                     <div class="col-lg-12 m-b-30">
                                         <button class="btn btn-info waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-arrows"></i></span>Move selected devices</button>
                                         <button class="btn btn-danger waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-trash"></i></span>Remove selected devices</button>
-                                        <button class="btn btn-success waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-plus"></i></span>Add new client</button>
+                                        <button class="btn btn-success waves-effect waves-light" type="button" data-toggle="modal" data-target="#addNewClModal"><span class="btn-label"><i class="fa fa-plus"></i></span>Add new client</button>
                                         <button class="btn btn-success waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-plus"></i></span>Add device</button>
                                         <button class="btn btn-danger waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-upload"></i></span>Release selected</button>
                                     </div>
                                 </div>
+                                <form action=" {{ route('add_device') }}" method="POST">
+                                @csrf
+                                <div class="modal fade" id="addNewClModal" tabindex="-1" role="dialog" >
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title" id="exampleModalLabel1">Add new device</h4>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="form-body>">
+                                                    <input type="hidden" name="sel_job_id_cr" value="{{ $job['job_id'] }}" >
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1">
+                                                                Type
+                                                            </span>
+                                                        </div>
+                                                        <select class="form-control custom-select" id="cr_device_name" name="cr_device_name">
+                                                            @foreach($types as $item)
+                                                            <option value="{{ $item['device_name'] }}" > {{ $item['device_name']}}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <hr>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1">
+                                                                Role
+                                                            </span>
+                                                        </div>
+                                                        <select class="form-control custom-select" id="cr_role" name="cr_role">
+                                                            <option value="Patient" >Patient</option>
+                                                            <option value="Data" >Data</option>
+                                                            <option value="Donor" >Donor</option>
+                                                        </select>
+                                                    </div>
+                                                    <hr>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1">
+                                                                Manufacturer
+                                                            </span>
+                                                        </div>
+                                                        <input type="text" class="form-control" id="cr_manufacturer" name="cr_manufacturer">
+                                                    </div>
+                                                    <hr>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1">
+                                                                Model
+                                                            </span>
+                                                        </div>
+                                                        <input type="text" class="form-control" id="cr_model" name="cr_model">
+                                                    </div>
+                                                    <hr>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1">
+                                                                Serial
+                                                            </span>
+                                                        </div>
+                                                        <input type="text" class="form-control" id="cr_serial" name="cr_serial">
+                                                    </div>
+                                                    <hr>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1">
+                                                                Location
+                                                            </span>
+                                                        </div>
+                                                        <input type="text" class="form-control" id="cr_location" name="cr_location">
+                                                    </div>
+                                                    <hr>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1">
+                                                                Note
+                                                            </span>
+                                                        </div>
+                                                        <input type="text" class="form-control" id="cr_note" name="cr_note">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                                <button type="submit" class="btn btn-primary">Add</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                </form>
                                 <div class="row">
                                     <div class="col-lg-12">
                                     <h4 class="card-title">Patent Devices</h4>
@@ -297,19 +435,28 @@
                                                         <th>Location</th>
                                                         <th>Diagnosis</th>
                                                         <th>Note</th>
+                                                        <th><th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    @foreach($devices as $item)
+                                                    @if($item['role'] == 'Patient')
                                                     <tr>
-                                                        <td></td>
-                                                        <td>Laptop</td>
-                                                        <td>HP</td>
-                                                        <td>HP LNDF</td>
-                                                        <td>SDFE1248</td>
-                                                        <td></td>
-                                                        <td>Not set</td>
-                                                        <td></td>
+                                                        <td><input type="checkbox"></td>
+                                                        <td>{{ $item['type'] }}</td>
+                                                        <td>{{ $item['manufacturer'] }}</td>
+                                                        <td>{{ $item['model'] }}</td>
+                                                        <td>{{ $item['serial'] }}</td>
+                                                        <td>{{ $item['location'] }}</td>
+                                                        <td>{{ $item['diagnosis'] }}</td>
+                                                        <td>{{ $item['note'] }}</td>
+                                                        <td class="text-nowrap">
+                                                            <a href="{{ route('show_edit_job', ['id' => $item['id']]) }}" data-toggle="tooltip" data-original-title="Edit"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
+                                                            <a href="#" data-toggle="tooltip" data-original-title="Delete"> <i class="fa fa-close text-danger"></i> </a>
+                                                        </td>
                                                     </tr>
+                                                    @endif
+                                                    @endforeach
                                                 </tbody>
                                             </table>
                                         </div>
@@ -331,17 +478,24 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    @foreach($devices as $item)
+                                                    @if($item['role'] == 'Clone')
                                                     <tr>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
+                                                        <td><input type="checkbox"></td>
+                                                        <td>{{ $item['id'] }}</td>
+                                                        <td>{{ $item['type'] }}</td>
+                                                        <td>{{ $item['manufacturer'] }}</td>
+                                                        <td>{{ $item['model'] }}</td>
+                                                        <td>{{ $item['serial'] }}</td>
+                                                        <td>{{ $item['location'] }}</td>
+                                                        <td>{{ $item['note'] }}</td>
+                                                        <td class="text-nowrap">
+                                                            <a href="{{ route('show_edit_job', ['id' => $item['id']]) }}" data-toggle="tooltip" data-original-title="Edit"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
+                                                            <a href="#" data-toggle="tooltip" data-original-title="Delete"> <i class="fa fa-close text-danger"></i> </a>
+                                                        </td>
                                                     </tr>
+                                                    @endif
+                                                    @endforeach
                                                 </tbody>
                                             </table>
                                         </div>
@@ -363,17 +517,24 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    @foreach($devices as $item)
+                                                    @if($item['role'] == 'Donor')
                                                     <tr>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
+                                                        <td><input type="checkbox"></td>
+                                                        <td>{{ $item['id'] }}</td>
+                                                        <td>{{ $item['type'] }}</td>
+                                                        <td>{{ $item['manufacturer'] }}</td>
+                                                        <td>{{ $item['model'] }}</td>
+                                                        <td>{{ $item['serial'] }}</td>
+                                                        <td>{{ $item['location'] }}</td>
+                                                        <td>{{ $item['note'] }}</td>
+                                                        <td class="text-nowrap">
+                                                            <a href="{{ route('show_edit_job', ['id' => $item['id']]) }}" data-toggle="tooltip" data-original-title="Edit"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
+                                                            <a href="#" data-toggle="tooltip" data-original-title="Delete"> <i class="fa fa-close text-danger"></i> </a>
+                                                        </td>
                                                     </tr>
+                                                    @endif
+                                                    @endforeach
                                                 </tbody>
                                             </table>
                                         </div>
@@ -384,7 +545,6 @@
                                                 <thead>
                                                     <tr>
                                                         <th></th>
-                                                        <th>ID</th>
                                                         <th>Type</th>
                                                         <th>Manufacturer</th>
                                                         <th>Model</th>
@@ -395,17 +555,23 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    @foreach($devices as $item)
+                                                    @if($item['role'] == 'Other')
                                                     <tr>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
+                                                        <td><input type="checkbox"></td>
+                                                        <td>{{ $item['type'] }}</td>
+                                                        <td>{{ $item['manufacturer'] }}</td>
+                                                        <td>{{ $item['model'] }}</td>
+                                                        <td>{{ $item['serial'] }}</td>
+                                                        <td>{{ $item['location'] }}</td>
+                                                        <td>{{ $item['note'] }}</td>
+                                                        <td class="text-nowrap">
+                                                            <a href="{{ route('show_edit_job', ['id' => $item['id']]) }}" data-toggle="tooltip" data-original-title="Edit"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
+                                                            <a href="#" data-toggle="tooltip" data-original-title="Delete"> <i class="fa fa-close text-danger"></i> </a>
+                                                        </td>
                                                     </tr>
+                                                    @endif
+                                                    @endforeach
                                                 </tbody>
                                             </table>
                                         </div>
