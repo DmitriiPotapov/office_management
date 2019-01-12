@@ -29,7 +29,7 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <input type="text" id="client_info" name="client_info" class="form-control" placeholder="Cleint info" >
-                                        <a style="margin-left: 30px;" href="javascript:void(0)"> New Client </a> </div>
+                                        <a style="margin-left: 30px;" href="{{ route('addClinet') }}"> New Client </a> </div>
                                         <input type="hidden" name="client_id" value="1">
                                 </div>
                             </div>
