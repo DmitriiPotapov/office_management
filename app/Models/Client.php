@@ -21,6 +21,8 @@ class Client extends Model
         'email_name',
         'phone_value',
         'phone_name',
-        'client_note'
+        'client_note',
+        'client_group',
+        'company'
     ];
 }
