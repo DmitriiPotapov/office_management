@@ -8,7 +8,7 @@
 @section('content')
 <!-- Container fluid  -->
 <div class="container-fluid">
-    <form class="form-material m-t-40" action="{{URL::to('settings/lists/devicediagnosis/createAction')}}" method="post">
+    <form class="form-material m-t-40" action="{{URL::to('settings/lists/basejobstatues/createAction')}}" method="post">
     @csrf
         <div class="form-group">
             <label><span class="help">New Job Status</span></label>

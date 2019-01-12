@@ -13,8 +13,8 @@
                 <!-- ============================================================== -->
     <div class="row page-titles">
         <div class="col-md-6 col-8 align-self-center">
-            <h3 class="text-themecolor m-b-0 m-t-0">Device Types</h3>
-            <a href = "{{URL::to('settings/lists/devicetypes/create')}}"><button type="button" class="btn btn-info"><i class="ti-plus text" aria-hidden="true"></i> New device type</button></a>
+            <h3 class="text-themecolor m-b-0 m-t-0">All clients</h3>
+            <a href = "{{URL::to('clients/add')}}"><button type="button" class="btn btn-info"><i class="ti-plus text" aria-hidden="true"></i>Add New Client</button></a>
         </div>
         
     </div>
@@ -31,20 +31,31 @@
                 <div class="table-responsive m-t-40">
                     <table id="example23" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
                         <thead>
-                            <tr>
-                                
-                                <th style = "width: 85%;">Name</th>
-                                <th> Action</th>                                   
+                            <tr>                                
+                                <th>Name</th>
+                                <th>Address</th>
+                                <th>Phone</th>
+                                <th>Email</th>
+                                <th>PIB/JMBG</th>
+                                <th>Action</th>
+                                                                 
                             </tr>
                         </thead>
                         
-                        <tbody>
-                        @foreach($deviceTypes as $item)
-                            <tr>                  
-                                <td>{{$item->device_name}}</td>
-                                <td><a href = "{{URL::to('settings/lists/devicetypes/deleteAction?id=')}}{{$item->id}}"><button class="btn btn-youtube waves-effect btn-circle waves-light" type="button"> <i class="fa fa-trash" aria-hidden="true"></i> </button></a></td>
+                        <tbody> 
+                            @foreach ($clients as $client)
+                            <tr>
+                            <td>{{ $client->client_name }}</td>
+                            <td>{{ $client->city_name }}{{ $client->postal_code }},{{ $client->pak }},{{ $client->country }}</td>
+                            <td>{{ $client->phone_value }}</td>
+                            <td>{{ $client->email_value }}</td>
+                            <td>{{ $client->pib_jmbg }}</td>                              
+                            <td>
+                                <button type="button" class="btn btn-info btn-circle"><i class="fa fa-file-text"></i></button>
+                            <a href="{{ URL::to('clients/deleteAction?id=') }}{{ $client->id }}"><button class="btn btn-youtube waves-effect btn-circle waves-light" type="button"> <i class="fa fa-trash" aria-hidden="true"></i> </button></a>
+                            </td>
                             </tr>
-                        @endforeach                               
+                            @endforeach                                      
                         </tbody>
                     </table>
                 </div>

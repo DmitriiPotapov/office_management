@@ -8,66 +8,22 @@
 @section('content')
 <!-- Container fluid  -->
 <div class="container-fluid">
-<h1>Bulk add to stock</h1>
+<h1>New Invoice</h1>
 <div class="row">
         <div class="col-sm-12 col-xs-12">
           <form action="{{ route('createstock') }}" method="post">
           @csrf
-            <span>Device type</span>
-                <div class = "row">
-                    <div class = "col-md-6" style = "margin: 0px; padding: 0px;">
+            <button type="button" class="btn btn-info"><i class="fa  fa-pencil"></i>Change Client</button>
+            <br />
+            <br />
+            <span>Client</span>
+                <div class = "row">                   
                       <div class="input-group">
                           <div class="input-group-prepend">
-                              <span class="input-group-text" id="basic-addon1">Storage Type</span>
+                              <span class="input-group-text" id="basic-addon1">Client</span>
                           </div>
-                          <select class="custom-select col-12" id="inlineFormCustomSelect" name = "device_type">
-                              <option selected="">Choose...</option>
-                              <option value="1">One</option>
-                              <option value="2">Two</option>
-                              <option value="3">Three</option>
-                          </select>
-                      </div>
-                    </div>
-                    <div class = "col-md-6" style = "display: flex; margin:0px; padding: 0px;">
-                      <div class = "col-md-6" style = "margin: 0px; padding: 0px;">
-                        <div class="input-group">
-                          <div class="input-group-prepend">
-                              <span class="input-group-text" id="basic-addon1">Connection</span>
-                          </div>
-                          <select class="custom-select col-12" id="inlineFormCustomSelect" name = "connection">
-                              <option selected="">Choose...</option>
-                              <option value="1">M.2</option>
-                              <option value="2">mSATA</option>
-                              <option value="3">Other</option>
-                              <option value="4">PATA</option>
-                              <option value="5">PCI-Express</option>
-                              <option value="6">SAS</option>
-                              <option value="7">SATA</option>
-                              <option value="8">SATA Express</option>
-                              <option value="9">USB 2.0</option>
-                              <option value="9">USB 3.0</option>
-                              <option value="9">USB 3.1</option>
-                          </select>
-                        </div>  
-                      </div>
-                      <div class = "col-md-6" style = "margin: 0px; padding: 0px;">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1">Form factor</span>
-                            </div>
-                            <select class="custom-select col-12" id="inlineFormCustomSelect" name = "form_factor">
-                                <option selected="">Choose...</option>
-                                <option value="1">1.0"</option>
-                                <option value="2">1.3"</option>
-                                <option value="3">1.8"</option>
-                                <option value="4">2.5"</option>
-                                <option value="5">3.5"</option>
-                                <option value="6">5.25"</option>
-                                <option value="6">Other</option>
-                            </select>
-                        </div>
-                      </div>
-                    </div>
+                          <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" name = "client">  
+                      </div>                                       
                 </div>
                 
                 <br>

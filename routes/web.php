@@ -110,6 +110,27 @@ Route::group(
 //stock part
 Route::group(
     ['prefix'=>'stock'], function(){
+        Route::get('/allview', 'Stock\StockController@index')->name('allstocks');
         Route::get('/create', 'Stock\StockController@create')->name('addstock');
+        Route::post('/createAction', 'Stock\StockController@store')->name('createstock');
+        Route::get('/resetAction', 'Stock\StockController@reset');
+        Route::get('/deleteAction', 'Stock\StockController@destroy');
+    }
+);
+//clients part
+Route::group(
+    ['prefix'=>'clients'], function(){
+        Route::get('/add', 'ClientsController@create')->name('addClinet');
+        Route::get('/allview', 'ClientsController@index')->name('allclients');
+        Route::post('/createAction', 'ClientsController@store');
+        Route::get('/resetAction', 'ClientsController@reset');
+        Route::get('/deleteAction', 'ClientsController@destroy');
+    }
+);
+
+//invoice part
+Route::group(
+    ['prefix'=>'invoice'], function(){
+        Route::get('/add', 'InvoiceController@create')->name('add_invoice');
     }
 );

@@ -13,8 +13,8 @@
                 <!-- ============================================================== -->
     <div class="row page-titles">
         <div class="col-md-6 col-8 align-self-center">
-            <h3 class="text-themecolor m-b-0 m-t-0">Device Types</h3>
-            <a href = "{{URL::to('settings/lists/devicetypes/create')}}"><button type="button" class="btn btn-info"><i class="ti-plus text" aria-hidden="true"></i> New device type</button></a>
+            <h3 class="text-themecolor m-b-0 m-t-0">All Stock Items</h3>
+            <a href = "{{URL::to('stock/create')}}"><button type="button" class="btn btn-info"><i class="ti-plus text" aria-hidden="true"></i>Add New Stock</button></a>
         </div>
         
     </div>
@@ -31,20 +31,35 @@
                 <div class="table-responsive m-t-40">
                     <table id="example23" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
                         <thead>
-                            <tr>
-                                
-                                <th style = "width: 85%;">Name</th>
+                            <tr>                                
+                                <th>Manufacturer</th>
+                                <th>Model</th>
+                                <th>Serial number</th>
+                                <th>Location</th>
+                                <th>Price with VAT</th>
+                                <th>Acquired from</th>
+                                <th>Input date</th>
                                 <th> Action</th>                                   
                             </tr>
                         </thead>
                         
-                        <tbody>
-                        @foreach($deviceTypes as $item)
-                            <tr>                  
-                                <td>{{$item->device_name}}</td>
-                                <td><a href = "{{URL::to('settings/lists/devicetypes/deleteAction?id=')}}{{$item->id}}"><button class="btn btn-youtube waves-effect btn-circle waves-light" type="button"> <i class="fa fa-trash" aria-hidden="true"></i> </button></a></td>
-                            </tr>
-                        @endforeach                               
+                        <tbody> 
+                            @foreach ($stockItems as $item)                      
+                            <tr>
+                            <td>{{ $item->manufacturer }}</td>
+                            <td>{{ $item->stock_model }}</td>
+                            <td>{{ $item->serial_number }}</td>
+                            <td>{{ $item->location }}</td>
+                            <td>{{ $item->input_price }}</td>
+                            <td>{{ $item->diler_info }}</td>
+                            <td>{{ $item->created_at }}</td>    
+                                <td>
+                                    <button type="button" class="btn btn-info btn-circle"><i class="fa fa-file-text"></i> </button>
+                                    <button type="button" class="btn btn-info btn-circle"><i class="fa fa-exchange"></i> </button>
+                                <a href="{{ URL::to('stock/deleteAction?id=') }}{{ $item->id }}"><button class="btn btn-youtube waves-effect btn-circle waves-light" type="button"> <i class="fa fa-trash" aria-hidden="true"></i> </button></a>
+                                </td>
+                              </tr>
+                            @endforeach                                
                         </tbody>
                     </table>
                 </div>

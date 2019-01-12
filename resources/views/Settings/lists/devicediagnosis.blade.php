@@ -37,13 +37,7 @@
                                     <th style = "width:10%;"> Action</th>                                   
                                 </tr>
                             </thead>
-                            <tfoot>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Device type</th>
-                                    <th>Action</th>                                  
-                                </tr>
-                            </tfoot>
+                            
                             <tbody>
                                 @foreach($devicediagnosis as $item)
                                 <tr>

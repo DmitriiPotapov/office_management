@@ -37,12 +37,7 @@
                                     <th> Action</th>                                   
                                 </tr>
                             </thead>
-                            <tfoot>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Action</th>                                  
-                                </tr>
-                            </tfoot>
+                            
                             <tbody>
                             @foreach($jobPriorities as $item)
                                 <tr>

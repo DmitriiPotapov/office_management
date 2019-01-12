@@ -34,21 +34,21 @@
                 <li>
                     <a class="has-arrow " href="#" aria-expanded="false"><i class="icon-people"></i><span class="hide-menu">Clients </span></a>
                     <ul aria-expanded="false" class="collapse">
-                        <li><a href="app-calendar.html">New client </a></li>
-                        <li><a href="app-chat.html">View all clients </a></li>
+                    <li><a href="{{ route('addClinet') }}">New client </a></li>
+                    <li><a href="{{ route('allclients') }}">View all clients </a></li>
                     </ul>
                 </li>
                 <li>
                     <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-cart-outline"></i><span class="hide-menu">Stock </span></a>
                     <ul aria-expanded="false" class="collapse">
                         <li><a href="{{URL::to('stock/create')}}">New stock item </a></li>
-                        <li><a href="app-chat.html">View all items </a></li>
+                        <li><a href="{{ URL::to('stock/allview') }}">View all items </a></li>
                     </ul>
                 </li>
                 <li>
                     <a class="has-arrow " href="#" aria-expanded="false"><i class="fa fa-bank"></i><span class="hide-menu">Billing </span></a>
                     <ul aria-expanded="false" class="collapse">
-                        <li><a href="app-calendar.html">New invoice </a></li>
+                    <li><a href="{{ URL::to('invoice/add') }}">New invoice </a></li>
                         <li><a href="app-chat.html">View all invoices </a></li>
                         <li><a href="app-ticket.html">Bills </a></li>
                     </ul>
