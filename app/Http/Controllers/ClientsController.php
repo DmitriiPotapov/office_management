@@ -53,6 +53,8 @@ class ClientsController extends Controller
         $phone_value = $request->phone_value;
         $phone_name = $request->phone_name;
         $client_note = $request->client_note;
+        $company = $request->company;
+        $client_group = $request->client_group;
         
         $client = new Client();
         $client->client_name = $client_name;
@@ -70,6 +72,8 @@ class ClientsController extends Controller
         $client->phone_value = $phone_value;
         $client->phone_name = $phone_name;
         $client->client_note = $client_note;
+        $client->company = $company;
+        $client->client_group = $client_group;
 
         $client->save();
 

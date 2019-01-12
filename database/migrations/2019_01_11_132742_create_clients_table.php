@@ -31,6 +31,8 @@ class CreateClientsTable extends Migration
             $table->string('phone_value')->nullable();
             $table->string('phone_name')->nullable();
             $table->string('client_note')->nullable();
+            $table->string('company')->nullable();
+            $table->string('client_group')->nullable();
             $table->timestamps();
         });
     }
