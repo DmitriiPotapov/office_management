@@ -18,7 +18,7 @@
                                 <input type="text" class="form-control" id="jobNumber" placeholder="Job Number">
                                 <div class="input-group-append">
                                     <span class="input-group-text" id="basic-addon2">
-                                        <a href="javascript:void(0)"><i class="ti-hand-point-right"></i></a>
+                                        <button onclick="onquickjump()"><a><i class="ti-hand-point-right"></i></a></button>
                                     </span>
                                 </div>
                             </div>
@@ -66,7 +66,7 @@
                                 <td>{{ $item['created_at'] }}</td>
                                 <td class="text-nowrap">
                                     <a href="{{ route('show_edit_job', ['id' => $item['job_id']]) }}" data-toggle="tooltip" data-original-title="Edit"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
-                                    <a href="#" data-toggle="tooltip" data-original-title="Delete"> <i class="fa fa-close text-danger"></i> </a>
+                                    <a href="{{ route('delete_job', ['id' => $item['job_id']]) }}" data-toggle="tooltip" data-original-title="Delete"> <i class="fa fa-close text-danger"></i> </a>
                                 </td>
                             </tr>
                             @endforeach
@@ -103,6 +103,13 @@ $('#myTable').DataTable({
         'copy', 'csv', 'excel', 'pdf', 'print'
     ]
 });
+
+function onquickjump()
+{
+    var id = $('#jobNumber').val();
+    window.location = '/job/editJob/' + id;
+}
+
 </script>
 
 @endpush
