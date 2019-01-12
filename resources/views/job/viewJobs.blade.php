@@ -7,15 +7,6 @@
 @section('content')
 <div class="container-fluid">
 <!-- Bread crumb and right sidebar toggle -->
-    <div class="row page-titles">
-        <div class="col-md-6 col-8 align-self-center">
-            <h3 class="text-themecolor m-b-0 m-t-0">Jobs</h3>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="javascript:void(0)">View jobs</a></li>
-            </ol>
-        </div>
-    </div>
-
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
@@ -27,7 +18,7 @@
                                 <input type="text" class="form-control" id="jobNumber" placeholder="Job Number">
                                 <div class="input-group-append">
                                     <span class="input-group-text" id="basic-addon2">
-                                        <a href="javascript:void(0)"><i class="ti-hand-point-right"></i></a>
+                                        <button onclick="onquickjump()"><a><i class="ti-hand-point-right"></i></a></button>
                                     </span>
                                 </div>
                             </div>
@@ -47,11 +38,13 @@
                         <table id="myTable" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
                             <thead>
                                 <tr>
+                                    <th></th>
                                     <th>No</th>
                                     <th>Priority</th>
                                     <th>Client</th>
                                     <th>Status</th>
                                     <th>Info</th>
+                                    <th>Last Note</th>
                                     <th>Assgined to</th>
                                     <th>Created by</th>
                                     <th>Created at</th>
@@ -59,18 +52,24 @@
                                 </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td>
-                                <a class="btn btn-circle btn-sm btn-danger"><i class="fa fa-trash"></i></a></td>
+                            @foreach($jobs as $item)
+                            <tr >
+                                <td><input type="checkbox"></td>
+                                <td>{{ $item['job_id'] }}</td>
+                                <td>{{ $item['priority'] }}</td>
+                                <td>{{ $item['client_name'] }}</td>
+                                <td>{{ $item['status'] }}</td>
+                                <td>{{ $item['device_malfunc_info'] }}</td>
+                                <td>{{ $item['notes'] }}</td>
+                                <td>{{ $item['assigned_engineer'] }}</td>
+                                <td>{{ $item['user_name'] }}</td>
+                                <td>{{ $item['created_at'] }}</td>
+                                <td class="text-nowrap">
+                                    <a href="{{ route('show_edit_job', ['id' => $item['job_id']]) }}" data-toggle="tooltip" data-original-title="Edit"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
+                                    <a href="{{ route('delete_job', ['id' => $item['job_id']]) }}" data-toggle="tooltip" data-original-title="Delete"> <i class="fa fa-close text-danger"></i> </a>
+                                </td>
                             </tr>
+                            @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -104,6 +103,13 @@ $('#myTable').DataTable({
         'copy', 'csv', 'excel', 'pdf', 'print'
     ]
 });
+
+function onquickjump()
+{
+    var id = $('#jobNumber').val();
+    window.location = '/job/editJob/' + id;
+}
+
 </script>
 
 @endpush

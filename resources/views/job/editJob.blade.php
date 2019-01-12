@@ -3,6 +3,7 @@
 @push('header-style')
 
 <link href="{{ asset('assets/plugins/icheck/skins/all.css')}}" rel="stylesheet">
+<link href="{{ asset('assets/plugins/dropify/dist/css/dropify.min.css')}}" rel="stylesheet">
 
 @endpush
 
@@ -15,14 +16,49 @@
                 <div class="card-body">
                     <div class="row button-group">
                         <div class="col-lg-12 m-b-30">
-                            <button class="btn btn-primary waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-user"></i></span>Assign job to engineer</button>
-                            <button class="btn btn-success waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-check"></i></span>Admission form</button>
+                            <button class="btn btn-primary waves-effect waves-light" type="button" data-toggle="modal" data-target="#assignto"><span class="btn-label" ><i class="fa fa-user"></i></span>Assign job to engineer</button>
+                            <button class="btn btn-success waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-book"></i></span><a href="{{ route('admission_form',['job_id' => $job['job_id']]) }}">Admission form</a></button>
                             <button class="btn btn-info waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-folder"></i></span>Go to file list</button>
                             <button class="btn btn-warning waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-key"></i></span>Unlock client access</button>
                             <button class="btn btn-danger waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-refresh"></i></span>Refresh file list info</button>
                             <button class="btn btn-danger waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-users"></i></span>Change client</button>
                             <button class="btn btn-danger waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-check"></i></span>Check-out form</button>
                             <button class="btn btn-success waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-envelope-o"></i></span>Generate invoice</button>
+                        </div>
+                        <div class="modal fade" id="assignto" tabindex="-1" role="dialog" >
+                            <form action="{{ route('assign_job') }}" method="POST">
+                            @csrf
+                                <input type="hidden" name="assign_job_id" value="{{ $job['job_id'] }}">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title" id="exampleModalLabel1">Assign job to engineer</h4>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="form-body>">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" id="basic-addon1">
+                                                            Engineer
+                                                        </span>
+                                                    </div>
+                                                    <select class="form-control custom-select" id="assign_engineer" name="assign_engineer">
+                                                        @foreach($engineers as $item)
+                                                        <option value="{{ $item['username'] }}" > {{ $item['username']}}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <hr>                                        
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                            <button type="submit" class="btn btn-primary">Add</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                     <div class="col-md-12">
@@ -39,205 +75,254 @@
                         <hr>
                         <div class="tab-content">
                             <div class="tab-pane active" id="general" role="tabpanel">
-                            <form method="POST" action="{{ route('add_new_Permission') }}">
-                            @csrf
-                                <div class="form-body">
-                                <div class="row">
-                                    <div class="col-lg-5">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <div class="form-group row">
-                                                    <label class="col-lg-4 control-label"><b>Services:</b></label>
-                                                    <label class="col-lg-4 control-label">Data Recovery</label>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label class="col-lg-4 control-label"><b>File list password:</b></label>
-                                                    <label class="col-lg-4 control-label">8456451654 &nbsp;<a href="javascript:void(0)"><i class="fa fa-refresh"></i></a></label>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label class="col-lg-4 control-label"><b>Assigned to engineer:</b></label>
-                                                    <label class="col-lg-4 control-label">Joe</label>
-                                                </div>
-                                                <div class="input-group">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text" id="basic-addon1">
-                                                            Price
-                                                        </span>
+                                <form method="POST" action="{{ route('update_Job') }}">
+                                @csrf
+                                    <input type="hidden" name="seljob_id" value="{{ $job['job_id'] }}">
+                                    <div class="form-body">
+                                    <div class="row">
+                                        <div class="col-lg-5">
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <div class="form-group row">
+                                                        <label class="col-lg-4 control-label"><b>Services:</b></label>
+                                                        <input type="hidden" name="services" value="{{ $job['services'] }}">
+                                                        <label class="col-lg-4 control-label" >{{ $job['services'] }}</label>
                                                     </div>
-                                                    <input type="text" class="form-control" id="exampleInputuname" placeholder="0">
-                                                </div>
-                                                <hr>
-                                                <div class="input-group">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text" id="basic-addon1">
-                                                            Status
-                                                        </span>
+                                                    <div class="form-group row">
+                                                        <label class="col-lg-4 control-label"><b>File list password:</b></label>
+                                                        <input type="hidden" id="job_password" name="job_password" value="{{ $job['job_password'] }}">
+                                                        <label class="col-lg-4 control-label" id="job_passwordl">{{ $job['job_password'] }}</label><a href="javascript:void(0)" onclick = "gen_password()""><i class="fa fa-refresh"></i></a>
                                                     </div>
-                                                    <select class="form-control custom-select" id="status" name="status">
-                                                        <option value="Received">Received</option>
-                                                        <option value="In process">In process</option>
-                                                        <option value="Waiting for parts">Waiting for parts</option>
-                                                        <option value="Paid">Paid</option>
-                                                    </select>
-                                                </div>
-                                                <hr>
-                                                <div class="input-group">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text" id="basic-addon1">
-                                                            Priority
-                                                        </span>
+                                                    <div class="form-group row">
+                                                        <label class="col-lg-5 control-label"><b>Assigned to engineer:</b></label>
+                                                        <input type="hidden" name="assigned_engineer" value="{{ $job['assigned_engineer'] }}">
+                                                        <label class="col-lg-4 control-label" >{{ $job['assigned_engineer'] }}</label>
                                                     </div>
-                                                    <select class="form-control custom-select" id="priority" name="priority">
-                                                        <option value="Priority 1+">Priority 1+</option>
-                                                        <option value="Priority 1">Priority 1</option>
-                                                        <option value="Priority 2">Priority 2</option>
-                                                        <option value="RAID">RAID</option>
-                                                    </select>
-                                                </div>
-                                                <hr>
-                                                <div class="form-group row has-success">
-                                                    <h4 class="card-title">Job info</h4>
-                                                    <textarea class="form-control" rows="3"></textarea>
-                                                </div>
-                                                <hr>
-                                                <div class="form-group row has-info">
-                                                    <h4 class="card-title">Important data</h4>
-                                                    <textarea class="form-control" rows="3"></textarea>
-                                                </div>
-                                                <hr>
-                                                <div class="form-group row has-danger">
-                                                    <h4 class="card-title">Cleint note</h4>
-                                                    <textarea class="form-control" rows="3"></textarea>
-                                                </div>
-                                                <div class="form-actions">
-                                                    <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Save</button>
-                                                </div>
-                                                <hr>
-                                                <div class="input-group">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text" id="basic-addon3">
-                                                            Comment
-                                                        </span>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1">
+                                                                Price
+                                                            </span>
+                                                        </div>
+                                                        <input type="text" class="form-control" id="price" name="price" value="{{ $job['price'] }}">
                                                     </div>
-                                                    <textarea type="text" class="form-control" rows="3" id="comment" placeholder=""></textarea>
-                                                    <button class="btn btn-success"> <i class="fa fa-comment"></i> Send comment</button>
+                                                    <hr>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1">
+                                                                Status
+                                                            </span>
+                                                        </div>
+                                                        <select class="form-control custom-select" id="status" name="status">
+                                                            <@foreach($statuses as $item)
+                                                            <option value="{{ $item['status_name'] }}" {{ ($item['status_name'] == $job['status']) ? 'selected' : '' }}> {{ $item['status_name']}}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <hr>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1">
+                                                                Priority
+                                                            </span>
+                                                        </div>
+                                                        <select class="form-control custom-select" id="priority" name="priority">
+                                                            @foreach($priorities as $item)
+                                                            <option value="{{ $item['job_priority_name'] }}" {{ ($item['job_priority_name'] == $job['priority']) ? 'selected' : '' }}> {{ $item['job_priority_name']}}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <hr>
+                                                    <div class="form-group row has-success">
+                                                        <h4 class="card-title">Job info</h4>
+                                                        <textarea class="form-control" rows="3" name="device_malfunc_info">{{ $job['device_malfunc_info'] }}</textarea>
+                                                    </div>
+                                                    <hr>
+                                                    <div class="form-group row has-info">
+                                                        <h4 class="card-title">Important data</h4>
+                                                        <textarea class="form-control" rows="3" name="important_data">{{ $job['important_data'] }}</textarea>
+                                                    </div>
+                                                    <hr>
+                                                    <div class="form-group row has-danger">
+                                                        <h4 class="card-title">Cleint note</h4>
+                                                        <textarea class="form-control" rows="3" name="notes">{{ $job['notes'] }}</textarea>
+                                                    </div>
+                                                    <div class="form-actions">
+                                                        <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Save</button>
+                                                    </div>
+                                                    <hr>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-7">
+                                            <div class="card">
+                                                <h4 class="card-title">Client info</h4>
+                                                <div class="card-body">
+                                                    <div class="form-group row">
+                                                        <label class="col-lg-4 control-label"><b>Ime kijentha:</b></label>
+                                                        <label class="col-lg-6 control-label">Nthin sivadas</label>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label class="col-lg-4 control-label"><b>Adresa:</b></label>
+                                                        <label class="col-lg-6 control-label">Ambalaparam sivadas</label>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label class="col-lg-4 control-label"><b>Grad:</b></label>
+                                                        <label class="col-lg-6 control-label">926261 sivadas</label>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label class="col-lg-4 control-label"><b>Drazava:</b></label>
+                                                        <label class="col-lg-6 control-label">India</label>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label class="col-lg-4 control-label"><b>Note:</b></label>
+                                                        <label class="col-lg-6 control-label"></label>
+                                                    </div>
+                                                    <h4 class="card-title">Patent Devices</h4>
+                                                    <div class="table-responsive">
+                                                        <table class="table color-bordered-table info-bordered-table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Type</th>
+                                                                    <th>Manufacturer</th>
+                                                                    <th>Model</th>
+                                                                    <th>Serial</th>
+                                                                    <th>Location</th>
+                                                                    <th>Diagnosis</th>
+                                                                    <th>Note</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach($devices as $item)
+                                                                @if($item['role'] == 'Patient')
+                                                                <tr>
+                                                                    <td>{{ $item['type'] }}</td>
+                                                                    <td>{{ $item['manufacturer'] }}</td>
+                                                                    <td>{{ $item['model'] }}</td>
+                                                                    <td>{{ $item['serial'] }}</td>
+                                                                    <td>{{ $item['location'] }}</td>
+                                                                    <td>{{ $item['diagnosis'] }}</td>
+                                                                    <td>{{ $item['note'] }}</td>
+                                                                </tr>
+                                                                @endif
+                                                                @endforeach
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <hr>
+                                                    <h4 class="card-title">Job Clones</h4>
+                                                    <div class="table-responsive">
+                                                        <table class="table color-bordered-table info-bordered-table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>ID</th>
+                                                                    <th>Type</th>
+                                                                    <th>Manufacturer</th>
+                                                                    <th>Model</th>
+                                                                    <th>Serial</th>
+                                                                    <th>Location</th>
+                                                                    <th>Note</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach($devices as $item)
+                                                                @if($item['role'] == 'Clone')
+                                                                <tr>
+                                                                    <td>{{ $item['id'] }}</td>
+                                                                    <td>{{ $item['type'] }}</td>
+                                                                    <td>{{ $item['manufacturer'] }}</td>
+                                                                    <td>{{ $item['model'] }}</td>
+                                                                    <td>{{ $item['serial'] }}</td>
+                                                                    <td>{{ $item['location'] }}</td>
+                                                                    <td>{{ $item['note'] }}</td>
+                                                                </tr>
+                                                                @endif
+                                                                @endforeach
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <hr>
+                                                    <h4 class="card-title">Job Donors</h4>
+                                                    <div class="table-responsive">
+                                                        <table class="table color-bordered-table info-bordered-table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>ID</th>
+                                                                    <th>Type</th>
+                                                                    <th>Manufacturer</th>
+                                                                    <th>Model</th>
+                                                                    <th>Serial</th>
+                                                                    <th>Location</th>
+                                                                    <th>Note</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach($devices as $item)
+                                                                @if($item['role'] == 'Donor')
+                                                                <tr>
+                                                                    <td>{{ $item['id'] }}</td>
+                                                                    <td>{{ $item['type'] }}</td>
+                                                                    <td>{{ $item['manufacturer'] }}</td>
+                                                                    <td>{{ $item['model'] }}</td>
+                                                                    <td>{{ $item['serial'] }}</td>
+                                                                    <td>{{ $item['location'] }}</td>
+                                                                    <td>{{ $item['note'] }}</td>
+                                                                </tr>
+                                                                @endif
+                                                                @endforeach
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                    <hr>
+                                                    <h4 class="card-title">Other client devices</h4>
+                                                    <div class="table-responsive">
+                                                        <table class="table color-bordered-table info-bordered-table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Type</th>
+                                                                    <th>Manufacturer</th>
+                                                                    <th>Model</th>
+                                                                    <th>Serial</th>
+                                                                    <th>Location</th>
+                                                                    <th>Note</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach($devices as $item)
+                                                                @if($item['role'] == 'Other')
+                                                                <tr>
+                                                                    <td>{{ $item['type'] }}</td>
+                                                                    <td>{{ $item['manufacturer'] }}</td>
+                                                                    <td>{{ $item['model'] }}</td>
+                                                                    <td>{{ $item['serial'] }}</td>
+                                                                    <td>{{ $item['location'] }}</td>
+                                                                    <td>{{ $item['note'] }}</td>
+                                                                </tr>
+                                                                @endif
+                                                                @endforeach
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-lg-7">
-                                        <div class="card">
-                                            <h4 class="card-title">Client info</h4>
-                                            <div class="card-body">
-                                                <div class="form-group row">
-                                                    <label class="col-lg-4 control-label"><b>Ime kijentha:</b></label>
-                                                    <label class="col-lg-6 control-label">Nthin sivadas</label>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label class="col-lg-4 control-label"><b>Adresa:</b></label>
-                                                    <label class="col-lg-6 control-label">Ambalaparam sivadas</label>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label class="col-lg-4 control-label"><b>Grad:</b></label>
-                                                    <label class="col-lg-6 control-label">926261 sivadas</label>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label class="col-lg-4 control-label"><b>Drazava:</b></label>
-                                                    <label class="col-lg-6 control-label">India</label>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label class="col-lg-4 control-label"><b>Note:</b></label>
-                                                    <label class="col-lg-6 control-label"></label>
-                                                </div>
-                                                <h4 class="card-title">Patent Devices</h4>
-                                                <div class="table-responsive">
-                                                    <table class="table color-bordered-table info-bordered-table">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Type</th>
-                                                                <th>Manufacturer</th>
-                                                                <th>Model</th>
-                                                                <th>Serial</th>
-                                                                <th>Location</th>
-                                                                <th>Diagnosis</th>
-                                                                <th>Note</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td>Laptop</td>
-                                                                <td>HP</td>
-                                                                <td>HP LNDF</td>
-                                                                <td>SDFE1248</td>
-                                                                <td></td>
-                                                                <td>Not set</td>
-                                                                <td></td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                                <hr>
-                                                <h4 class="card-title">Job Clones</h4>
-                                                <div class="table-responsive">
-                                                    <table class="table color-bordered-table info-bordered-table">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>ID</th>
-                                                                <th>Type</th>
-                                                                <th>Manufacturer</th>
-                                                                <th>Model</th>
-                                                                <th>Serial</th>
-                                                                <th>Location</th>
-                                                                <th>Note</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td></td>
-                                                                <td></td>
-                                                                <td></td>
-                                                                <td></td>
-                                                                <td></td>
-                                                                <td></td>
-                                                                <td></td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                                <hr>
-                                                <h4 class="card-title">Job Donors</h4>
-                                                <div class="table-responsive">
-                                                    <table class="table color-bordered-table info-bordered-table">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>ID</th>
-                                                                <th>Type</th>
-                                                                <th>Manufacturer</th>
-                                                                <th>Model</th>
-                                                                <th>Serial</th>
-                                                                <th>Location</th>
-                                                                <th>Note</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td></td>
-                                                                <td></td>
-                                                                <td></td>
-                                                                <td></td>
-                                                                <td></td>
-                                                                <td></td>
-                                                                <td></td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                                <hr>
-                                            </div>
-                                        </div>
                                     </div>
-                                </div>
+                                </form>
                                 <div class="row">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon3">
+                                                Comment
+                                            </span>
+                                        </div>
+                                        <form action="{{ route('send_comment') }}" method="POST">
+                                        @csrf
+                                        <textarea type="text" class="form-control" rows="3" id="comment" name="comment" placeholder="">{{ $job['last_comment'] }}</textarea>
+                                        <input type="hidden" name="comjob_id" value="{{ $job['job_id'] }}">
+                                        <button type="submit" class="btn btn-success" > <i class="fa fa-comment"></i> Send comment</button>
+                                        </form>
+                                    </div>
                                     <div class="col-lg-12">
                                         <div class="card">
                                             <div class="card-body">
@@ -252,39 +337,128 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
+                                                        @foreach($comments as $item)
                                                         <tr>
-                                                            <td>Joe</td>
-                                                            <td>2019:01:10</td>
-                                                            <td>SSSS</td>
+                                                            <td>{{ $item['user'] }}</td>
+                                                            <td>{{ $item['created_at']}}</td>
+                                                            <td>{{ $item['note'] }}</td>
                                                             <td>
-                                                            <a class="btn btn-circle btn-sm btn-info" href=""><i class="fa fa-pencil"></i></a>
-                                                            <a class="btn btn-circle btn-sm btn-danger" href=""><i class="fa fa-trash"></i></a></td>
+                                                            <a class="btn btn-circle btn-sm btn-danger" href="{{ route('delete_comment',['id' => $item['id']]) }}"><i class="fa fa-trash"></i></a></td>
                                                         </tr>
                                                         </tbody>
+                                                        @endforeach
                                                     </table>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <!-- Row -->
-                                </div>
-                                
-                            </form>
+                                </div>                                
                             </div>
                             <div class="tab-pane p-20" id="jobdevices" role="tabpanel">
                                 <div class="row button-group">
                                     <div class="col-lg-12 m-b-30">
                                         <button class="btn btn-info waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-arrows"></i></span>Move selected devices</button>
                                         <button class="btn btn-danger waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-trash"></i></span>Remove selected devices</button>
-                                        <button class="btn btn-success waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-plus"></i></span>Add new client</button>
+                                        <button class="btn btn-success waves-effect waves-light" type="button" data-toggle="modal" data-target="#addNewClModal"><span class="btn-label"><i class="fa fa-plus"></i></span>Add new client</button>
                                         <button class="btn btn-success waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-plus"></i></span>Add device</button>
                                         <button class="btn btn-danger waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-upload"></i></span>Release selected</button>
                                     </div>
                                 </div>
+                                <form action=" {{ route('add_device') }}" method="POST">
+                                @csrf
+                                <div class="modal fade" id="addNewClModal" tabindex="-1" role="dialog" >
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title" id="exampleModalLabel1">Add new device</h4>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="form-body>">
+                                                    <input type="hidden" name="sel_job_id_cr" value="{{ $job['job_id'] }}" >
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1">
+                                                                Type
+                                                            </span>
+                                                        </div>
+                                                        <select class="form-control custom-select" id="cr_device_name" name="cr_device_name">
+                                                            @foreach($types as $item)
+                                                            <option value="{{ $item['device_name'] }}" > {{ $item['device_name']}}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <hr>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1">
+                                                                Role
+                                                            </span>
+                                                        </div>
+                                                        <select class="form-control custom-select" id="cr_role" name="cr_role">
+                                                            <option value="Patient" >Patient</option>
+                                                            <option value="Data" >Data</option>
+                                                            <option value="Donor" >Donor</option>
+                                                        </select>
+                                                    </div>
+                                                    <hr>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1">
+                                                                Manufacturer
+                                                            </span>
+                                                        </div>
+                                                        <input type="text" class="form-control" id="cr_manufacturer" name="cr_manufacturer">
+                                                    </div>
+                                                    <hr>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1">
+                                                                Model
+                                                            </span>
+                                                        </div>
+                                                        <input type="text" class="form-control" id="cr_model" name="cr_model">
+                                                    </div>
+                                                    <hr>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1">
+                                                                Serial
+                                                            </span>
+                                                        </div>
+                                                        <input type="text" class="form-control" id="cr_serial" name="cr_serial">
+                                                    </div>
+                                                    <hr>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1">
+                                                                Location
+                                                            </span>
+                                                        </div>
+                                                        <input type="text" class="form-control" id="cr_location" name="cr_location">
+                                                    </div>
+                                                    <hr>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1">
+                                                                Note
+                                                            </span>
+                                                        </div>
+                                                        <input type="text" class="form-control" id="cr_note" name="cr_note">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                                <button type="submit" class="btn btn-primary">Add</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                </form>
                                 <div class="row">
                                     <div class="col-lg-12">
-                                    <h4 class="card-title">Patent Devices</h4>
+                                    <h4 class="card-title">Patient Devices</h4>
                                         <div class="table-responsive">
                                             <table class="table color-bordered-table info-bordered-table">
                                                 <thead>
@@ -297,19 +471,28 @@
                                                         <th>Location</th>
                                                         <th>Diagnosis</th>
                                                         <th>Note</th>
+                                                        <th></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    @foreach($devices as $item)
+                                                    @if($item['role'] == 'Patient')
                                                     <tr>
-                                                        <td></td>
-                                                        <td>Laptop</td>
-                                                        <td>HP</td>
-                                                        <td>HP LNDF</td>
-                                                        <td>SDFE1248</td>
-                                                        <td></td>
-                                                        <td>Not set</td>
-                                                        <td></td>
+                                                        <td><input type="checkbox"></td>
+                                                        <td>{{ $item['type'] }}</td>
+                                                        <td>{{ $item['manufacturer'] }}</td>
+                                                        <td>{{ $item['model'] }}</td>
+                                                        <td>{{ $item['serial'] }}</td>
+                                                        <td>{{ $item['location'] }}</td>
+                                                        <td>{{ $item['diagnosis'] }}</td>
+                                                        <td>{{ $item['note'] }}</td>
+                                                        <td class="text-nowrap">
+                                                            <a href="#" data-toggle="tooltip" data-original-title="Edit"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
+                                                            <a href="{{ route('delete_device', ['id' => $item['id']]) }}" data-toggle="tooltip" data-original-title="Delete"> <i class="fa fa-close text-danger"></i> </a>
+                                                        </td>
                                                     </tr>
+                                                    @endif
+                                                    @endforeach
                                                 </tbody>
                                             </table>
                                         </div>
@@ -331,17 +514,24 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    @foreach($devices as $item)
+                                                    @if($item['role'] == 'Clone')
                                                     <tr>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
+                                                        <td><input type="checkbox"></td>
+                                                        <td>{{ $item['id'] }}</td>
+                                                        <td>{{ $item['type'] }}</td>
+                                                        <td>{{ $item['manufacturer'] }}</td>
+                                                        <td>{{ $item['model'] }}</td>
+                                                        <td>{{ $item['serial'] }}</td>
+                                                        <td>{{ $item['location'] }}</td>
+                                                        <td>{{ $item['note'] }}</td>
+                                                        <td class="text-nowrap">
+                                                            <a href="#" data-toggle="tooltip" data-original-title="Edit"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
+                                                            <a href="{{ route('delete_device', ['id' => $item['id']]) }}" data-toggle="tooltip" data-original-title="Delete"> <i class="fa fa-close text-danger"></i> </a>
+                                                        </td>
                                                     </tr>
+                                                    @endif
+                                                    @endforeach
                                                 </tbody>
                                             </table>
                                         </div>
@@ -363,17 +553,24 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    @foreach($devices as $item)
+                                                    @if($item['role'] == 'Donor')
                                                     <tr>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
+                                                        <td><input type="checkbox"></td>
+                                                        <td>{{ $item['id'] }}</td>
+                                                        <td>{{ $item['type'] }}</td>
+                                                        <td>{{ $item['manufacturer'] }}</td>
+                                                        <td>{{ $item['model'] }}</td>
+                                                        <td>{{ $item['serial'] }}</td>
+                                                        <td>{{ $item['location'] }}</td>
+                                                        <td>{{ $item['note'] }}</td>
+                                                        <td class="text-nowrap">
+                                                            <a href="#" data-toggle="tooltip" data-original-title="Edit"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
+                                                            <a href="{{ route('delete_device', ['id' => $item['id']]) }}" data-toggle="tooltip" data-original-title="Delete"> <i class="fa fa-close text-danger"></i> </a>
+                                                        </td>
                                                     </tr>
+                                                    @endif
+                                                    @endforeach
                                                 </tbody>
                                             </table>
                                         </div>
@@ -384,13 +581,108 @@
                                                 <thead>
                                                     <tr>
                                                         <th></th>
-                                                        <th>ID</th>
                                                         <th>Type</th>
                                                         <th>Manufacturer</th>
                                                         <th>Model</th>
                                                         <th>Serial</th>
                                                         <th>Location</th>
                                                         <th>Note</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach($devices as $item)
+                                                    @if($item['role'] == 'Other')
+                                                    <tr>
+                                                        <td><input type="checkbox"></td>
+                                                        <td>{{ $item['type'] }}</td>
+                                                        <td>{{ $item['manufacturer'] }}</td>
+                                                        <td>{{ $item['model'] }}</td>
+                                                        <td>{{ $item['serial'] }}</td>
+                                                        <td>{{ $item['location'] }}</td>
+                                                        <td>{{ $item['note'] }}</td>
+                                                        <td class="text-nowrap">
+                                                            <a href="#" data-toggle="tooltip" data-original-title="Edit"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
+                                                            <a href="{{ route('delete_device', ['id' => $item['id']]) }}" data-toggle="tooltip" data-original-title="Delete"> <i class="fa fa-close text-danger"></i> </a>
+                                                        </td>
+                                                    </tr>
+                                                    @endif
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane p-20" id="services" role="tabpanel">
+                                <form action="{{ route('update_service') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="update_service_job_id" value="{{ $job['job_id'] }}">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="basic-addon1">
+                                                        <input type="radio" id="datarec" name="service_name" value="Data Recovery" {{ ($job['services'] == 'Data Recovery' ? 'checked' : '') }}>
+                                                    </span>
+                                                </div>
+                                                <label for="datarec" id="ldatarec" name="ldatarec" class="form-control">Data Recovery</label>
+                                                <small class="form-control-feedback"></small> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="basic-addon1">
+                                                        <input type="radio" id="urg9" name="service_name" value="Urgent case 09-18h" {{ ($job['services'] == 'Urgent case 09-18h' ? 'checked' : '') }}>
+                                                    </span>
+                                                </div>
+                                                <label for="urg9" id="lurg9" name="lurg9" class="form-control">Urgent case 09-18h</label>
+                                                <small class="form-control-feedback"></small> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <hr>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="basic-addon1">
+                                                        <input type="radio" id="urg24" name="service_name"  value="Urgent case 00-24h" {{ ($job['services'] == 'urgent case 00-24h' ? 'checked' : '') }}>
+                                                    </span>
+                                                </div>
+                                                <label for="urg24" id="lurg24" name="lurg24" class="form-control">Urgent case 00-24h</label>
+                                                <small class="form-control-feedback"></small> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <hr>
+                                            <div class="input-group">
+                                                <button type="submit" class="btn btn-info waves-effect waves-light" ><span class="btn-label"><i class="fa fa-save"></i></span>Save</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="tab-pane p-20" id="cloningmonitor" role="tabpanel">DEMO, NOT FOR ACTUAL USE YET!!</div>
+                            <div class="tab-pane p-20" id="attachments" role="tabpanel">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <h4 class="card-title">File Attachments</h4>
+                                        <div class="table-responsive">
+                                            <table class="table color-bordered-table info-bordered-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th>File Name</th>
+                                                        <th>Size</th>
+                                                        <th>Date Uploaded</th>
+                                                        <th>Uploaded by</th>
                                                         <th></th>
                                                     </tr>
                                                 </thead>
@@ -402,20 +694,177 @@
                                                         <td></td>
                                                         <td></td>
                                                         <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
                                                     </tr>
                                                 </tbody>
                                             </table>
                                         </div>
+                                        <hr>
+                                        <form action="" method="POST">
+                                            <h4 class="card-title">Uploaded new</h4>
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <input type="file" id="input-file-now" class="dropify" />
+                                                </div>
+                                            </div>
+                                            <div class="card">
+                                                <div class="col-md-2 offset-md-5">
+                                                    <div class="card-body" >
+                                                        <button class="btn btn-success waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-upload"></i></span>Upload</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-pane p-20" id="services" role="tabpanel">services</div>
-                            <div class="tab-pane p-20" id="cloningmonitor" role="tabpanel">cloningmonitor</div>
-                            <div class="tab-pane p-20" id="attachments" role="tabpanel">attachments</div>
-                            <div class="tab-pane p-20" id="billing" role="tabpanel">billing</div>
+                            <div class="tab-pane p-20" id="billing" role="tabpanel">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <h3 class="card-title">Billing</h3>
+                                        <div class="row p-t-20">
+                                            <div class="col-md-3">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" id="basic-addon1">
+                                                            Service
+                                                        </span>
+                                                    </div>
+                                                    <input type="text" id="bill_service" name="bill_service" class="form-control" placeholder="Spassavanje pddataka" >
+                                                    <small class="form-control-feedback"></small> 
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" id="basic-addon1">
+                                                            Price
+                                                        </span>
+                                                    </div>
+                                                    <input type="text" id="bill_price" name="bill_price" class="form-control" placeholder="0" >
+                                                    <small class="form-control-feedback"></small> 
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" id="basic-addon1">
+                                                            Parts
+                                                        </span>
+                                                    </div>
+                                                    <input type="text" id="bill_parts" name="bill_parts" class="form-control" placeholder="0" >
+                                                    <small class="form-control-feedback"></small> </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" id="basic-addon1">
+                                                            VAT(%)
+                                                        </span>
+                                                    </div>
+                                                    <input type="text" id="vill_VAT" name="bill_VAT" class="form-control" placeholder="20" >
+                                                    <small class="form-control-feedback"></small> </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" id="basic-addon1">
+                                                            Discount(%)
+                                                        </span>
+                                                    </div>
+                                                    <input type="text" id="bill_discount" name="bill_discount" class="form-control" placeholder="0" >
+                                                    <small class="form-control-feedback"></small> </div>
+                                            </div>
+                                        </div>
+                                        <div class="row p-t-20">
+                                            <div class="col-md-2">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" id="basic-addon1">
+                                                            Total
+                                                        </span>
+                                                    </div>
+                                                    <input type="text" id="bill_total" name="bill_total" class="form-control" placeholder="0" >
+                                                    <small class="form-control-feedback"></small> </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" id="basic-addon1">
+                                                            Subtotal
+                                                        </span>
+                                                    </div>
+                                                    <input type="text" id="bill_subtotal" name="bill_subtotal" class="form-control" placeholder="0" >
+                                                    <small class="form-control-feedback"></small> </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" id="basic-addon1">
+                                                            Total with VAT
+                                                        </span>
+                                                    </div>
+                                                    <input type="text" id="bill_total_with_VAT" name="bill_total_with_VAT" class="form-control" placeholder="0" >
+                                                    <small class="form-control-feedback"></small> </div>
+                                            </div>
+                                        </div> 
+                                        <div class="row p-t-20">
+                                            <button class="btn btn-info waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-save"></i></span>Save</button>
+                                        </div>
+                                        <hr>
+                                        <h5 class="card-title">Invoices</h5>
+                                        <div class="row p-t-20">
+                                            <div class="table-responsive">
+                                                <table class="table color-bordered-table info-bordered-table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>No</th>
+                                                            <th>Status</th>
+                                                            <th>Total</th>
+                                                            <th>Created by</th>
+                                                            <th>Created at</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <h5 class="card-title">Bills</h5>
+                                        <div class="row p-t-20">
+                                            <div class="table-responsive">
+                                                <table class="table color-bordered-table info-bordered-table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>No</th>
+                                                            <th>Status</th>
+                                                            <th>Total</th>
+                                                            <th>Created by</th>
+                                                            <th>Created at</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="tab-pane p-20" id="jobhistory" role="tabpanel">
                                 <div class="row">
                                     <div class="col-lg-12">
@@ -428,6 +877,7 @@
                                                         <th>Client</th>
                                                         <th>Job Priority</th>
                                                         <th>Job Status</th>
+                                                        <th>Job Info</th>
                                                         <th>Important Data</th>
                                                         <th>Assigned to</th>
                                                         <th>Comment</th>
@@ -436,17 +886,20 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    @foreach($histories as $item)
                                                     <tr>
-                                                        <td>Joe</td>
-                                                        <td>Nithin</td>
-                                                        <td>priority1 +</td>
-                                                        <td>Received</td>
-                                                        <td>Water Damage</td>
-                                                        <td></td>
-                                                        <td>Not set</td>
-                                                        <td></td>
-                                                        <td></td>
+                                                        <td>{{ $item['user_name'] }}</td>
+                                                        <td>{{ $item['client_name'] }}</td>
+                                                        <td>{{ $item['job_priority'] }}</td>
+                                                        <td>{{ $item['job_status'] }}</td>
+                                                        <td>{{ $item['job_info'] }}</td>
+                                                        <td>{{ $item['important_data'] }}</td>
+                                                        <td>{{ $item['assigned_to'] }}</td>
+                                                        <td>{{ $item['comment'] }}</td>
+                                                        <td>{{ $item['client_info'] }}</td>
+                                                        <td>{{ $item['created_at'] }}</td>
                                                     </tr>
+                                                    @endforeach
                                                 </tbody>
                                             </table>
                                         </div>
@@ -455,9 +908,9 @@
                                 </div>
                             </div>
                             <div class="tab-pane p-20" id="log" role="tabpanel">
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <h4 class="card-title">Log</h4>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <h4 class="card-title">Log</h4>
                                         <div class="table-responsive">
                                             <table class="table color-bordered-table info-bordered-table">
                                                 <thead>
@@ -468,35 +921,31 @@
                                                         <th>Action</th>
                                                         <th>Description</th>
                                                         <th>Time and Date</th>
-                                                        <th></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    @foreach($logs as $item)
                                                     <tr>
-                                                        <td>Joe</td>
-                                                        <td>1.1.1.1</td>
-                                                        <td>Job</td>
-                                                        <td>Create</td>
-                                                        <td>New job created</td>
-                                                        <td>2018-12-22</td>
-                                                        <td></td>
-                                                        <td></td>
+                                                        <td>{{ $item['user_name'] }}</td>
+                                                        <td>{{ $item['ip_address'] }}</td>
+                                                        <td>{{ $item['module'] }}</td>
+                                                        <td>{{ $item['action'] }}</td>
+                                                        <td>{{ $item['description'] }}</td>
+                                                        <td>{{ $item['created_at'] }}</td>
                                                     </tr>
+                                                    @endforeach
                                                 </tbody>
                                             </table>
                                         </div>
-                                        
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
                 </div>
             </div>
         </div>
     </div>
-
 </div>
 
 @endsection
@@ -504,6 +953,7 @@
 @push('footer-script')
 <script src="{{ asset('assets/plugins/icheck/icheck.min.js')}}"></script>
 <script src="{{ asset('assets/plugins/icheck/icheck.init.js')}}"></script>
+<script src="{{ asset('assets/plugins/dropify/dist/js/dropify.min.js')}}"></script>
 
 
 <script src="{{ asset('assets/plugins/datatables/jquery.dataTables.min.js')}}"></script>
@@ -520,6 +970,43 @@
 <script>
 $(document).ready(function() {
     $('#example23').DataTable();
+    $('.dropify').dropify();
+
+    // Translated
+    $('.dropify-fr').dropify({
+        messages: {
+            default: 'Glissez-déposez un fichier ici ou cliquez',
+            replace: 'Glissez-déposez un fichier ou cliquez pour remplacer',
+            remove: 'Supprimer',
+            error: 'Désolé, le fichier trop volumineux'
+        }
+    });
+
+    // Used events
+    var drEvent = $('#input-file-events').dropify();
+
+    drEvent.on('dropify.beforeClear', function(event, element) {
+        return confirm("Do you really want to delete \"" + element.file.name + "\" ?");
+    });
+
+    drEvent.on('dropify.afterClear', function(event, element) {
+        alert('File deleted');
+    });
+
+    drEvent.on('dropify.errors', function(event, element) {
+        console.log('Has Errors');
+    });
+
+    var drDestroy = $('#input-file-to-destroy').dropify();
+    drDestroy = drDestroy.data('dropify')
+    $('#toggleDropify').on('click', function(e) {
+        e.preventDefault();
+        if (drDestroy.isDropified()) {
+            drDestroy.destroy();
+        } else {
+            drDestroy.init();
+        }
+    })
 });
 $('#myTable').DataTable({
     dom: 'Bfrtip',
@@ -527,6 +1014,16 @@ $('#myTable').DataTable({
         'copy', 'csv', 'excel', 'pdf', 'print'
     ]
 });
+
+function gen_password()
+{
+    max = 999999999;
+    min = 100000000;
+    var num = Math.floor(Math.random()*(max-min+1)+min);
+    $("#job_password").val(num);
+    $("#job_passwordl").html(num);
+}
+
 </script>
 
 @endpush
