@@ -7,6 +7,7 @@
 
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="description" content="">
     <meta name="author" content="">
 
@@ -15,8 +16,9 @@
     <title>Office Management System</title>
 
     <!-- Bootstrap Core CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="{{ asset('assets/plugins/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">   
-
+    <link href="{{ asset('assets/plugins/summernote/summernote.css') }}" rel="stylesheet" />
     <!-- Custom CSS -->
     <link href="{{ asset('css/style.css')}}" rel="stylesheet"> 
     <link href="{{ asset('css/colors/blue.css')}}" id="theme" rel="stylesheet">
@@ -69,7 +71,9 @@
     <script src="{{ asset('assets/plugins/sticky-kit-master/dist/sticky-kit.min.js')}}"></script>
 
     <!--Custom JavaScript -->
-    <script src="{{ asset('js/custom.min.js')}}"></script>    
+    <script src="{{ asset('js/custom.min.js')}}"></script>
+    <script src="{{ asset('js/summernote.min.js') }}"></script>
+        
 
     <!-- Style switcher -->
     <script src="{{ asset('assets/plugins/styleswitcher/jQuery.style.switcher.js')}}"></script>
