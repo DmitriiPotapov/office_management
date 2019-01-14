@@ -160,23 +160,31 @@
                                                 <div class="card-body">
                                                     <div class="form-group row">
                                                         <label class="col-lg-4 control-label"><b>Ime kijentha:</b></label>
-                                                        <label class="col-lg-6 control-label">Nthin sivadas</label>
+                                                        <label class="col-lg-6 control-label">{{ $client['client_name'] }}</label>
                                                     </div>
                                                     <div class="form-group row">
                                                         <label class="col-lg-4 control-label"><b>Adresa:</b></label>
-                                                        <label class="col-lg-6 control-label">Ambalaparam sivadas</label>
+                                                        <label class="col-lg-6 control-label">{{ $client['street'] }}</label>
                                                     </div>
                                                     <div class="form-group row">
                                                         <label class="col-lg-4 control-label"><b>Grad:</b></label>
-                                                        <label class="col-lg-6 control-label">926261 sivadas</label>
+                                                        <label class="col-lg-6 control-label">{{ $client['postal_code'].' '.$client['city_name'] }}</label>
                                                     </div>
                                                     <div class="form-group row">
                                                         <label class="col-lg-4 control-label"><b>Drazava:</b></label>
-                                                        <label class="col-lg-6 control-label">India</label>
+                                                        <label class="col-lg-6 control-label">{{ $client['country'] }}</label>
                                                     </div>
                                                     <div class="form-group row">
                                                         <label class="col-lg-4 control-label"><b>Note:</b></label>
-                                                        <label class="col-lg-6 control-label"></label>
+                                                        <label class="col-lg-6 control-label">{{ $client['note'] }}</label>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label class="col-lg-4 control-label"><b>Email:</b></label>
+                                                        <label class="col-lg-6 control-label">{{ $client['email_value'] }}</label>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label class="col-lg-4 control-label"><b>Phone:</b></label>
+                                                        <label class="col-lg-6 control-label">{{ $client['phone_value'] }}</label>
                                                     </div>
                                                     <h4 class="card-title">Patent Devices</h4>
                                                     <div class="table-responsive">

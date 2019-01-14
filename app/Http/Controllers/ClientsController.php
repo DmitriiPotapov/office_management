@@ -81,7 +81,7 @@ class ClientsController extends Controller
             $clients = Client::all();
             return view('clients/all_clients', compact('clients'));
         }else{
-            return redirect('job/showAddJob');
+            return redirect(route('show_add_job', ['client_id' => $client->id]));
         }
     }
 

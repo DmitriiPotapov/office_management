@@ -8,15 +8,15 @@
         <nav class="sidebar-nav">
             <ul id="sidebarnav">
                 <li>
-                    <a href="#" aria-expanded="false"><i class="mdi mdi-view-dashboard"></i><span class="hide-menu">Dashboard </span></a>
+                    <a href="{{ route('dashboard') }}" aria-expanded="false"><i class="mdi mdi-view-dashboard"></i><span class="hide-menu">Dashboard </span></a>
                 </li>
                 <li>
                     <a class="has-arrow " href="#" aria-expanded="false"><i class="icon-layers"></i><span class="hide-menu">Jobs </span></a>
                     <ul aria-expanded="false" class="collapse">
-                        <li><a href="{{ route('show_add_job') }}">New job </a></li>
+                        <li><a href="{{ route('show_add_job', ['client_id' => 0 ]) }}">New job </a></li>
                         <li><a href="{{ route('show_all_job') }}">View all jobs </a></li>
                         <li><a href="{{ route('show_all_priority_job') }}">View priority jobs </a></li>
-                        <li><a href="app-contact.html">Overview </a></li>
+                        <li><a href="{{ route('show_overview')}}">Overview </a></li>
                     </ul>
                 </li>
                 <li>

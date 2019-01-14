@@ -859,10 +859,10 @@ Buttons
   padding: 10px; }
 
 .btn-circle.btn-sm {
-  width: 35px;
-  height: 35px;
-  padding: 8px 10px;
-  font-size: 14px; }
+  width: 25px;
+  height: 25px;
+  padding: 4px 5px;
+  font-size: 10px; }
 
 .btn-circle.btn-lg {
   width: 50px;

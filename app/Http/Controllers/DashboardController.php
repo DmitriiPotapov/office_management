@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Auth;
+use App\Models\DataJobs;
 
 class DashboardController extends Controller
 {
@@ -24,8 +25,9 @@ class DashboardController extends Controller
      */
     public function index()
     {
+        $jobs = DataJobs::orderBy('created_at', 'DESC')->limit(12)->get()->toArray();
         if (Auth::check()) {
-            return view('dashboard');            
+            return view('dashboard',compact('jobs'));            
         } else {
             return redirect()->route('login');
         }

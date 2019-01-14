@@ -54,7 +54,7 @@ Route::group(
 
 Route::group(
     ['prefix'=>'job'], function(){
-        Route::get('/showAddJob', 'JobController@showAddJob')->name('show_add_job');
+        Route::get('/showAddJob/{client_id}', 'JobController@showAddJob')->name('show_add_job');
         Route::post('/addNewJob', 'JobController@addNewJob')->name('add_new_job');
         Route::get('/showAllJob', 'JobController@showAllJob')->name('show_all_job');
         Route::get('/showAllPriorityJob', 'JobController@showAllPriorityJob')->name('show_all_priority_job');
