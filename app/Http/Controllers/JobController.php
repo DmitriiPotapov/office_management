@@ -14,6 +14,7 @@ use App\Models\DataJobHistory;
 use App\User;
 use App\Models\DataLogs;
 use PDF;
+use App\Models\Client;
 
 class JobController extends Controller
 {
@@ -34,7 +35,8 @@ class JobController extends Controller
         $job->job_password = rand(100000000, 999999999);
 
         $job->client_id = $request->input('client_id');
-        $job->client_name = 'abc';
+        $client = Client::find($job->client_id);
+        $job->client_name = $client->client_name;
         $job->priority = $request->input('priority');
         $job->device_malfunc_info = $request->input('device_malfunc_info');
         $job->important_data = $request->input('important_data');
@@ -77,11 +79,13 @@ class JobController extends Controller
         return redirect('/job/showAllJob');
     }
 
-    public function showAddJob()
+    public function showAddJob($client_id)
     {
         $priorities = JobPriority::all();
         $types = DeviceType::all();
-        return view('job.addJob', compact('priorities', 'types'));
+        $client = Client::find($client_id);
+        
+        return view('job.addJob', compact('priorities', 'types', 'client_id', 'client'));
     }
 
     public function showAllJob()
@@ -98,12 +102,14 @@ class JobController extends Controller
 
     public function showOverview()
     {
-
+        $jobs = DataJobs::all();
+        return view('job.overView',compact('jobs'));
     }
 
     public function showEditJob($job_id)
     {
         $job = DataJobs::where('job_id', $job_id)->first();
+        $client = Client::find($job->client_id);
         $statuses = BaseJobStatuse::all();
         $priorities = JobPriority::all();
         $types = DeviceType::all();
@@ -118,7 +124,8 @@ class JobController extends Controller
 
         $logs = DataLogs::where('job_id', $job_id)->get()->toArray();
 
-        return view('job.editJob' , compact('job','statuses','priorities', 'devices', 'comments', 'types', 'histories', 'engineers', 'logs'));
+
+        return view('job.editJob' , compact('job', 'client' ,'statuses','priorities', 'devices', 'comments', 'types', 'histories', 'engineers', 'logs'));
     }
 
     public function updateJob(Request $request)
@@ -320,9 +327,12 @@ class JobController extends Controller
 
     }
 
+    
+
     function convert_job_data_to_html($job_id)
     {
         $job = DataJobs::where('job_id',$job_id)->first();
+        $client = Client::find($job->client_id);
         $output = '
         <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
@@ -400,14 +410,14 @@ padding: 8px;
 <div class="title_block">
 <h3 align="center">CASE NUMBER:</h3>
 <h3 align="center">'.$job->job_id.'</h3>
-<h5>Client name:</h5>
-<h5>Address:</h5>
-<h5>City:</h5>
-<h5>Case Password:</h5>
-<h5>Date:</h5>
-<h5>Service:</h5>
-<h5>E-mail:</h5>
-<h5>Mobile phone:</h5>
+<h5>Client name:'.$client->client_name.'</h5>
+<h5>Address:'.$client->street.'</h5>
+<h5>City:'.$client->city_name.'</h5>
+<h5>Case Password:'.$job->job_password.'</h5>
+<h5>Date:'.$job->created_at.'</h5>
+<h5>Service:'.$job->services.'</h5>
+<h5>E-mail:'.$client->email_value.'</h5>
+<h5>Mobile phone:'.$client->phone_value.'</h5>
 </div>
 <p>
 </p>
