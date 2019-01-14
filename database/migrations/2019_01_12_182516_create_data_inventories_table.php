@@ -15,7 +15,6 @@ class CreateDataInventoriesTable extends Migration
     {
         Schema::create('data_inventories', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('job_id')->unsigned()->nullable();
             $table->string('acquire_from', 100)->nullable();
             $table->string('inventory_id', 100)->nullable();
             $table->string('manufacturer', 100)->nullable();
