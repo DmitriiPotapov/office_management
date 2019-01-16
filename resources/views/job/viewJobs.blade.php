@@ -95,13 +95,13 @@
 
 <script>
 $(document).ready(function() {
-    $('#myTable').DataTable();
-});
-$('#myTable').DataTable({
+    $('#myTable').DataTable({
     dom: 'Bfrtip',
     buttons: [
         'copy', 'csv', 'excel', 'pdf', 'print'
-    ]
+    ],
+    order: [9,'desc']
+    });
 });
 
 function onquickjump()

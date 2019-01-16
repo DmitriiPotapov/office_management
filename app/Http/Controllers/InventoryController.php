@@ -62,9 +62,11 @@ class InventoryController extends Controller
         $inventory->acquire_from = $request->input('acquired_from');
         $inventory->role = $request->input('item_role');
         $inventory->device_type = $request->input('storagetype');
+        $inventory->category = $request->input('category');
         $inventory->manufacturer = $request->input('manufacturer');
         $inventory->model = $request->input('model');
         $inventory->serial_number = $request->input('serial');
+        $inventory->interface = $request->input('interface');
         $inventory->part_number = $request->input('part_number');
         $inventory->capacity = $request->input('capacity');
         $inventory->LBA_number = $request->input('LBA_number');
@@ -80,6 +82,7 @@ class InventoryController extends Controller
         $inventory->location = $request->input('location');
         $inventory->heads_number = $request->input('heads_number');
         $inventory->heads_info = $request->input('heads_info');
+        $inventory->madeIn = $request->input('madeIn');
         $inventory->note = $request->input('note');
 
         $inventory->save();

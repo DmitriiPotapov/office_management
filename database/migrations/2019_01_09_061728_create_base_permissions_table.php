@@ -17,6 +17,7 @@ class CreateBasePermissionsTable extends Migration
             $table->increments('id');
             $table->string('permission_name');
             $table->tinyInteger('inuse')->default(1);
+            $table->string('description', 191)->nullable();
             $table->timestamps();
         });
     }

@@ -16,6 +16,7 @@ class CreateBaseUserGroupsTable extends Migration
         Schema::create('base_user_groups', function (Blueprint $table) {
             $table->increments('id');
             $table->string('group_name');
+            $table->tinyInteger('inuse')->default(1);
             $table->timestamps();
         });
     }

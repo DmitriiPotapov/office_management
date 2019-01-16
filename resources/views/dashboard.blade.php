@@ -2,6 +2,14 @@
 
 @push('header-style')
 
+<style>
+#viewJobs tr:hover {
+    background-color: #ccc;
+}
+#viewJobs td:hover {
+    cursor: pointer;
+}
+</style>
 
 @endpush
 
@@ -21,11 +29,11 @@
         <div class="col-md-6 col-lg-3 col-xlg-3">
             <div class="card card-inverse card-danger">
                 <div class="box bg-danger text-center">
-                    <h1 class="font-light text-white"><i class="fa fa-exclamation-triangle"></i>&nbsp;2,064</h1>
+                    <h1 class="font-light text-white"><i class="fa fa-exclamation-triangle"></i>&nbsp;{{ $urgentCount }}</h1>
                     <h6 class="text-white">Urgent attention</h6>
                 </div>
                 <div class="box bg-white text-center border-red" >
-                    <h6 class="text-red">View Details</h6>
+                <h6 class="text-red"><a href="{{ route('view_urgent') }}">View Details</a></h6>
                 </div>
             </div>
         </div>
@@ -33,11 +41,11 @@
         <div class="col-md-6 col-lg-3 col-xlg-3">
             <div class="card card-primary card-success">
                 <div class="box bg-success text-center">
-                    <h1 class="font-light text-white"><i class="fa fa-check"></i>&nbsp;2,064</h1>
+                    <h1 class="font-light text-white"><i class="fa fa-check"></i>&nbsp;{{ $completedCount }}</h1>
                     <h6 class="text-white">Completed successfully</h6>
                 </div>
                 <div class="box bg-white text-center border-red" >
-                    <h6 class="text-red">View Details</h6>
+                    <h6 class="text-red"><a href="{{ route('view_completed') }}">View Details</a></h6>
                 </div>
             </div>
         </div>
@@ -45,11 +53,11 @@
         <div class="col-md-6 col-lg-3 col-xlg-3">
             <div class="card card-inverse card-warning">
                 <div class="box bg-warning text-center">
-                    <h1 class="font-light text-white"><i class="fa fa-clock-o"></i>&nbsp;2,064</h1>
+                    <h1 class="font-light text-white"><i class="fa fa-clock-o"></i>&nbsp;{{ $paymentPendingCount }}</h1>
                     <h6 class="text-white">Payment pending</h6>
                 </div>
                 <div class="box bg-white text-center border-red" >
-                    <h6 class="text-red">View Details</h6>
+                    <h6 class="text-red"><a href="{{ route('view_payment_pending') }}">View Details</a></h6>
                 </div>
             </div>
         </div>
@@ -57,11 +65,11 @@
         <div class="col-md-6 col-lg-3 col-xlg-3">
             <div class="card card-inverse card-danger">
                 <div class="box bg-danger text-center">
-                    <h1 class="font-light text-white"><i class="fa fa-money"></i>&nbsp;2,064</h1>
+                    <h1 class="font-light text-white"><i class="fa fa-money"></i>&nbsp;{{ $paidCount }}</h1>
                     <h6 class="text-white">Paid</h6>
                 </div>
                 <div class="box bg-white text-center border-red" >
-                    <h6 class="text-red">View Details</h6>
+                    <h6 class="text-red"><a href="{{ route('view_paid') }}">View Details</a></h6>
                 </div>
             </div>
         </div>
@@ -70,7 +78,7 @@
     <div class="row">
         <div class="col-md-7">
             <div class="table-responsive">
-                <table class="table color-bordered-table info-bordered-table">
+                <table class="table color-bordered-table info-bordered-table" id="viewJobs">
                     <thead>
                         <tr>
                             <th>User</th>
@@ -84,7 +92,7 @@
                             <tr>
                                 <td>{{ $item['user_name'] }}</td>
                                 <td>{{ $item['created_at'] }}</td>
-                                <td>{{ $item['job_id'] }}</td>
+                                <td><a href="{{ route('show_edit_job', ['id' => $item['job_id']]) }}">{{ $item['job_id'] }}</a></td>
                                 <td>{{ $item['last_comment'] }}</td>
                             </tr>
                         @endforeach
@@ -141,6 +149,17 @@
 
 <script src="{{ asset('js/dashboard.js')}}"></script>
 
+<script>
+    $(document).ready(function() {
 
+    $('#viewJobs tr').click(function() {
+        var href = $(this).find("a").attr("href");
+        if(href) {
+            window.location = href;
+        }
+    });
+
+});
+</script>
 
 @endpush

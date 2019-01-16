@@ -19,6 +19,7 @@ class CreateDataDevicesTable extends Migration
             $table->string('type', 100)->nullable();
             $table->string('role', 100)->nullable();
             $table->string('manufacturer', 100)->nullable();
+            $table->string('capacity', 100)->default('4GB');
             $table->string('model', 100)->nullable();
             $table->string('serial', 100)->nullable();
             $table->string('location', 100)->nullable();

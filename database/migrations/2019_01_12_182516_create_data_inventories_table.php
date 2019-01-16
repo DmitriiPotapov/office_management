@@ -21,6 +21,7 @@ class CreateDataInventoriesTable extends Migration
             $table->string('model', 100)->nullable();
             $table->string('serial_number', 100)->nullable();
             $table->string('firmware', 100)->nullable();
+            $table->string('capacity', 100)->nullable();
             $table->integer('job_id')->unsigned()->nullable();
             $table->string('PCB_state', 100)->nullable();
             $table->string('family', 100)->nullable();
@@ -41,6 +42,9 @@ class CreateDataInventoriesTable extends Migration
             $table->string('PCB_motor_driver', 100)->nullable();
             $table->string('PCB_connection', 100)->nullable();
             $table->string('RPM', 100)->nullable();
+            $table->string('interface', 100)->nullable();
+            $table->string('category', 100)->nullable();
+            $table->string('madeIn', 100)->nullable();
             $table->timestamps();
         });
     }

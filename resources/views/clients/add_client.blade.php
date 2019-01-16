@@ -13,7 +13,7 @@
         <form action="{{ URL::to('clients/createAction') }}" method="post" id = "form">
           @csrf
           <input type="hidden" name="submitType" id="submitType"/>
-                <span>Clent name</span>
+                <span>Client name</span>
                 <div class = "row">
                     <div class = "col-md-8" style = "margin: 0px; padding: 0px;">
                       <div class="input-group">                         

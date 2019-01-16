@@ -33,6 +33,8 @@ class CreateClientsTable extends Migration
             $table->string('client_note')->nullable();
             $table->string('company')->nullable();
             $table->string('client_group')->nullable();
+            $table->string('nationalID')->nullable();
+            $table->string('signature')->nullable();
             $table->timestamps();
         });
     }

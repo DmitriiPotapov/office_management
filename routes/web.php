@@ -69,6 +69,11 @@ Route::group(
         Route::get('/deleteComment/{id}','JobController@deleteComment')->name('delete_comment');
         Route::get('/deleteDevice/{id}','JobController@deleteDevice')->name('delete_device');
         Route::get('/addmissionForm/{id}', 'JobController@addmissionForm')->name('admission_form');
+        Route::get('/checkoutForm/{id}', 'JobController@checkoutForm')->name('checkout_form');
+        Route::get('/viewUrgent', 'JobController@viewUrgent')->name('view_urgent');
+        Route::get('/viewCompleted', 'JobController@viewCompleted')->name('view_completed');
+        Route::get('/viewPaymentPending', 'JobController@viewPaymentPending')->name('view_payment_pending');
+        Route::get('/viewPaid', 'JobController@viewPaid')->name('view_paid');
     }
 );
 
