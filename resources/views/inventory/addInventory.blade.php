@@ -32,7 +32,7 @@
                             <hr>
                             <h4 class="card-title">Device type</h4>
                             <div class="row p-t-20">
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1">
@@ -47,18 +47,43 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1">
-                                                Strage Type
+                                                Category
+                                            </span>
+                                        </div>
+                                        <select class="form-control custom-select" id="category" name="category">
+                                            <option value="Laptop Drive">Laptop Drive</option>
+                                            <option value="Desktop Drive">Desktop Drive</option>
+                                            <option value="External Drive">External Drive</option>
+                                            <option value="Server Drive">Server Drive</option>
+                                            <option value="Mobile Phone">Mobile Phone</option>
+                                            <option value="Flash Drive">Flash Drive</option>
+                                            <option value="Smart Devices">Smart Devices</option>
+                                            <option value="Others">Others</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon1">
+                                                Storage Type
                                             </span>
                                         </div>
                                         <select class="form-control custom-select" id="storagetype" name="storagetype">
-                                            <option value="HDD">HDD</option>
-                                            <option value="FLASH">FLASH</option>
-                                            <option value="MEMORY">MEMORY</option>
-                                            <option value="Laptop">Laptop</option>
+                                            <option value="2.5’ HDD">2.5’ HDD</option>
+                                            <option value="3.5’ HDD">3.5’ HDD</option>
+                                            <option value="Server HDD">Server HDD</option>
+                                            <option value="SSD">SSD</option>
+                                            <option value="Micro SD">Micro SD</option>
+                                            <option value="SD">SD</option>
+                                            <option value="SDXC">SDXC</option>
+                                            <option value="SDHC">SDHC</option>
+                                            <option value="PENDRIVE">PENDRIVE</option>
+                                            <option value="Others">Others</option>
                                         </select>
                                     </div>
                                 </div>
@@ -70,14 +95,26 @@
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1">
-                                                Manufacturer
+                                                Brand
                                             </span>
                                         </div>
-                                        <input type="text" id="manufacturer" name="manufacturer" class="form-control" placeholder=" " required>
-                                        <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
+                                        <select class="form-control custom-select" id="manufacturer" name="manufacturer">
+                                            <option value="Western Digital">Western Digital </option>
+                                            <option value="Seagate">Seagate</option>
+                                            <option value="Samsung">Samsung</option>
+                                            <option value="Toshiba">Toshiba</option>
+                                            <option value="Apple">Apple</option>
+                                            <option value="HGST">HGST</option>
+                                            <option value="Fujistu">Fujistu</option>
+                                            <option value="Dell">Dell</option>
+                                            <option value="HP">HP</option>
+                                            <option value="IBM">IBM</option>
+                                            <option value="Maxtor">Maxtor</option>
+                                            <option value="Others">Others</option>
+                                        </select>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1">
@@ -97,6 +134,23 @@
                                         </div>
                                         <input type="text" id="serial" name="serial" class="form-control" placeholder=" " required>
                                         <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon1">
+                                                Interface
+                                            </span>
+                                        </div>
+                                        <select class="form-control custom-select" id="interface" name="interface">
+                                            <option value="Western Digital">USB </option>
+                                            <option value="Seagate">SATA</option>
+                                            <option value="mSATA">mSATA</option>
+                                            <option value="PCi">PCi</option>
+                                            <option value="SAS">SAS</option>
+                                            <option value="Others">Others</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
@@ -123,8 +177,33 @@
                                                 GB
                                             </span>
                                         </div>
-                                        <input type="text" id="capacity" name="capacity" class="form-control" placeholder=" " required>
-                                        <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
+                                        <select class="form-control custom-select" id="capacity" name="capacity">
+                                            <option value="4 GB">4 GB</option>
+                                            <option value="8 GB">8 GB</option>
+                                            <option value="16 GB">16 GB</option>
+                                            <option value="20 GB">20 GB</option>
+                                            <option value="32 GB">32 GB</option>
+                                            <option value="64 GB">64 GB</option>
+                                            <option value="80 GB">80 GB</option>
+                                            <option value="128 GB">128 GB</option>
+                                            <option value="160 GB">160 GB</option>
+                                            <option value="240 GB">240 GB</option>
+                                            <option value="250 GB">250 GB</option>
+                                            <option value="256 GB">256 GB</option>
+                                            <option value="320 GB">320 GB</option>
+                                            <option value="500 GB">500 GB</option>
+                                            <option value="512 GB">512 GB</option>
+                                            <option value="640 GB">640 GB</option>
+                                            <option value="750 GB">750 GB</option>
+                                            <option value="1 TB">1 TB</option>
+                                            <option value="1.5 TB">1.5 TB</option>
+                                            <option value="2 TB">2 TB</option>
+                                            <option value="3 TB">3 TB</option>
+                                            <option value="4 TB">4 TB</option>
+                                            <option value="6 TB">6 TB</option>
+                                            <option value="8 TB">8 TB</option>
+                                            <option value="10 TB">10 TB</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -206,11 +285,11 @@
                                             </span>
                                         </div>
                                         <select class="form-control custom-select" id="pcb_state" name="pcb_state">
-                                            <option value="1.8*">OK</option>
-                                            <option value="2.5*">Bad</option>
-                                            <option value="3.5*">Missing</option>
-                                            <option value="5.25*">Untested</option>
-                                            <option value="1.0*">Unstable</option>
+                                            <option value="OK">OK</option>
+                                            <option value="Bad">Bad</option>
+                                            <option value="Missing">Missing</option>
+                                            <option value="Untested">Untested</option>
+                                            <option value="Unstable">Unstable</option>
                                         </select>
                                         <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
                                     </div>
@@ -279,24 +358,56 @@
                             </div> 
                             <h4 class="card-title">Heads</h4>
                             <div class="row p-t-20">
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1">
                                                 Heads Number
                                             </span>
                                         </div>
-                                        <input type="text" id="heads_number" name="heads_number" class="form-control" placeholder="" required>
+                                        <select class="form-control custom-select" id="heads_number" name="heads_number">
+                                            @for ($i = 1; $i <= 6; $i++)
+                                                <option value="{{ $i }}">{{ $i }}</option>
+                                            @endfor
+                                        </select>
                                     </div>
                                 </div>
-                                <div class="col-md-5">
+                                <div class="col-md-3">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1">
                                                 Heads info
                                             </span>
                                         </div>
-                                        <input type="text" id="heads_info" name="heads_info" class="form-control" placeholder="" required>
+                                        
+                                        <select class="form-control custom-select" id="heads_info" name="heads_info">
+                                            @for ($i = 1; $i <= 12; $i++)
+                                                <option value="{{ $i }}">{{ $i }}</option>
+                                            @endfor
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon1">
+                                                Made In
+                                            </span>
+                                        </div>
+                                        
+                                        <select class="form-control custom-select" id="madeIn" name="madeIn">
+                                            <option value="Malaysia">Malaysia</option>
+                                            <option value="Thailand">Thailand</option>
+                                            <option value="Philippines">Philippines</option>
+                                            <option value="Korea">Korea</option>
+                                            <option value="WU">WU</option>
+                                            <option value="SU">SU</option>
+                                            <option value="TK">TK</option>
+                                            <option value="Japan">Japan</option>
+                                            <option value="China">China</option>
+                                            <option value="Finland">Finland</option>
+                                            <option value="Germany">Germany</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>

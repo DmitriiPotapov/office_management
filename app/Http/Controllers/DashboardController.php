@@ -25,9 +25,13 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $jobs = DataJobs::orderBy('created_at', 'DESC')->limit(12)->get()->toArray();
         if (Auth::check()) {
-            return view('dashboard',compact('jobs'));            
+            $jobs = DataJobs::orderBy('created_at', 'DESC')->limit(12)->get()->toArray();
+            $urgentCount = DataJobs::all()->count();
+            $completedCount = DataJobs::where('status', 'Completed successfully')->count();
+            $paymentPendingCount = DataJobs::where('status', 'Payment pending')->count();
+            $paidCount = DataJobs::where('status', 'Paid')->count();
+            return view('dashboard',compact('jobs', 'urgentCount', 'completedCount', 'paymentPendingCount', 'paidCount'));
         } else {
             return redirect()->route('login');
         }

@@ -17,12 +17,12 @@
                     <div class="row button-group">
                         <div class="col-lg-12 m-b-30">
                             <button class="btn btn-primary waves-effect waves-light" type="button" data-toggle="modal" data-target="#assignto"><span class="btn-label" ><i class="fa fa-user"></i></span>Assign job to engineer</button>
-                            <button class="btn btn-success waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-book"></i></span><a href="{{ route('admission_form',['job_id' => $job['job_id']]) }}">Admission form</a></button>
+                            <a class="btn btn-success waves-effect waves-light" href="{{ route('admission_form',['job_id' => $job['job_id']]) }}"><span class="btn-label"><i class="fa fa-book"></i></span>Admission form</a>
                             <button class="btn btn-info waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-folder"></i></span>Go to file list</button>
                             <button class="btn btn-warning waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-key"></i></span>Unlock client access</button>
                             <button class="btn btn-danger waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-refresh"></i></span>Refresh file list info</button>
                             <button class="btn btn-danger waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-users"></i></span>Change client</button>
-                            <button class="btn btn-danger waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-check"></i></span>Check-out form</button>
+                            <a class="btn btn-danger waves-effect waves-light" href="{{ route('checkout_form',['job_id' => $job['job_id']]) }}"><span class="btn-label"><i class="fa fa-check" ></i></span>Check-out form</a>
                             <button class="btn btn-success waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-envelope-o"></i></span>Generate invoice</button>
                         </div>
                         <div class="modal fade" id="assignto" tabindex="-1" role="dialog" >
@@ -75,262 +75,276 @@
                         <hr>
                         <div class="tab-content">
                             <div class="tab-pane active" id="general" role="tabpanel">
-                                <form method="POST" action="{{ route('update_Job') }}">
-                                @csrf
-                                    <input type="hidden" name="seljob_id" value="{{ $job['job_id'] }}">
-                                    <div class="form-body">
-                                    <div class="row">
-                                        <div class="col-lg-5">
-                                            <div class="card">
-                                                <div class="card-body">
-                                                    <div class="form-group row">
-                                                        <label class="col-lg-4 control-label"><b>Services:</b></label>
-                                                        <input type="hidden" name="services" value="{{ $job['services'] }}">
-                                                        <label class="col-lg-4 control-label" >{{ $job['services'] }}</label>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <label class="col-lg-4 control-label"><b>File list password:</b></label>
-                                                        <input type="hidden" id="job_password" name="job_password" value="{{ $job['job_password'] }}">
-                                                        <label class="col-lg-4 control-label" id="job_passwordl">{{ $job['job_password'] }}</label><a href="javascript:void(0)" onclick = "gen_password()""><i class="fa fa-refresh"></i></a>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <label class="col-lg-5 control-label"><b>Assigned to engineer:</b></label>
-                                                        <input type="hidden" name="assigned_engineer" value="{{ $job['assigned_engineer'] }}">
-                                                        <label class="col-lg-4 control-label" >{{ $job['assigned_engineer'] }}</label>
-                                                    </div>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1">
-                                                                Price
-                                                            </span>
-                                                        </div>
-                                                        <input type="text" class="form-control" id="price" name="price" value="{{ $job['price'] }}">
-                                                    </div>
-                                                    <hr>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1">
-                                                                Status
-                                                            </span>
-                                                        </div>
-                                                        <select class="form-control custom-select" id="status" name="status">
-                                                            <@foreach($statuses as $item)
-                                                            <option value="{{ $item['status_name'] }}" {{ ($item['status_name'] == $job['status']) ? 'selected' : '' }}> {{ $item['status_name']}}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                    <hr>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text" id="basic-addon1">
-                                                                Priority
-                                                            </span>
-                                                        </div>
-                                                        <select class="form-control custom-select" id="priority" name="priority">
-                                                            @foreach($priorities as $item)
-                                                            <option value="{{ $item['job_priority_name'] }}" {{ ($item['job_priority_name'] == $job['priority']) ? 'selected' : '' }}> {{ $item['job_priority_name']}}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                    <hr>
-                                                    <div class="form-group row has-success">
-                                                        <h4 class="card-title">Job info</h4>
-                                                        <textarea class="form-control" rows="3" name="device_malfunc_info">{{ $job['device_malfunc_info'] }}</textarea>
-                                                    </div>
-                                                    <hr>
-                                                    <div class="form-group row has-info">
-                                                        <h4 class="card-title">Important data</h4>
-                                                        <textarea class="form-control" rows="3" name="important_data">{{ $job['important_data'] }}</textarea>
-                                                    </div>
-                                                    <hr>
-                                                    <div class="form-group row has-danger">
-                                                        <h4 class="card-title">Cleint note</h4>
-                                                        <textarea class="form-control" rows="3" name="notes">{{ $job['notes'] }}</textarea>
-                                                    </div>
-                                                    <div class="form-actions">
-                                                        <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Save</button>
-                                                    </div>
-                                                    <hr>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-7">
-                                            <div class="card">
-                                                <h4 class="card-title">Client info</h4>
-                                                <div class="card-body">
-                                                    <div class="form-group row">
-                                                        <label class="col-lg-4 control-label"><b>Ime kijentha:</b></label>
-                                                        <label class="col-lg-6 control-label">{{ $client['client_name'] }}</label>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <label class="col-lg-4 control-label"><b>Adresa:</b></label>
-                                                        <label class="col-lg-6 control-label">{{ $client['street'] }}</label>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <label class="col-lg-4 control-label"><b>Grad:</b></label>
-                                                        <label class="col-lg-6 control-label">{{ $client['postal_code'].' '.$client['city_name'] }}</label>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <label class="col-lg-4 control-label"><b>Drazava:</b></label>
-                                                        <label class="col-lg-6 control-label">{{ $client['country'] }}</label>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <label class="col-lg-4 control-label"><b>Note:</b></label>
-                                                        <label class="col-lg-6 control-label">{{ $client['note'] }}</label>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <label class="col-lg-4 control-label"><b>Email:</b></label>
-                                                        <label class="col-lg-6 control-label">{{ $client['email_value'] }}</label>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <label class="col-lg-4 control-label"><b>Phone:</b></label>
-                                                        <label class="col-lg-6 control-label">{{ $client['phone_value'] }}</label>
-                                                    </div>
-                                                    <h4 class="card-title">Patent Devices</h4>
-                                                    <div class="table-responsive">
-                                                        <table class="table color-bordered-table info-bordered-table">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th>Type</th>
-                                                                    <th>Manufacturer</th>
-                                                                    <th>Model</th>
-                                                                    <th>Serial</th>
-                                                                    <th>Location</th>
-                                                                    <th>Diagnosis</th>
-                                                                    <th>Note</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                @foreach($devices as $item)
-                                                                @if($item['role'] == 'Patient')
-                                                                <tr>
-                                                                    <td>{{ $item['type'] }}</td>
-                                                                    <td>{{ $item['manufacturer'] }}</td>
-                                                                    <td>{{ $item['model'] }}</td>
-                                                                    <td>{{ $item['serial'] }}</td>
-                                                                    <td>{{ $item['location'] }}</td>
-                                                                    <td>{{ $item['diagnosis'] }}</td>
-                                                                    <td>{{ $item['note'] }}</td>
-                                                                </tr>
-                                                                @endif
-                                                                @endforeach
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                    <hr>
-                                                    <h4 class="card-title">Job Clones</h4>
-                                                    <div class="table-responsive">
-                                                        <table class="table color-bordered-table info-bordered-table">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th>ID</th>
-                                                                    <th>Type</th>
-                                                                    <th>Manufacturer</th>
-                                                                    <th>Model</th>
-                                                                    <th>Serial</th>
-                                                                    <th>Location</th>
-                                                                    <th>Note</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                @foreach($devices as $item)
-                                                                @if($item['role'] == 'Clone')
-                                                                <tr>
-                                                                    <td>{{ $item['id'] }}</td>
-                                                                    <td>{{ $item['type'] }}</td>
-                                                                    <td>{{ $item['manufacturer'] }}</td>
-                                                                    <td>{{ $item['model'] }}</td>
-                                                                    <td>{{ $item['serial'] }}</td>
-                                                                    <td>{{ $item['location'] }}</td>
-                                                                    <td>{{ $item['note'] }}</td>
-                                                                </tr>
-                                                                @endif
-                                                                @endforeach
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                    <hr>
-                                                    <h4 class="card-title">Job Donors</h4>
-                                                    <div class="table-responsive">
-                                                        <table class="table color-bordered-table info-bordered-table">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th>ID</th>
-                                                                    <th>Type</th>
-                                                                    <th>Manufacturer</th>
-                                                                    <th>Model</th>
-                                                                    <th>Serial</th>
-                                                                    <th>Location</th>
-                                                                    <th>Note</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                @foreach($devices as $item)
-                                                                @if($item['role'] == 'Donor')
-                                                                <tr>
-                                                                    <td>{{ $item['id'] }}</td>
-                                                                    <td>{{ $item['type'] }}</td>
-                                                                    <td>{{ $item['manufacturer'] }}</td>
-                                                                    <td>{{ $item['model'] }}</td>
-                                                                    <td>{{ $item['serial'] }}</td>
-                                                                    <td>{{ $item['location'] }}</td>
-                                                                    <td>{{ $item['note'] }}</td>
-                                                                </tr>
-                                                                @endif
-                                                                @endforeach
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                    <hr>
-                                                    <h4 class="card-title">Other client devices</h4>
-                                                    <div class="table-responsive">
-                                                        <table class="table color-bordered-table info-bordered-table">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th>Type</th>
-                                                                    <th>Manufacturer</th>
-                                                                    <th>Model</th>
-                                                                    <th>Serial</th>
-                                                                    <th>Location</th>
-                                                                    <th>Note</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                @foreach($devices as $item)
-                                                                @if($item['role'] == 'Other')
-                                                                <tr>
-                                                                    <td>{{ $item['type'] }}</td>
-                                                                    <td>{{ $item['manufacturer'] }}</td>
-                                                                    <td>{{ $item['model'] }}</td>
-                                                                    <td>{{ $item['serial'] }}</td>
-                                                                    <td>{{ $item['location'] }}</td>
-                                                                    <td>{{ $item['note'] }}</td>
-                                                                </tr>
-                                                                @endif
-                                                                @endforeach
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    </div>
-                                </form>
                                 <div class="row">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="basic-addon3">
-                                                Comment
-                                            </span>
-                                        </div>
-                                        <form action="{{ route('send_comment') }}" method="POST">
-                                        @csrf
-                                        <textarea type="text" class="form-control" rows="3" id="comment" name="comment" placeholder="">{{ $job['last_comment'] }}</textarea>
-                                        <input type="hidden" name="comjob_id" value="{{ $job['job_id'] }}">
-                                        <button type="submit" class="btn btn-success" > <i class="fa fa-comment"></i> Send comment</button>
+                                    <div class="col-lg-5">
+                                        <form method="POST" action="{{ route('update_Job') }}">
+                                            @csrf
+                                            <input type="hidden" name="seljob_id" value="{{ $job['job_id'] }}">
+                                            <div class="form-body">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <div class="form-group row">
+                                                            <label class="col-lg-4 control-label"><b>Services:</b></label>
+                                                            <input type="hidden" name="services" value="{{ $job['services'] }}">
+                                                            <label class="col-lg-4 control-label" >{{ $job['services'] }}</label>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label class="col-lg-4 control-label"><b>File list password:</b></label>
+                                                            <input type="hidden" id="job_password" name="job_password" value="{{ $job['job_password'] }}">
+                                                            <label class="col-lg-4 control-label" id="job_passwordl">{{ $job['job_password'] }}</label><a href="javascript:void(0)" onclick = "gen_password()""><i class="fa fa-refresh"></i></a>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label class="col-lg-5 control-label"><b>Assigned to engineer:</b></label>
+                                                            <input type="hidden" name="assigned_engineer" value="{{ $job['assigned_engineer'] }}">
+                                                            <label class="col-lg-4 control-label" >{{ $job['assigned_engineer'] }}</label>
+                                                        </div>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text" id="basic-addon1">
+                                                                    Price
+                                                                </span>
+                                                            </div>
+                                                            <input type="text" class="form-control" id="price" name="price" value="{{ $job['price'] }}">
+                                                        </div>
+                                                        <hr>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text" id="basic-addon1">
+                                                                    Status
+                                                                </span>
+                                                            </div>
+                                                            <select class="form-control custom-select" id="status" name="status">
+                                                                <@foreach($statuses as $item)
+                                                                <option value="{{ $item['status_name'] }}" {{ ($item['status_name'] == $job['status']) ? 'selected' : '' }}> {{ $item['status_name']}}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                        <hr>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text" id="basic-addon1">
+                                                                    Priority
+                                                                </span>
+                                                            </div>
+                                                            <select class="form-control custom-select" id="priority" name="priority">
+                                                                @foreach($priorities as $item)
+                                                                <option value="{{ $item['job_priority_name'] }}" {{ ($item['job_priority_name'] == $job['priority']) ? 'selected' : '' }}> {{ $item['job_priority_name']}}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                        <hr>
+                                                        <div class="form-group row has-success">
+                                                            <h4 class="card-title">Job info</h4>
+                                                            <select class="form-control custom-select" id="device_malfunc_info" name="device_malfunc_info">
+                                                                <option value="Fell down" {{ ($job['device_malfunc_info'] == 'Fell down') ? 'checked' : ''}}>Fell down</option>
+                                                                <option value="Not working" {{ ($job['device_malfunc_info'] == 'Not working') ? 'checked' : ''}}>Not working</option>
+                                                                <option value="Clicking Sound" {{ ($job['device_malfunc_info'] == 'Clicking Sound') ? 'checked' : ''}}>Clicking Sound</option>
+                                                                <option value="Abnormal Noise" {{ ($job['device_malfunc_info'] == 'Abnormal Noise') ? 'checked' : ''}}>Abnormal Noise</option>
+                                                                <option value="Water Damage" {{ ($job['device_malfunc_info'] == 'Water Damage') ? 'checked' : ''}}>Water Damage</option>
+                                                                <option value="Fire Damage" {{ ($job['device_malfunc_info'] == 'Fire Damage') ? 'checked' : ''}}>Fire Damage</option>
+                                                                <option value="Deleted" {{ ($job['device_malfunc_info'] == 'Deleted') ? 'checked' : ''}}>Deleted</option>
+                                                                <option value="Formatted" {{ ($job['device_malfunc_info'] == 'Formatted') ? 'checked' : ''}}>Formatted</option>
+                                                                <option value="Rebuild" {{ ($job['device_malfunc_info'] == 'Rebuild') ? 'checked' : ''}}>Rebuild</option>
+                                                                <option value="PCB Burn" {{ ($job['device_malfunc_info'] == 'PCB Burn') ? 'checked' : ''}}>PCB Burn</option>
+                                                                <option value="Overwritten" {{ ($job['device_malfunc_info'] == 'Overwritten') ? 'checked' : ''}}>Overwritten</option>
+                                                                <option value="Virus issue" {{ ($job['device_malfunc_info'] == 'Virus issue') ? 'checked' : ''}}>Virus issue</option>
+                                                                <option value="Ransomware attack" {{ ($job['device_malfunc_info'] == 'Ransomware attack') ? 'checked' : ''}}>Ransomware attack</option>
+                                                                <option value="Password Forget" {{ ($job['device_malfunc_info'] == 'Password Forget') ? 'checked' : ''}}>Password Forget</option>
+                                                                <option value="Encryption" {{ ($job['device_malfunc_info'] == 'Encryption') ? 'checked' : ''}}>Encryption</option>
+                                                                <option value="File corruption / damage" {{ ($job['device_malfunc_info'] == 'File corruption / damage') ? 'checked' : ''}}>File corruption / damage</option>
+                                                                <option value="File missing" {{ ($job['device_malfunc_info'] == 'File missing') ? 'checked' : ''}}>File missing</option>
+                                                                <option value="Complete dead" {{ ($job['device_malfunc_info'] == 'Complete dead') ? 'checked' : ''}}>Complete dead</option>
+                                                                <option value="Display Broken" {{ ($job['device_malfunc_info'] == 'Display Broken') ? 'checked' : ''}}>Display Broken</option>
+                                                                <option value="Others" {{ ($job['device_malfunc_info'] == 'Others') ? 'checked' : ''}}>Others</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group row has-info">
+                                                            <h4 class="card-title">Important data</h4>
+                                                            <textarea class="form-control" rows="3" name="important_data">{{ $job['important_data'] }}</textarea>
+                                                        </div>
+                                                        <div class="form-group row has-danger">
+                                                            <h4 class="card-title">Cleint note</h4>
+                                                            <textarea class="form-control" rows="3" name="notes">{{ $job['notes'] }}</textarea>
+                                                        </div>
+                                                        <div class="form-actions">
+                                                            <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Save</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </form>
+                                        <div >
+                                            <h4>Comment</h4>
+                                            <form action="{{ route('send_comment') }}" method="POST">
+                                            @csrf
+                                            <textarea type="text" class="form-control" rows="3" id="comment" name="comment" placeholder="">{{ $job['last_comment'] }}</textarea>
+                                            <input type="hidden" name="comjob_id" value="{{ $job['job_id'] }}">
+                                            <button type="submit" class="btn btn-success" > <i class="fa fa-comment"></i> Send comment</button>
+                                            </form>
+                                        </div>
                                     </div>
+                                    <div class="col-lg-7">
+                                        <div class="card">
+                                            <h4 class="card-title">Client info</h4>
+                                            <div class="card-body">
+                                                <div class="form-group row">
+                                                    <label class="col-lg-4 control-label"><b>Ime kijentha:</b></label>
+                                                    <label class="col-lg-6 control-label">{{ $client['client_name'] }}</label>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-lg-4 control-label"><b>Adresa:</b></label>
+                                                    <label class="col-lg-6 control-label">{{ $client['street'] }}</label>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-lg-4 control-label"><b>Grad:</b></label>
+                                                    <label class="col-lg-6 control-label">{{ $client['postal_code'].' '.$client['city_name'] }}</label>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-lg-4 control-label"><b>Drazava:</b></label>
+                                                    <label class="col-lg-6 control-label">{{ $client['country'] }}</label>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-lg-4 control-label"><b>Note:</b></label>
+                                                    <label class="col-lg-6 control-label">{{ $client['note'] }}</label>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-lg-4 control-label"><b>Email:</b></label>
+                                                    <label class="col-lg-6 control-label">{{ $client['email_value'] }}</label>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-lg-4 control-label"><b>Phone:</b></label>
+                                                    <label class="col-lg-6 control-label">{{ $client['phone_value'] }}</label>
+                                                </div>
+                                                <h4 class="card-title">Patent Devices</h4>
+                                                <div class="table-responsive">
+                                                    <table class="table color-bordered-table info-bordered-table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Type</th>
+                                                                <th>Manufacturer</th>
+                                                                <th>Model</th>
+                                                                <th>Serial</th>
+                                                                <th>Location</th>
+                                                                <th>Diagnosis</th>
+                                                                <th>Note</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach($devices as $item)
+                                                            @if($item['role'] == 'Patient')
+                                                            <tr>
+                                                                <td>{{ $item['type'] }}</td>
+                                                                <td>{{ $item['manufacturer'] }}</td>
+                                                                <td>{{ $item['model'] }}</td>
+                                                                <td>{{ $item['serial'] }}</td>
+                                                                <td>{{ $item['location'] }}</td>
+                                                                <td>{{ $item['diagnosis'] }}</td>
+                                                                <td>{{ $item['note'] }}</td>
+                                                            </tr>
+                                                            @endif
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <hr>
+                                                <h4 class="card-title">Job Clones</h4>
+                                                <div class="table-responsive">
+                                                    <table class="table color-bordered-table info-bordered-table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>ID</th>
+                                                                <th>Type</th>
+                                                                <th>Manufacturer</th>
+                                                                <th>Model</th>
+                                                                <th>Serial</th>
+                                                                <th>Location</th>
+                                                                <th>Note</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach($devices as $item)
+                                                            @if($item['role'] == 'Clone')
+                                                            <tr>
+                                                                <td>{{ $item['id'] }}</td>
+                                                                <td>{{ $item['type'] }}</td>
+                                                                <td>{{ $item['manufacturer'] }}</td>
+                                                                <td>{{ $item['model'] }}</td>
+                                                                <td>{{ $item['serial'] }}</td>
+                                                                <td>{{ $item['location'] }}</td>
+                                                                <td>{{ $item['note'] }}</td>
+                                                            </tr>
+                                                            @endif
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <hr>
+                                                <h4 class="card-title">Job Donors</h4>
+                                                <div class="table-responsive">
+                                                    <table class="table color-bordered-table info-bordered-table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>ID</th>
+                                                                <th>Type</th>
+                                                                <th>Manufacturer</th>
+                                                                <th>Model</th>
+                                                                <th>Serial</th>
+                                                                <th>Location</th>
+                                                                <th>Note</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach($devices as $item)
+                                                            @if($item['role'] == 'Donor')
+                                                            <tr>
+                                                                <td>{{ $item['id'] }}</td>
+                                                                <td>{{ $item['type'] }}</td>
+                                                                <td>{{ $item['manufacturer'] }}</td>
+                                                                <td>{{ $item['model'] }}</td>
+                                                                <td>{{ $item['serial'] }}</td>
+                                                                <td>{{ $item['location'] }}</td>
+                                                                <td>{{ $item['note'] }}</td>
+                                                            </tr>
+                                                            @endif
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <hr>
+                                                <h4 class="card-title">Other client devices</h4>
+                                                <div class="table-responsive">
+                                                    <table class="table color-bordered-table info-bordered-table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Type</th>
+                                                                <th>Manufacturer</th>
+                                                                <th>Model</th>
+                                                                <th>Serial</th>
+                                                                <th>Location</th>
+                                                                <th>Note</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach($devices as $item)
+                                                            @if($item['role'] == 'Other')
+                                                            <tr>
+                                                                <td>{{ $item['type'] }}</td>
+                                                                <td>{{ $item['manufacturer'] }}</td>
+                                                                <td>{{ $item['model'] }}</td>
+                                                                <td>{{ $item['serial'] }}</td>
+                                                                <td>{{ $item['location'] }}</td>
+                                                                <td>{{ $item['note'] }}</td>
+                                                            </tr>
+                                                            @endif
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
                                     <div class="col-lg-12">
                                         <div class="card">
                                             <div class="card-body">
@@ -416,7 +430,20 @@
                                                                 Manufacturer
                                                             </span>
                                                         </div>
-                                                        <input type="text" class="form-control" id="cr_manufacturer" name="cr_manufacturer">
+                                                        <select class="form-control custom-select" id="cr_manufacturer" name="cr_manufacturer">
+                                                            <option value="Western Digital">Western Digital </option>
+                                                            <option value="Seagate">Seagate</option>
+                                                            <option value="Samsung">Samsung</option>
+                                                            <option value="Toshiba">Toshiba</option>
+                                                            <option value="Apple">Apple</option>
+                                                            <option value="HGST">HGST</option>
+                                                            <option value="Fujistu">Fujistu</option>
+                                                            <option value="Dell">Dell</option>
+                                                            <option value="HP">HP</option>
+                                                            <option value="IBM">IBM</option>
+                                                            <option value="Maxtor">Maxtor</option>
+                                                            <option value="Others">Others</option>
+                                                        </select>
                                                     </div>
                                                     <hr>
                                                     <div class="input-group">
@@ -626,47 +653,22 @@
                                 <form action="{{ route('update_service') }}" method="POST">
                                     @csrf
                                     <input type="hidden" name="update_service_job_id" value="{{ $job['job_id'] }}">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text" id="basic-addon1">
-                                                        <input type="radio" id="datarec" name="service_name" value="Data Recovery" {{ ($job['services'] == 'Data Recovery' ? 'checked' : '') }}>
-                                                    </span>
+                                    @foreach ($services as $item)
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" id="basic-addon1">
+                                                            <input type="radio" id="urg9" name="service_name" value="{{ $item['service_name'] }}" {{ ($job['services'] == $item['service_name'] ? 'checked' : '') }}>
+                                                        </span>
+                                                    </div>
+                                                    <label for="urg9" id="lurg9" name="lurg9" class="form-control">{{$item['service_name']}}</label>
+                                                    <small class="form-control-feedback"></small> 
                                                 </div>
-                                                <label for="datarec" id="ldatarec" name="ldatarec" class="form-control">Data Recovery</label>
-                                                <small class="form-control-feedback"></small> 
                                             </div>
                                         </div>
-                                    </div>
-                                    <hr>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text" id="basic-addon1">
-                                                        <input type="radio" id="urg9" name="service_name" value="Urgent case 09-18h" {{ ($job['services'] == 'Urgent case 09-18h' ? 'checked' : '') }}>
-                                                    </span>
-                                                </div>
-                                                <label for="urg9" id="lurg9" name="lurg9" class="form-control">Urgent case 09-18h</label>
-                                                <small class="form-control-feedback"></small> 
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <hr>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text" id="basic-addon1">
-                                                        <input type="radio" id="urg24" name="service_name"  value="Urgent case 00-24h" {{ ($job['services'] == 'urgent case 00-24h' ? 'checked' : '') }}>
-                                                    </span>
-                                                </div>
-                                                <label for="urg24" id="lurg24" name="lurg24" class="form-control">Urgent case 00-24h</label>
-                                                <small class="form-control-feedback"></small> 
-                                            </div>
-                                        </div>
-                                    </div>
+                                        <hr>
+                                    @endforeach
                                     <div class="row">
                                         <div class="col-md-6">
                                             <hr>

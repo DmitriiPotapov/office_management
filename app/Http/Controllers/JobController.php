@@ -15,6 +15,7 @@ use App\User;
 use App\Models\DataLogs;
 use PDF;
 use App\Models\Client;
+use App\Models\Service;
 
 class JobController extends Controller
 {
@@ -31,11 +32,14 @@ class JobController extends Controller
         
         $job->user_id = Auth::user()->id;
         $job->user_name = Auth::user()->username;
-        $job->job_id = rand(100, 99999);
+        $job->job_id = rand(10000, 99999);
         $job->job_password = rand(100000000, 999999999);
 
-        $job->client_id = $request->input('client_id');
-        $client = Client::find($job->client_id);
+        $client_info = $request->input('client_info');
+        $client_name = strtok($client_info, ',');
+
+        $client = Client::where('client_name',$client_name)->first();
+        $job->client_id = $client->id;
         $job->client_name = $client->client_name;
         $job->priority = $request->input('priority');
         $job->device_malfunc_info = $request->input('device_malfunc_info');
@@ -44,16 +48,23 @@ class JobController extends Controller
 
         $job->save();
 
-        $devices = new DataDevices();
-        $devices->job_id = $job->job_id;
-        $devices->type = $request->input('device_type');
-        $devices->role = $request->input('role');
-        $devices->manufacturer = $request->input('manufacturer');
-        $devices->model = $request->input('model');
-        $devices->serial = $request->input('serial');
-        $devices->location = $request->input('location');
+        $device_count = $request->input('device_count');
 
-        $devices->save();
+        for($i = 1 ; $i <= $device_count; $i ++)
+        {
+            $devices = new DataDevices();
+            $devices->job_id = $job->job_id;
+            $devices->type = $request->input('device_type'.$i);
+            $devices->role = $request->input('role'.$i);
+            $devices->manufacturer = $request->input('manufacturer'.$i);
+            $devices->model = $request->input('model'.$i);
+            $devices->serial = $request->input('serial'.$i);
+            $devices->location = $request->input('location'.$i);
+
+            $devices->save();
+        }
+
+        
 
         $history = new DataJobHistory();
         $history->job_id = $job->job_id;
@@ -84,8 +95,9 @@ class JobController extends Controller
         $priorities = JobPriority::all();
         $types = DeviceType::all();
         $client = Client::find($client_id);
+        $clients = Client::all();
         
-        return view('job.addJob', compact('priorities', 'types', 'client_id', 'client'));
+        return view('job.addJob', compact('priorities', 'types', 'client_id', 'client','clients'));
     }
 
     public function showAllJob()
@@ -96,7 +108,7 @@ class JobController extends Controller
 
     public function showAllPriorityJob()
     {
-        $jobs = DataJobs::where('priority','!=','Normal')->get()->toArray();
+        $jobs = DataJobs::where('priority','!=','Standard')->get()->toArray();
         return view('job.viewJobs', compact('jobs'));
     }
 
@@ -104,6 +116,30 @@ class JobController extends Controller
     {
         $jobs = DataJobs::all();
         return view('job.overView',compact('jobs'));
+    }
+
+    public function viewUrgent()
+    {
+        $jobs = DataJobs::all()->toArray();
+        return view('job.viewJobs', compact('jobs'));
+    }
+
+    public function viewCompleted()
+    {
+        $jobs = DataJobs::where('status', 'Completed successfully')->get()->toArray();
+        return view('job.viewJobs', compact('jobs'));
+    }
+
+    public function viewPaymentPending()
+    {
+        $jobs = DataJobs::where('status', 'Payment pending')->get()->toArray();
+        return view('job.viewJobs', compact('jobs'));
+    }
+
+    public function viewPaid()
+    {
+        $jobs = DataJobs::where('status', 'Paid')->get()->toArray();
+        return view('job.viewJobs', compact('jobs'));
     }
 
     public function showEditJob($job_id)
@@ -124,8 +160,10 @@ class JobController extends Controller
 
         $logs = DataLogs::where('job_id', $job_id)->get()->toArray();
 
+        $services = Service::all();
 
-        return view('job.editJob' , compact('job', 'client' ,'statuses','priorities', 'devices', 'comments', 'types', 'histories', 'engineers', 'logs'));
+
+        return view('job.editJob' , compact('job', 'client' ,'statuses','priorities', 'devices', 'comments', 'types', 'histories', 'engineers', 'logs', 'services'));
     }
 
     public function updateJob(Request $request)
@@ -320,16 +358,23 @@ class JobController extends Controller
     public function addmissionForm($job_id)
     {
         $pdf = \App::make('dompdf.wrapper');
-        $pdf->loadHTML($this->convert_job_data_to_html($job_id));
+        $pdf->loadHTML($this->convert_job_data_to_admission_form($job_id));
         $pdf->stream();
         $invoice_path = 'admission_form_'.$job_id.'.pdf';
         return $pdf->download($invoice_path);
 
     }
 
-    
+    public function checkoutForm($job_id)
+    {
+        $pdf = \App::make('dompdf.wrapper');
+        $pdf->loadHTML($this->convert_job_data_to_checkout_form($job_id));
+        $pdf->stream();
+        $invoice_path = 'chechout_form_'.$job_id.'.pdf';
+        return $pdf->download($invoice_path);
+    }    
 
-    function convert_job_data_to_html($job_id)
+    function convert_job_data_to_admission_form($job_id)
     {
         $job = DataJobs::where('job_id',$job_id)->first();
         $client = Client::find($job->client_id);
@@ -464,4 +509,123 @@ Lorem ipsum dolaldiwerjkjlk, dkjfowjerijklaslkdjfalkds, dskflkdsjfcxlvjlksjdoiew
         return $output;
     }
 
+    function convert_job_data_to_checkout_form($job_id)
+    {
+        $job = DataJobs::where('job_id',$job_id)->first();
+        $client = Client::find($job->client_id);
+        $output = '
+        <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>HTML4</title>
+<style>
+body {
+  font-family: Verdana,sans-serif;
+  font-size: 0.9em;
+}
+
+div#header, div#footer {
+  padding: 10px;
+  color: white;
+  background-color: black;
+}
+
+div#content {
+  margin: 5px;
+  padding: 10px;
+  background-color: lightgrey;
+}
+
+div.article {
+  margin: 5px;
+  padding: 10px;
+  background-color: white;
+}
+
+div#menu ul {
+  padding: 0;
+}
+
+div#menu ul li {
+  display: inline;
+  margin: 5px;
+}
+.title_block {
+    border-bottom: 1px solid #000;
+    padding-bottom: 1px;
+    margin-bottom: 1px;
+}
+table {
+font-family: arial, sans-serif;
+border-collapse: collapse;
+width: 100%;
+}
+
+td, th {
+border: 1px solid #dddddd;
+text-align: left;
+padding: 8px;
+}
+
+</style>
+</head>
+<body>
+<div class="row"><div style="font-size:20px;" align="left"> SPACE RECOVERY </div>
+<div style="font-size:30px;color:#2E74B5;" align="right"><b>SIGN OUT FORM</b> </div></div>
+<br>
+<br>
+<br>
+<div><label style="font-size:16px;">Customer Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:16px;">'.$client->client_name.'</label></div>
+<div class="row">
+<label style="font-size:16px;">Street Address&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:16px;">'.$client->street.', '.$client->apt.', '.$client->number.'</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<label style="font-size:16px;color:#2E74B5;"><b>JOB NUMBER # </b> </label>&nbsp;<label style="font-size:16px;">'.$job->job_id.'</label>
+</div>
+<div><label style="font-size:16px;">City, ST ZIP Code&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:16px;">'.$client->city_name.'</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<label style="font-size:16px;color:#2E74B5;"><b> OUT DATE </b> </label>&nbsp;<label style="font-size:16px;">'.$job->created_at.'</label></div>
+<div><label style="font-size:16px;">Phone </label>&nbsp;&nbsp;<label style="font-size:16px;">'.$client->phone_value.'</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;
+<label style="font-size:16px;">Fax </label>&nbsp;&nbsp;<label style="font-size:16px;">'.'  '.'</label></div>
+<div><label style="font-size:16px;">Email&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:16px;">'.$client->email_value.'</label></div>
+<br>
+';
+
+    $output .=
+'
+<h3 style="color:#2E74B5;">MEDIA DETAILS</h3>
+<div class="title_block" style="border-style:solid;">';
+
+    $devices = DataDevices::where('job_id', $job_id)->get()->toArray();
+    foreach($devices as $item)
+    {
+        $output .= '
+        <label style="font-size:16px;">'.$item['manufacturer'].' '.$item['capacity'].'</label><br>
+        <label style="font-size:16px;"> Serial Number: '.$item["serial"].'</label><br><br>';
+    }
+
+
+    $output .=
+'
+</div>
+<br>
+<br>
+<div><label style="font-size:16px;">Customer Name&nbsp;&nbsp;&nbsp;:  </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:16px;">'.$client->client_name.'</label></div>
+<div><label style="font-size:16px;">Mobile Number&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:16px;">'.$client->phone_value.'</label></div>
+<div><label style="font-size:16px;">National ID No.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:16px;">'.$client->nationalId.'</label></div>
+<div><label style="font-size:16px;">Signature&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:16px;">'.$client->signature.'</label></div>
+<br>
+<h6>Please read carefully before signing </h6>
+<h4>Your Feedback is really important for us to grow </h4>
+................................................................................................................................................................................................<br>
+................................................................................................................................................................................................<br>
+................................................................................................................................................................................................<br>
+<h6>How likely do you recommend our service to a friend?  </h6>
+<h5>Not Likely at all   0 1 2 3 4 5 6 7 8 9 10 Extremely Likely   </h5>
+SPACE RECOVERY <br>
+<label style="font-size:12px;">#108, First Floor, Azaiba Mall, Azaiba, Muscat, Sultanate Of Oman | +968 96312346 / 7 | <a>mail@spacedatarecovery.com</a> </label><br>
+<div align="center">ww.spacedatarecovery.com </div>
+<h2 align="center" style="color:rgb(147,183,217);">THANK YOU FOR YOUR BUSINESS!</h2>
+</body>
+</html>';
+        return $output;
+    }
 }

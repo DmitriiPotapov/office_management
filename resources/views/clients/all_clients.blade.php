@@ -51,8 +51,8 @@
                             <td>{{ $client->email_value }}</td>
                             <td>{{ $client->pib_jmbg }}</td>                              
                             <td>
-                                <button type="button" class="btn btn-info btn-circle"><i class="fa fa-file-text"></i></button>
-                            <a href="{{ URL::to('clients/deleteAction?id=') }}{{ $client->id }}"><button class="btn btn-youtube waves-effect btn-circle waves-light" type="button"> <i class="fa fa-trash" aria-hidden="true"></i> </button></a>
+                                <button type="button" class="btn-sm btn-info btn-circle"><i class="fa fa-file-text"></i></button>
+                            <a href="{{ URL::to('clients/deleteAction?id=') }}{{ $client->id }}"><button class="btn-sm btn-danger btn-circle" type="button"> <i class="fa fa-trash" aria-hidden="true"></i> </button></a>
                             </td>
                             </tr>
                             @endforeach                                      

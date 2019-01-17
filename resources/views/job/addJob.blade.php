@@ -3,6 +3,7 @@
 @push('header-style')
 
 <link href="{{ asset('assets/plugins/icheck/skins/all.css')}}" rel="stylesheet">
+<link href="{{ asset('assets/plugins/typeahead.js-master/dist/typehead-min.css')}}" rel="stylesheet">
 
 @endpush
 
@@ -29,12 +30,16 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         @if($client_id == 0)
-                                        <input type="text" id="client_info" name="client_info" class="form-control" placeholder="Cleint info" >
+                                        <div id="the-basics">
+                                            <input type="text" id="client_info" name="client_info" class="typeahead form-control" placeholder="Cleint info" >
+                                        </div>
                                         <a style="margin-left: 30px;" href="{{ route('addClinet') }}"> New Client </a> </div>
                                         <input type="hidden" name="client_id" value="1">
                                         @endif
                                         @if($client_id != 0)
-                                        <input type="text" id="client_info" name="client_info" class="form-control" value="{{ $client['client_name'].', '.$client['street'].', '.$client['postal_code'].', '.$client['city_name'] }}" >
+                                        <div>
+                                            <input type="text" id="client_info" name="client_info" class="typeahead form-control" value="{{ $client['client_name'].', '.$client['street'].', '.$client['postal_code'].', '.$client['city_name'] }}" >
+                                        </div>
                                         <a style="margin-left: 30px;" href="{{ route('addClinet') }}"> New Client </a> </div>
                                         <input type="hidden" name="client_id" value="{{ $client_id }}">
                                         @endif
@@ -90,14 +95,16 @@
                             </div>
                             <hr>
                             <h4 class="card-title">Devices</h4>
+                            <input type="hidden" name="device_count" id="device_count" value="1">
                             <div class="row p-t-20">
                                 <div class="col-md-2">
                                     <div class="form-group">
-                                        <a class="btn btn-circle btn-sm btn-success" href="javascript:void(0)"><i class="fa fa-plus"></i></a>
-                                        <a class="btn btn-circle btn-sm btn-danger" href="javascript:void(0)"><i class="fa fa-times"></i></a>
+                                        <a class="btn btn-circle btn-sm btn-success" onclick="onDeviceAdd()"><i class="fa fa-plus"></i></a>
+                                        <a class="btn btn-circle btn-sm btn-danger" onclick="remove_device()"><i class="fa fa-times"></i></a>
                                     </div>
                                 </div>
                             </div>
+                            <div id="adult">
                             <div class="row p-t-20">
                                 <div class="col-md-2">
                                     <div class="input-group">
@@ -106,9 +113,9 @@
                                                 Type
                                             </span>
                                         </div>
-                                        <select class="form-control custom-select" id="devtype" name="device_type">
+                                        <select class="form-control custom-select" id="devtype" name="device_type1">
                                             @foreach($types as $item)
-                                            <option value="{{ $item['device_name']}}"> {{ $item['device_name']}}</option>
+                                            <option value="{{ $item->device_name}}"> {{ $item->device_name}}</option>
                                             @endforeach
                                         </select>
                                         <small class="form-control-feedback"></small> 
@@ -121,7 +128,7 @@
                                                 Role
                                             </span>
                                         </div>
-                                        <select class="form-control custom-select" id="role" name="role">
+                                        <select class="form-control custom-select" id="role" name="role1">
                                             <option value="Patient">Patient</option>
                                             <option value="Clone">Clone</option>
                                             <option value="Donor">Donor</option>
@@ -137,7 +144,20 @@
                                                 Manufacturer
                                             </span>
                                         </div>
-                                        <input type="text" id="manufacturer" name="manufacturer" class="form-control" placeholder="" >
+                                        <select class="form-control custom-select" id="manufacturer1" name="manufacturer">
+                                            <option value="Western Digital">Western Digital </option>
+                                            <option value="Seagate">Seagate</option>
+                                            <option value="Samsung">Samsung</option>
+                                            <option value="Toshiba">Toshiba</option>
+                                            <option value="Apple">Apple</option>
+                                            <option value="HGST">HGST</option>
+                                            <option value="Fujistu">Fujistu</option>
+                                            <option value="Dell">Dell</option>
+                                            <option value="HP">HP</option>
+                                            <option value="IBM">IBM</option>
+                                            <option value="Maxtor">Maxtor</option>
+                                            <option value="Others">Others</option>
+                                        </select>
                                         <small class="form-control-feedback"></small> </div>
                                 </div>
                                 <div class="col-md-2">
@@ -147,7 +167,7 @@
                                                 Model
                                             </span>
                                         </div>
-                                        <input type="text" id="model" name="model" class="form-control" placeholder="" >
+                                        <input type="text" id="model" name="model1" class="form-control" placeholder="" >
                                         <small class="form-control-feedback"></small> </div>
                                 </div>
                                 <div class="col-md-2">
@@ -157,7 +177,7 @@
                                                 Serial
                                             </span>
                                         </div>
-                                        <input type="text" id="serial" name="serial" class="form-control" placeholder="" >
+                                        <input type="text" id="serial" name="serial1" class="form-control" placeholder="" >
                                         <small class="form-control-feedback"></small> </div>
                                 </div>
                                 <div class="col-md-2">
@@ -167,16 +187,40 @@
                                                 Location
                                             </span>
                                         </div>
-                                        <input type="text" id="location" name="location" class="form-control" placeholder="" >
+                                        <input type="text" id="location" name="location1" class="form-control" placeholder="" >
                                         <small class="form-control-feedback"></small> </div>
                                 </div>
-                            </div> 
+                            </div>
+                            <br>
+                            </div>
                             <br>
                             <h4 class="card-title">Device malfunction information</h4>
                             <div class="row p-t-20">
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <textarea class="form-control" name="device_malfunc_info" rows="8"></textarea>
+                                        <select class="form-control custom-select" id="device_malfunc_info" name="device_malfunc_info">
+                                            <option value="">Choose...</option>
+                                            <option value="Western Digital">Fell down</option>
+                                            <option value="Not working">Not working</option>
+                                            <option value="Clicking Sound">Clicking Sound</option>
+                                            <option value="Abnormal Noise">Abnormal Noise</option>
+                                            <option value="Water Damage">Water Damage</option>
+                                            <option value="Fire Damage">Fire Damage</option>
+                                            <option value="Deleted">Deleted</option>
+                                            <option value="Formatted">Formatted</option>
+                                            <option value="Rebuild">Rebuild</option>
+                                            <option value="PCB Burn">PCB Burn</option>
+                                            <option value="Overwritten">Overwritten</option>
+                                            <option value="Virus issue">Virus issue</option>
+                                            <option value="Ransomware attack">Ransomware attack</option>
+                                            <option value="Password Forget">Password Forget</option>
+                                            <option value="Encryption">Encryption</option>
+                                            <option value="File corruption / damage">File corruption / damage</option>
+                                            <option value="File missing">File missing</option>
+                                            <option value="Complete dead">Complete dead</option>
+                                            <option value="Display Broken">Display Broken</option>
+                                            <option value="Others">Others</option>
+                                        </select>
                                         <small class="form-control-feedback"><a href="javascript:void(0)"> </a></small> </div>
                                 </div>
                             </div> 
@@ -214,5 +258,65 @@
 @push('footer-script')
 <script src="{{ asset('assets/plugins/icheck/icheck.min.js')}}"></script>
 <script src="{{ asset('assets/plugins/icheck/icheck.init.js')}}"></script>
+<script src="{{ asset('assets/plugins/typeahead.js-master/dist/typeahead.bundle.min.js')}}"></script>
 
+<script>
+
+    var room = 1;
+    function onDeviceAdd()
+    {
+        room++;
+        $("#device_count").val(room);
+        var objTo = document.getElementById('adult')
+        var divtest = document.createElement("div");
+        divtest.setAttribute("class", "form-group removeclass" + room);
+        var rdiv = 'removeclass' + room;
+        divtest.innerHTML = '<div class="row "><div class="col-md-2"><div class="input-group"><div class="input-group-prepend"><span class="input-group-text" id="basic-addon1">Type</span></div><select class="form-control custom-select" id="devtype" name="device_type'+room+'">@foreach($types as $item)<option value="{{ $item->device_name}}"> {{ $item->device_name}}</option>@endforeach</select><small class="form-control-feedback"></small> </div></div><div class="col-md-1.5">       <div class="input-group"><div class="input-group-prepend"><span class="input-group-text" id="basic-addon1">Role</span></div><select class="form-control custom-select" id="role" name="role'+room+'"><option value="Patient">Patient</option><option value="Clone">Clone</option><option value="Donor">Donor</option><option value="Other">Other</option></select><small class="form-control-feedback"></small> </div></div><div class="col-md-2.5"><div class="input-group"><div class="input-group-prepend"><span class="input-group-text" id="basic-addon1">Manufacturer</span></div><select class="form-control custom-select" id="manufacturer" name="manufacturer'+room+'"><option value="Western Digital">Western Digital </option><option value="Seagate">Seagate</option><option value="Samsung">Samsung</option><option value="Toshiba">Toshiba</option><option value="Apple">Apple</option><option value="HGST">HGST</option><option value="Fujistu">Fujistu</option><option value="Dell">Dell</option><option value="HP">HP</option><option value="IBM">IBM</option><option value="Maxtor">Maxtor</option><option value="Others">Others</option></select><small class="form-control-feedback"></small> </div></div><div class="col-md-2"><div class="input-group"><div class="input-group-prepend"><span class="input-group-text" id="basic-addon1">Model</span></div><input type="text" id="model" name="model'+room+'" class="form-control" placeholder="" ><small class="form-control-feedback"></small> </div></div><div class="col-md-2"><div class="input-group"><div class="input-group-prepend"><span class="input-group-text" id="basic-addon1">Serial</span></div><input type="text" id="serial" name="serial'+room+'" class="form-control" placeholder="" ><small class="form-control-feedback"></small> </div></div><div class="col-md-2"><div class="input-group"><div class="input-group-prepend"><span class="input-group-text" id="basic-addon1">Location</span></div><input type="text" id="location" name="location'+room+'" class="form-control" placeholder="" ><small class="form-control-feedback"></small> </div></div></div>';
+
+        objTo.appendChild(divtest)
+    }
+
+    function remove_device() {
+        $('.removeclass' + room).remove();
+        room --;
+        $('#device_count').val(room);
+    }
+    
+var substringMatcher = function(strs) {
+    return function findMatches(q, cb) {
+      var matches, substringRegex;
+  
+      // an array that will be populated with substring matches
+      matches = [];
+  
+      // regex used to determine if a string contains the substring `q`
+      substrRegex = new RegExp(q, 'i');
+  
+      // iterate through the pool of strings and for any string that
+      // contains the substring `q`, add it to the `matches` array
+      $.each(strs, function(i, str) {
+        if (substrRegex.test(str)) {
+          matches.push(str);
+        }
+      });
+  
+      cb(matches);
+    };
+  };
+
+  var states = [];
+  @foreach ($clients as $item)
+    states.push("{{ $item['client_name'].', '.$item['street'].', '.$item['postal_code'].', '.$item['city_name'] }}");
+  @endforeach
+  
+  $('#the-basics .typeahead').typeahead({
+    hint: true,
+    highlight: true,
+    minLength: 1
+  },
+  {
+    name: 'states',
+    source: substringMatcher(states)
+  });
+</script>
 @endpush
