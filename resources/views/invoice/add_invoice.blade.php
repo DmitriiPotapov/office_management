@@ -326,11 +326,13 @@
 
         //jobpost with datatable.
         $('#jobPost').on('click', function() {
-                       
+
             var table = $('#invoiceItemList').DataTable();
-            var jobFormData = table.rows().data();
+            var jobFormData = table.rows();
             $.each( jobFormData, function( key, value ) {
-              console.log(JSON.stringify(jobFormData));
+
+              console.log('Data in index: '+key+' is: '+value);
+              
             });
                      
         });
