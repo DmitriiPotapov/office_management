@@ -29,33 +29,31 @@
                     <table id="example23" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
                         <thead>
                             <tr>                                
-                                <th>Manufacturer</th>
-                                <th>Model</th>
-                                <th>Serial number</th>
-                                <th>Location</th>
-                                <th>Price with VAT</th>
-                                <th>Acquired from</th>
-                                <th>Input date</th>
+                                <th>Job ID</th>
+                                <th>Status</th>
+                                <th>Client Name</th>
+                                <th>Total</th>
+                                <th>Created at</th>
+                                <th>Created by</th>                               
                                 <th> Action</th>                                   
                             </tr>
                         </thead>
                         
-                        <tbody> 
-                                               
-                            <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>    
-                                <td>
-                                    <button type="button" class="btn btn-info btn-circle"><i class="fa fa-file-text"></i> </button>
-                                    <button type="button" class="btn btn-info btn-circle"><i class="fa fa-exchange"></i> </button>
-                                <button class="btn btn-youtube waves-effect btn-circle waves-light" type="button"> <i class="fa fa-trash" aria-hidden="true"></i> </button>
-                                </td>
-                              </tr>
+                        <tbody>
+                        @foreach ($invoices as $item)
+                        <tr>                         
+                        <td>{{ $item->job_id }}</td>
+                        <td>{{ $item->status }}</td>
+                        <td>{{ $item->client_name }}</td>
+                        <td>{{ $item->item_total_price }}</td>
+                        <td>{{ $item->created_at }}</td>
+                        <td>{{ $item->created_by }}</td>    
+                        <td>
+                            <a href="{{ URL::to('invoice/deleteAction?id=') }}{{ $item->id }}"><button class="btn-sm btn-youtube waves-effect btn-circle waves-light" type="button"> <i class="fa fa-trash" aria-hidden="true"></i></button></a>
+                        </td>
+                        </tr>  
+                        @endforeach                                                   
+                        
                                                         
                         </tbody>
                     </table>

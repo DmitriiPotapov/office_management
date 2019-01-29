@@ -8,6 +8,7 @@ class InvoiceItem extends Model
 {
     protected $fillable = [
         'invoice_id',
+        'job_id',
         'type',
         'text',
         'price',

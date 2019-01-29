@@ -50,7 +50,7 @@
                     <ul aria-expanded="false" class="collapse">
                     <li><a href="{{ URL::to('invoice/add') }}">New invoice </a></li>
                     <li><a href="{{ URL::to('invoice/allview') }}">View all invoices </a></li>
-                        <li><a href="app-ticket.html">Bills </a></li>
+                        
                     </ul>
                 </li>
                 <li>
