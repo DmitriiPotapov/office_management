@@ -732,7 +732,7 @@
                             <div class="tab-pane p-20" id="billing" role="tabpanel">
                                 <div class="row">
                                     <div class="col-lg-12">
-                                        <h3 class="card-title">Billing</h3>
+                                        <!-- <h3 class="card-title">Billing</h3>
                                         <div class="row p-t-20">
                                             <div class="col-md-3">
                                                 <div class="input-group">
@@ -821,7 +821,7 @@
                                         </div> 
                                         <div class="row p-t-20">
                                             <button class="btn btn-info waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-save"></i></span>Save</button>
-                                        </div>
+                                        </div> -->
                                         <hr>
                                         <h5 class="card-title">Invoices</h5>
                                         <div class="row p-t-20">
@@ -838,18 +838,18 @@
                                                     </thead>
                                                     <tbody>
                                                         <tr>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td></td>
-                                                            <td></td>
+                                                            <td>{{ $invoice->id }}</td>
+                                                            <td>{{ $invoice->status }}</td>
+                                                            <td>{{ $invoice->item_total_price }}</td>
+                                                            <td>{{ $invoice->created_by }}</td>
+                                                            <td>{{ $invoice->created_at }}</td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
                                             </div>
                                         </div>
                                         <hr>
-                                        <h5 class="card-title">Bills</h5>
+                                        <!-- <h5 class="card-title">Bills</h5>
                                         <div class="row p-t-20">
                                             <div class="table-responsive">
                                                 <table class="table color-bordered-table info-bordered-table">
@@ -873,7 +873,7 @@
                                                     </tbody>
                                                 </table>
                                             </div>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
                             </div>

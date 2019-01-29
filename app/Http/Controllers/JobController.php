@@ -11,6 +11,8 @@ use App\Models\DeviceType;
 use App\Models\BaseJobStatuse;
 use App\Models\DataComments;
 use App\Models\DataJobHistory;
+use App\Models\Invoice;
+use App\Models\Backup;
 use App\User;
 use App\Models\DataLogs;
 use PDF;
@@ -162,8 +164,10 @@ class JobController extends Controller
 
         $services = Service::all();
 
+        $invoice = Invoice::where('job_id', $job_id)->first();
 
-        return view('job.editJob' , compact('job', 'client' ,'statuses','priorities', 'devices', 'comments', 'types', 'histories', 'engineers', 'logs', 'services'));
+
+        return view('job.editJob' , compact('job', 'client' ,'statuses','priorities', 'devices', 'comments', 'types', 'histories', 'engineers', 'logs', 'services', 'invoice'));
     }
 
     public function updateJob(Request $request)
@@ -463,7 +467,7 @@ padding: 8px;
 </style>
 </head>
 <body>
-<h1> YOUR LOGO HERE </h1>
+<div><img src="assets/images/logo_medium.png"></div>
 <div class="title_block">
 <h3>Company slogan</h3>
 </div>
@@ -527,7 +531,8 @@ padding: 8px;
 <h3>TERMS OF SERVICE</h3>
 </div>
 <p>
-Lorem ipsum dolaldiwerjkjlk, dkjfowjerijklaslkdjfalkds, dskflkdsjfcxlvjlksjdoiewr,scjvkxcjvoiwekrjds,.cxvjdsfiewr.dsfjdsfioewrijwsejdslkf,cvzxkcljvkldsjfiwerjlklkjsdjf,LDJFOIERJldflkj DFDerdfdsDFDCV JijIJIJ
+Thank you for using our service. Our service is Recovery Service. You are welcome!!!Thank you for using our service. Our service is Recovery Service. You are welcome!!!<br>
+Thank you for using our service. Our service is Recovery Service. You are welcome!!!
 </p>
 
 </div>
@@ -658,7 +663,10 @@ SPACE RECOVERY <br>
     function convert_job_data_to_invoice($job_id)
     {
         $job = DataJobs::where('job_id',$job_id)->first();
+        $invoice = Invoice::where('job_id', $job_id)->first();
+        $backup = Backup::where('job_id', $job_id)->first();
         $client = Client::find($job->client_id);
+        $total_price = $invoice->item_total_price + $backup->total_price;
         $output = '
         <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
@@ -842,21 +850,21 @@ body {
         <tbody>
         <tr>
             <td>1.00</td>
-            <td>Data Recover Service</td>
-            <td>OMR   120.000</td>
-            <td>OMR   120.000</td>
+            <td>'.$job->services.'</td>
+            <td>OMR   '.$invoice->item_total_price.'</td>
+            <td>OMR   '.$invoice->item_total_price.'</td>
         </tr>
         <tr>
             <td>1.00</td>
-            <td>WT 1TB Backup Hard Drive</td>
-            <td>OMR   120.000</td>
-            <td>OMR   120.000</td>
+            <td>Backup '.$invoice->item_type.'</td>
+            <td>OMR   '.$backup->total_price.'</td>
+            <td>OMR   '.$backup->total_price.'</td>
         </tr>
         </tbody>
     </table>
 </div>
 <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<label style="font-size:16px;color:#2E74B5;"><b>Subtotal</b></label>&nbsp;&nbsp;&nbsp;<label style="font-size:16px;">OMR 120.00</label></div>
+<label style="font-size:16px;color:#2E74B5;"><b>Subtotal</b></label>&nbsp;&nbsp;&nbsp;<label style="font-size:16px;">OMR '.$total_price.'</label></div>
 <br>
 <br>
 <br>
@@ -875,6 +883,7 @@ body {
     function convert_job_data_to_quote($job_id)
     {
         $job = DataJobs::where('job_id',$job_id)->first();
+        $invoice = Invoice::where('job_id', $job_id)->first();
         $client = Client::find($job->client_id);
         $output = '
         <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -1041,20 +1050,14 @@ body {
         <tr>
             <td>1.00</td>
             <td>Data Recover Service</td>
-            <td>OMR   120.000</td>
-            <td>OMR   120.000</td>
-        </tr>
-        <tr>
-            <td>1.00</td>
-            <td>WT 1TB Backup Hard Drive</td>
-            <td>OMR   120.000</td>
-            <td>OMR   120.000</td>
+            <td>OMR   '.$invoice->item_total_price.'</td>
+            <td>OMR   '.$invoice->item_total_price.'</td>
         </tr>
         </tbody>
     </table>
 </div>
 <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<label style="font-size:16px;color:#2E74B5;"><b>Subtotal</b></label>&nbsp;&nbsp;&nbsp;<label style="font-size:16px;">OMR 120.00</label></div>
+<label style="font-size:16px;color:#2E74B5;"><b>Subtotal</b></label>&nbsp;&nbsp;&nbsp;<label style="font-size:16px;">OMR '.$invoice->item_total_price.'</label></div>
 <br>
 <br>
 <br>
