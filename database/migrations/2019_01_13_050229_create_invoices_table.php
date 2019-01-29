@@ -15,12 +15,18 @@ class CreateInvoicesTable extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('job_id')->nullable();
-            $table->string('client_id')->nullable();
+            $table->string('invoice_id')->nullable();
+            $table->string('job_id')->nullable(); 
             $table->string('client_name')->nullable();
+            $table->string('service')->nullable();
             $table->string('invoice_language')->nullable();
             $table->string('currency')->nullable();
-            $table->string('footer_text')->nullable();
+            $table->string('item_type')->nullable();
+            $table->string('item_capacity')->nullable();
+            $table->string('item_price')->nullable();
+            $table->string('item_vat')->nullable();
+            $table->string('item_disaccount')->nullable();
+            $table->string('item_total_price')->nullable();
             $table->string('invoice_note')->nullable();
             $table->string('status')->nullable();
             $table->string('created_by')->nullable();

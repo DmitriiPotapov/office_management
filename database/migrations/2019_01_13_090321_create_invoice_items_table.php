@@ -16,6 +16,7 @@ class CreateInvoiceItemsTable extends Migration
         Schema::create('invoice_items', function (Blueprint $table) {
             $table->increments('id');
             $table->string('invoice_id')->nullable();
+            $table->string('job_id')->nullable();
             $table->string('type')->nullable();
             $table->string('text')->nullable();
             $table->string('price')->nullable();

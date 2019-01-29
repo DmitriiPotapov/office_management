@@ -19,6 +19,8 @@
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="{{ asset('assets/plugins/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">   
     <link href="{{ asset('assets/plugins/summernote/summernote.css') }}" rel="stylesheet" />
+    <!-- Typehead CSS -->
+    <link href="{{ asset('css/typehead-min.css') }}" rel="stylesheet" />
     <!-- Custom CSS -->
     <link href="{{ asset('css/style.css')}}" rel="stylesheet"> 
     <link href="{{ asset('css/colors/blue.css')}}" id="theme" rel="stylesheet">
