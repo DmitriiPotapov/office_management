@@ -70,6 +70,9 @@ Route::group(
         Route::get('/deleteDevice/{id}','JobController@deleteDevice')->name('delete_device');
         Route::get('/addmissionForm/{id}', 'JobController@addmissionForm')->name('admission_form');
         Route::get('/checkoutForm/{id}', 'JobController@checkoutForm')->name('checkout_form');
+        Route::get('/generateInvoice/{id}', 'JobController@generateInvoice')->name('generate_invoice');
+        Route::get('/generateQuote/{id}', 'JobController@generateQuote')->name('generate_quote');
+        Route::get('/generateMediaReport/{id}', 'JobController@generateMediaReport')->name('generate_media_report');
         Route::get('/viewUrgent', 'JobController@viewUrgent')->name('view_urgent');
         Route::get('/viewCompleted', 'JobController@viewCompleted')->name('view_completed');
         Route::get('/viewPaymentPending', 'JobController@viewPaymentPending')->name('view_payment_pending');

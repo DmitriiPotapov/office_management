@@ -22,8 +22,10 @@
                             <button class="btn btn-warning waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-key"></i></span>Unlock client access</button>
                             <button class="btn btn-danger waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-refresh"></i></span>Refresh file list info</button>
                             <button class="btn btn-danger waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-users"></i></span>Change client</button>
-                            <a class="btn btn-danger waves-effect waves-light" href="{{ route('checkout_form',['job_id' => $job['job_id']]) }}"><span class="btn-label"><i class="fa fa-check" ></i></span>Check-out form</a>
-                            <button class="btn btn-success waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-envelope-o"></i></span>Generate invoice</button>
+                            <a class="btn btn-danger waves-effect waves-light" href="{{ route('checkout_form',['job_id' => $job['job_id']]) }}" ><span class="btn-label"><i class="fa fa-check" ></i></span>Check-out form</a>
+                            <a class="btn btn-success waves-effect waves-light" href="{{ route('generate_invoice',['job_id' => $job['job_id']]) }}"><span class="btn-label"><i class="fa fa-envelope-o"></i></span>Generate invoice</a>
+                            <a class="btn btn-info waves-effect waves-light" href="{{ route('generate_quote',['job_id' => $job['job_id']]) }}"><span class="btn-label"><i class="fa fa-envelope-o"></i></span>Generate Quote</a>
+                            <a class="btn btn-success waves-effect waves-light" href="{{ route('generate_media_report',['job_id' => $job['job_id']]) }}"><span class="btn-label"><i class="fa fa-envelope-o"></i></span>Media Evolution Report</a>
                         </div>
                         <div class="modal fade" id="assignto" tabindex="-1" role="dialog" >
                             <form action="{{ route('assign_job') }}" method="POST">
@@ -381,7 +383,7 @@
                                     <div class="col-lg-12 m-b-30">
                                         <button class="btn btn-info waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-arrows"></i></span>Move selected devices</button>
                                         <button class="btn btn-danger waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-trash"></i></span>Remove selected devices</button>
-                                        <button class="btn btn-success waves-effect waves-light" type="button" data-toggle="modal" data-target="#addNewClModal"><span class="btn-label"><i class="fa fa-plus"></i></span>Add new client</button>
+                                        <button class="btn btn-success waves-effect waves-light" type="button" data-toggle="modal" data-target="#addNewClModal"><span class="btn-label"><i class="fa fa-plus"></i></span>Add new device</button>
                                         <button class="btn btn-success waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-plus"></i></span>Add device</button>
                                         <button class="btn btn-danger waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-upload"></i></span>Release selected</button>
                                     </div>
@@ -1033,7 +1035,6 @@ function gen_password()
     $("#job_password").val(num);
     $("#job_passwordl").html(num);
 }
-
 </script>
 
 @endpush

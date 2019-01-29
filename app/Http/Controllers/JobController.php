@@ -360,8 +360,8 @@ class JobController extends Controller
         $pdf = \App::make('dompdf.wrapper');
         $pdf->loadHTML($this->convert_job_data_to_admission_form($job_id));
         $pdf->stream();
-        $invoice_path = 'admission_form_'.$job_id.'.pdf';
-        return $pdf->download($invoice_path);
+        $file_path = 'admission_form_'.$job_id.'.pdf';
+        return $pdf->download($file_path);
 
     }
 
@@ -370,9 +370,36 @@ class JobController extends Controller
         $pdf = \App::make('dompdf.wrapper');
         $pdf->loadHTML($this->convert_job_data_to_checkout_form($job_id));
         $pdf->stream();
-        $invoice_path = 'chechout_form_'.$job_id.'.pdf';
-        return $pdf->download($invoice_path);
-    }    
+        $file_path = 'chechout_form_'.$job_id.'.pdf';
+        return $pdf->download($file_path);
+    }
+    
+    public function generateInvoice($job_id)
+    {
+        $pdf = \App::make('dompdf.wrapper');
+        $pdf->loadHTML($this->convert_job_data_to_invoice($job_id));
+        $pdf->stream();
+        $file_path = 'invoice_'.$job_id.'.pdf';
+        return $pdf->download($file_path);
+    }
+
+    public function generateQuote($job_id)
+    {
+        $pdf = \App::make('dompdf.wrapper');
+        $pdf->loadHTML($this->convert_job_data_to_quote($job_id));
+        $pdf->stream();
+        $file_path = 'quote_'.$job_id.'.pdf';
+        return $pdf->download($file_path);
+    }
+
+    public function generateMediaReport($job_id)
+    {
+        $pdf = \App::make('dompdf.wrapper');
+        $pdf->loadHTML($this->convert_job_data_to_media($job_id));
+        $pdf->stream();
+        $file_path = 'media_evaluation_report_'.$job_id.'.pdf';
+        return $pdf->download($file_path);
+    }
 
     function convert_job_data_to_admission_form($job_id)
     {
@@ -571,14 +598,14 @@ padding: 8px;
 </style>
 </head>
 <body>
-<div class="row"><div style="font-size:20px;" align="left"> SPACE RECOVERY </div>
-<div style="font-size:30px;color:#2E74B5;" align="right"><b>SIGN OUT FORM</b> </div></div>
-<br>
-<br>
+<div>
+<img src="assets/images/logo_medium.png"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<label style="font-size:30px;color:#3FC3F3;" align="right"><b>SIGN OUT FORM</b> </label>
+</div>
 <br>
 <div><label style="font-size:16px;">Customer Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:16px;">'.$client->client_name.'</label></div>
 <div class="row">
-<label style="font-size:16px;">Street Address&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:16px;">'.$client->street.', '.$client->apt.', '.$client->number.'</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<label style="font-size:16px;">Street Address&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:16px;">'.$client->street.', '.$client->apt.', '.$client->number.'</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <label style="font-size:16px;color:#2E74B5;"><b>JOB NUMBER # </b> </label>&nbsp;<label style="font-size:16px;">'.$job->job_id.'</label>
 </div>
 <div><label style="font-size:16px;">City, ST ZIP Code&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:16px;">'.$client->city_name.'</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -628,4 +655,598 @@ SPACE RECOVERY <br>
 </html>';
         return $output;
     }
+    function convert_job_data_to_invoice($job_id)
+    {
+        $job = DataJobs::where('job_id',$job_id)->first();
+        $client = Client::find($job->client_id);
+        $output = '
+        <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>HTML4</title>
+<style>
+<link href="assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="assets/plugins/summernote/summernote.css" rel="stylesheet" />
+<link href="css/style.css" rel="stylesheet"> 
+<link href="css/colors/blue.css" id="theme" rel="stylesheet">
+body {
+  font-family: Verdana,sans-serif;
+  font-size: 0.9em;
 }
+
+div#header, div#footer {
+  padding: 10px;
+  color: white;
+  background-color: black;
+}
+
+div#content {
+  margin: 5px;
+  padding: 10px;
+  background-color: lightgrey;
+}
+
+div.article {
+  margin: 5px;
+  padding: 10px;
+  background-color: white;
+}
+
+div#menu ul {
+  padding: 0;
+}
+
+div#menu ul li {
+  display: inline;
+  margin: 5px;
+}
+.title_block {
+    border-bottom: 3px solid #000;
+    padding-bottom: 1px;
+    margin-bottom: 1px;
+}
+table {
+font-family: arial, sans-serif;
+border-collapse: collapse;
+width: 100%;
+}
+
+td, th {
+border: 1px solid #dddddd;
+text-align: left;
+padding: 8px;
+}
+
+body {
+    margin-left:50;
+    margin-right:35px;
+    margin-top:50px;
+    margin-bottom:30px;
+}
+
+#customers {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size:14px;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  #customers td, #customers th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  #customers tr:nth-child(even){background-color: #f2f2f2;}
+  
+  #customers tr:hover {background-color: #ddd;}
+  
+  #customers th {
+    padding-top: 3px;
+    padding-bottom: 3px;
+    text-align: center;
+    background-color: #2E74B5;
+    color: black;
+  }
+  #customers1 {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size:14px;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  #customers1 td, #customers1 th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  #customers1 tr:nth-child(even){background-color: #f2f2f2;}
+  
+  #customers1 tr:hover {background-color: #ddd;}
+  
+  #customers1 th {
+    padding-top: 3px;
+    padding-bottom: 3px;
+    text-align: center;
+    background-color: #436784;
+    color: white;
+  }
+
+</style>
+</head>
+<body>
+<div class="title_block">
+<img src="assets/images/logo_medium.png"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<label style="font-size:50px;color:#2E74B5;" align="right"><b>Invoice</b> </label></div>
+<p></p>
+<br>
+<div class="title_block">
+<div class="row">
+<label style="font-size:18px;color:#2E74B5;"><b>SPACE RECOVERY</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<label style="font-size:16px;color:#2E74B5;"><b>Date:  </b> </label>&nbsp;<label style="font-size:16px;"> January 25, 2019</label>
+</div>
+<div class="row">
+<label style="font-size:16px;color:#2E74B5;">SMATCO IT DIVISION  </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<label style="font-size:16px;color:#2E74B5;"><b>Invoice #: </b> </label>&nbsp;<label style="font-size:16px;">No.</label>
+</div>
+<div class="row">
+<label style="font-size:16px;color:#2E74B5;"></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<label style="font-size:16px;color:#2E74B5;"><b>Customer Ref: </b> </label>&nbsp;<label style="font-size:16px;"></label>
+</div>
+<br>
+</div>
+
+<p></p>
+
+';
+
+    $output .=
+'
+<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:16px;color:#2E74B5;"><b>To:</b>  </label>&nbsp;<label style="font-size:16px;">'.$client->client_name.'</label></div>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:16px;">Company Name</label></div>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:16px;">Street Address</label></div>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:16px;">City, ST ZIP Code</label></div>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:16px;">Phone</label></div>
+<br>
+<div >
+    <table id="customers">
+        <thead>
+            <tr>
+                <th>Salesperson</th>
+                <th>Job</th>
+                <th>Payment terms</th>
+                <th>Due Date</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<br>
+<div >
+    <table id="customers1">
+        <thead>
+            <tr>
+                <th>Qty</th>
+                <th>Description</th>
+                <th>Unit Price</th>
+                <th>Line total</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>1.00</td>
+            <td>Data Recover Service</td>
+            <td>OMR   120.000</td>
+            <td>OMR   120.000</td>
+        </tr>
+        <tr>
+            <td>1.00</td>
+            <td>WT 1TB Backup Hard Drive</td>
+            <td>OMR   120.000</td>
+            <td>OMR   120.000</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<label style="font-size:16px;color:#2E74B5;"><b>Subtotal</b></label>&nbsp;&nbsp;&nbsp;<label style="font-size:16px;">OMR 120.00</label></div>
+<br>
+<br>
+<br>
+<div><label style="font-size:14px;"><b>Receiver Name:</b>  </label>&nbsp;<label style="font-size:16px;"></label></div>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:14px;"><b>Signature :</b>  </label>&nbsp;<label style="font-size:16px;"></label></div>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:14px;"><b>Date :</b>  </label>&nbsp;<label style="font-size:16px;"></label></div>
+<br>
+<div align="center" style="font-size:15px;">Make all checks payable to "SALMAN MOHAMMED ASHRAF TRDG. & COTG."</div>
+<div align="center" ><b>THANK YOU FOR YOUR BUSINESS!</b></div>
+<div align="center" style="font-size:11px;">SPACE RECOVERY, #108, First Floor, Azaiba Mall, Azaiba, Muscat, Sultanate Of Oman, www.spacedatarecovery.com </div>
+<div align="center" style="font-size:11px;">Email: mail@spacedatarecovery.com ,  Ph: +968 963 12346 / 7</div>
+</body>
+</html>';
+        return $output;
+    }
+    function convert_job_data_to_quote($job_id)
+    {
+        $job = DataJobs::where('job_id',$job_id)->first();
+        $client = Client::find($job->client_id);
+        $output = '
+        <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>HTML4</title>
+<style>
+<link href="assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="assets/plugins/summernote/summernote.css" rel="stylesheet" />
+<link href="css/style.css" rel="stylesheet"> 
+<link href="css/colors/blue.css" id="theme" rel="stylesheet">
+body {
+  font-family: Verdana,sans-serif;
+  font-size: 0.9em;
+}
+
+div#header, div#footer {
+  padding: 10px;
+  color: white;
+  background-color: black;
+}
+
+div#content {
+  margin: 5px;
+  padding: 10px;
+  background-color: lightgrey;
+}
+
+div.article {
+  margin: 5px;
+  padding: 10px;
+  background-color: white;
+}
+
+div#menu ul {
+  padding: 0;
+}
+
+div#menu ul li {
+  display: inline;
+  margin: 5px;
+}
+.title_block {
+    border-bottom: 3px solid #000;
+    padding-bottom: 1px;
+    margin-bottom: 1px;
+}
+table {
+font-family: arial, sans-serif;
+border-collapse: collapse;
+width: 100%;
+}
+
+td, th {
+border: 1px solid #dddddd;
+text-align: left;
+padding: 8px;
+}
+
+body {
+    margin-left:50;
+    margin-right:35px;
+    margin-top:50px;
+    margin-bottom:30px;
+}
+
+#customers {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size:14px;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  #customers td, #customers th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  #customers tr:nth-child(even){background-color: #f2f2f2;}
+  
+  #customers tr:hover {background-color: #ddd;}
+  
+  #customers th {
+    padding-top: 3px;
+    padding-bottom: 3px;
+    text-align: center;
+    background-color: #2E74B5;
+    color: black;
+  }
+  #customers1 {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size:14px;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  #customers1 td, #customers1 th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  #customers1 tr:nth-child(even){background-color: #f2f2f2;}
+  
+  #customers1 tr:hover {background-color: #ddd;}
+  
+  #customers1 th {
+    padding-top: 3px;
+    padding-bottom: 3px;
+    text-align: center;
+    background-color: #436784;
+    color: white;
+  }
+
+</style>
+</head>
+<body>
+<div class="title_block">
+<img src="assets/images/logo_medium.png"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<label style="font-size:50px;color:#2E74B5;" align="right"><b>Quotation</b> </label></div>
+<p></p>
+<br>
+<div class="title_block">
+<div class="row">
+<label style="font-size:18px;color:#2E74B5;"><b>SPACE RECOVERY</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<label style="font-size:16px;color:#2E74B5;"><b>Date:  </b> </label>&nbsp;<label style="font-size:16px;"> January 25, 2019</label>
+</div>
+<div class="row">
+<label style="font-size:16px;color:#2E74B5;">SMATCO IT DIVISION  </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<label style="font-size:16px;color:#2E74B5;"><b>Invoice #: </b> </label>&nbsp;<label style="font-size:16px;">No.</label>
+</div>
+<div class="row">
+<label style="font-size:16px;color:#2E74B5;"></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<label style="font-size:16px;color:#2E74B5;"><b>Customer Ref: </b> </label>&nbsp;<label style="font-size:16px;"></label>
+</div>
+<br>
+</div>
+
+<p></p>
+
+';
+
+    $output .=
+'
+<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:16px;color:#2E74B5;"><b>To:</b>  </label>&nbsp;<label style="font-size:16px;">'.$client->client_name.'</label></div>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:16px;">Company Name</label></div>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:16px;">Street Address</label></div>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:16px;">City, ST ZIP Code</label></div>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:16px;">Phone</label></div>
+<br>
+<br>
+<br>
+<div >
+    <table id="customers1">
+        <thead>
+            <tr>
+                <th>Qty</th>
+                <th>Description</th>
+                <th>Unit Price</th>
+                <th>Line total</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>1.00</td>
+            <td>Data Recover Service</td>
+            <td>OMR   120.000</td>
+            <td>OMR   120.000</td>
+        </tr>
+        <tr>
+            <td>1.00</td>
+            <td>WT 1TB Backup Hard Drive</td>
+            <td>OMR   120.000</td>
+            <td>OMR   120.000</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<label style="font-size:16px;color:#2E74B5;"><b>Subtotal</b></label>&nbsp;&nbsp;&nbsp;<label style="font-size:16px;">OMR 120.00</label></div>
+<br>
+<br>
+<br>
+<br>
+<div align="center" style="font-size:15px;">Quote Valid for 30 Days from the date issed Except Ransomware Data Recovery</div>
+<div align="center" style="font-size:15px;">*Standard Terms and conditions apply. </div>
+<div align="center" ><b>Look Forward to Hear from You Soon :-)</b></div>
+<div align="center" style="font-size:11px;">SPACE RECOVERY, #108, First Floor, Azaiba Mall, Azaiba, Muscat, Sultanate Of Oman, www.spacedatarecovery.com </div>
+<div align="center" style="font-size:11px;">Email: mail@spacedatarecovery.com ,  Call: +968 963 12346 / 7</div>
+</body>
+</html>';
+        return $output;
+    }
+    function convert_job_data_to_media($job_id)
+    {
+        $job = DataJobs::where('job_id',$job_id)->first();
+        $client = Client::find($job->client_id);
+        $device = DataDevices::where('job_id', $job_id)->first();
+        $output = '
+        <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>HTML4</title>
+<style>
+<link href="assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="assets/plugins/summernote/summernote.css" rel="stylesheet" />
+<link href="css/style.css" rel="stylesheet"> 
+<link href="css/colors/blue.css" id="theme" rel="stylesheet">
+
+div#header, div#footer {
+  padding: 10px;
+  color: white;
+  background-color: black;
+}
+
+div#content {
+  margin: 5px;
+  padding: 10px;
+  background-color: lightgrey;
+}
+
+div.article {
+  margin: 5px;
+  padding: 10px;
+  background-color: white;
+}
+
+div#menu ul {
+  padding: 0;
+}
+
+div#menu ul li {
+  display: inline;
+  margin: 5px;
+}
+.title_block {
+    border-bottom: 3px solid #000;
+    padding-bottom: 1px;
+    margin-bottom: 1px;
+}
+table {
+font-family: arial, sans-serif;
+border-collapse: collapse;
+width: 100%;
+}
+
+td, th {
+border: 1px solid #dddddd;
+text-align: left;
+padding: 8px;
+}
+
+body {
+    margin-left:50;
+    margin-right:35px;
+    margin-top:10px;
+    margin-bottom:15px;
+    font-family: "Times New Roman";
+}
+
+#customers {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size:14px;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  #customers td, #customers th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  #customers tr:nth-child(even){background-color: #f2f2f2;}
+  
+  #customers tr:hover {background-color: #ddd;}
+  
+  #customers th {
+    padding-top: 3px;
+    padding-bottom: 3px;
+    text-align: center;
+    background-color: #2E74B5;
+    color: black;
+  }
+  #customers1 {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size:14px;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  #customers1 td, #customers1 th {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  #customers1 tr:nth-child(even){background-color: #f2f2f2;}
+  
+  #customers1 tr:hover {background-color: #ddd;}
+  
+  #customers1 th {
+    padding-top: 3px;
+    padding-bottom: 3px;
+    text-align: center;
+    background-color: #436784;
+    color: white;
+  }
+
+</style>
+</head>
+<body>
+<div>
+<img src="assets/images/logo_medium.png"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<label style="font-size:40px;color:#3FC3F3;" align="right"><b>SPACE RECOVERY</b> </label>
+<label style="font-size:14px;" align="center"> #108, First Floor, Azaiba Mall, Azaiba, Muscat, Oman, www.spacedatarecovery.com, Ph:+968 963 12346 / 7 </label>
+</div>
+<br>
+<div>
+<label style="font-size:25px;color:#3B6489;" align="left"><b>MEDIA EVALUATION REPORT #'.$job_id.'</b> </label><br>
+<label style="font-size:20px;color:#3B6489;" align="left"><b>'."25/01/2019 ".'</b> </label>
+</div>
+<br>
+<div>
+<label style="font-size:20px;color:#122F6B;" align="right"><b>Media Details</b> </label><br>
+<label style="font-size:15px;color:#122F6B;">Case ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:15px;">'.$job_id.'</label><br>
+<label style="font-size:15px;color:#122F6B;">Media Type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:15px;">'.$device->type.'</label><br>
+<label style="font-size:15px;color:#122F6B;">Brand&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:15px;">'.$device->brand.'</label><br>
+<label style="font-size:15px;color:#122F6B;">Capacity&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:15px;">'.$device->capacity.'</label><br>
+<label style="font-size:15px;color:#122F6B;">Model&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:15px;">'.$device->model.'</label><br>
+<label style="font-size:15px;color:#122F6B;">Serial Number&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:15px;">'.$device->serial.'</label><br>
+<label style="font-size:15px;color:#122F6B;">DOM&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:15px;">'.$device->dom.'</label><br>
+<label style="font-size:15px;color:#122F6B;">Platter/Head&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:15px;">'.$device->platter_head.'</label><br>
+<label style="font-size:15px;color:#122F6B;">Made In&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:15px;">'.$device->made_in.'</label><br>
+</div>
+<br>
+<div>
+<label style="font-size:20px;color:#122F6B;" align="right"><b>Drive Status</b> </label><br>
+<label style="font-size:15px;color:#122F6B;">PCB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:15px;">'.$job_id.'</label><br>
+<label style="font-size:15px;color:#122F6B;">Motor&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:15px;">'.$device->type.'</label><br>
+<label style="font-size:15px;color:#122F6B;">Firmware&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:15px;">'.$device->brand.'</label><br>
+<label style="font-size:15px;color:#122F6B;">Encryption&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:15px;">'.$device->capacity.'</label><br>
+<label style="font-size:15px;color:#122F6B;">Head&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:15px;">'.$device->model.'</label><br>
+</div>
+<br>
+<div>
+<label style="font-size:20px;color:#122F6B;" align="right"><b>Analysis</b> </label><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:15px;">&bull;&nbsp;&nbsp;&nbsp;'."Drive was already opened and mishandled.".'</label><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:15px;">&bull;&nbsp;&nbsp;&nbsp;'."R/W Heads are damaged".'</label><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:15px;">&bull;&nbsp;&nbsp;&nbsp;'."Found minor damages on the platter surface.".'</label><br>
+</div>
+<br>
+<div>
+<label style="font-size:20px;color:#122F6B;" align="right"><b>Consultation </b> </label><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:15px;">&bull;&nbsp;&nbsp;&nbsp;'."Drive is Recoverable ".'</label><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:15px;">&bull;&nbsp;&nbsp;&nbsp;'."Head Replacement required to recover possible data. ".'</label><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:15px;">&bull;&nbsp;&nbsp;&nbsp;'."Some of the files may be damaged in result due to bad surface. ".'</label><br>
+</div>
+<br>
+<div>
+<label style="font-size:20px;color:#122F6B;" align="right"><b>Recovery Time/Cost </b> </label><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:15px;">&bull;&nbsp;&nbsp;&nbsp;'."Minimum 4-6 Working Days ".'</label><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:15px;">&bull;&nbsp;&nbsp;&nbsp;'."Recovery Charges OMR 120 /- ".'</label><br>
+</div>
+<br>
+<div>
+<label style="font-size:20px;color:#122F6B;" align="right"><b>Approval and Authority to Proceed  </b> </label><br>
+<label style="font-size:15px;">We Approve the Job as described above, and authorize SPACE team to proceed </label><br>
+</div>
+</body>
+</html>';
+        return $output;
+    }
+}
+
+
