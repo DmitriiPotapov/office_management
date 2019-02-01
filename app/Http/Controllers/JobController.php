@@ -359,6 +359,18 @@ class JobController extends Controller
         return redirect()->back();
     }
 
+    public function updateDevice(Request $request)
+    {
+        $device_id = $request->input('device_id');
+        $device = DataDevices::find($device_id);
+        $device->diagnosis = $request->input('dev_diagnosis');
+        $device->consultation = $request->input('dev_consultation');
+        $device->recover = $request->input('dev_recover');
+        $device->update();
+
+        return redirect()->back();
+    }
+
     public function addmissionForm($job_id)
     {
         $pdf = \App::make('dompdf.wrapper');
@@ -841,30 +853,30 @@ body {
     <table id="customers1">
         <thead>
             <tr>
-                <th>Qty</th>
-                <th>Description</th>
-                <th>Unit Price</th>
-                <th>Line total</th>
+                <th style="width:50px;">Qty</th>
+                <th style="width:250px;">Description</th>
+                <th style="width:100px;">Unit Price</th>
+                <th style="width:100px;">Line total</th>
             </tr>
         </thead>
         <tbody>
         <tr>
             <td>1.00</td>
             <td>'.$job->services.'</td>
-            <td>OMR   '.$invoice->item_total_price.'</td>
-            <td>OMR   '.$invoice->item_total_price.'</td>
+            <td>OMR   '.number_format($invoice->item_total_price,3,".","").'</td>
+            <td>OMR   '.number_format($invoice->item_total_price,3,".","").'</td>
         </tr>
         <tr>
             <td>1.00</td>
             <td>Backup '.$invoice->item_type.'</td>
-            <td>OMR   '.$backup->total_price.'</td>
-            <td>OMR   '.$backup->total_price.'</td>
+            <td>OMR   '.number_format($backup->total_price,3,".","").'</td>
+            <td>OMR   '.number_format($backup->total_price,3,".","").'</td>
         </tr>
         </tbody>
     </table>
 </div>
-<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<label style="font-size:16px;color:#2E74B5;"><b>Subtotal</b></label>&nbsp;&nbsp;&nbsp;<label style="font-size:16px;">OMR '.$total_price.'</label></div>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<label style="font-size:16px;color:#2E74B5;"><b>Subtotal</b></label>&nbsp;&nbsp;&nbsp;<label style="font-size:16px;">OMR '.number_format($total_price,3,".","").'</label></div>
 <br>
 <br>
 <br>
@@ -872,7 +884,7 @@ body {
 <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:14px;"><b>Signature :</b>  </label>&nbsp;<label style="font-size:16px;"></label></div>
 <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:14px;"><b>Date :</b>  </label>&nbsp;<label style="font-size:16px;"></label></div>
 <br>
-<div align="center" style="font-size:15px;">Make all checks payable to "SALMAN MOHAMMED ASHRAF TRDG. & COTG."</div>
+<div align="center" style="font-size:14px;">Make all checks payable to "SALMAN MOHAMMED ASHRAF TRDG. & COTG."</div>
 <div align="center" ><b>THANK YOU FOR YOUR BUSINESS!</b></div>
 <div align="center" style="font-size:11px;">SPACE RECOVERY, #108, First Floor, Azaiba Mall, Azaiba, Muscat, Sultanate Of Oman, www.spacedatarecovery.com </div>
 <div align="center" style="font-size:11px;">Email: mail@spacedatarecovery.com ,  Ph: +968 963 12346 / 7</div>
@@ -1040,30 +1052,30 @@ body {
     <table id="customers1">
         <thead>
             <tr>
-                <th>Qty</th>
-                <th>Description</th>
-                <th>Unit Price</th>
-                <th>Line total</th>
+                <th style="width:50px;">Qty</th>
+                <th style="width:250px;">Description</th>
+                <th style="width:100px;">Unit Price</th>
+                <th style="width:100px;">Line total</th>
             </tr>
         </thead>
         <tbody>
         <tr>
             <td>1.00</td>
             <td>Data Recover Service</td>
-            <td>OMR   '.$invoice->item_total_price.'</td>
-            <td>OMR   '.$invoice->item_total_price.'</td>
+            <td>OMR   '.number_format($invoice->item_total_price,3,".","").'</td>
+            <td>OMR   '.number_format($invoice->item_total_price,3,".","").'</td>
         </tr>
         </tbody>
     </table>
 </div>
-<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<label style="font-size:16px;color:#2E74B5;"><b>Subtotal</b></label>&nbsp;&nbsp;&nbsp;<label style="font-size:16px;">OMR '.$invoice->item_total_price.'</label></div>
+<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<label style="font-size:16px;color:#2E74B5;"><b>Subtotal</b></label>&nbsp;&nbsp;&nbsp;<label style="font-size:16px;">OMR&nbsp;'.number_format($invoice->item_total_price,3,".","").'</label></div>
 <br>
 <br>
 <br>
 <br>
-<div align="center" style="font-size:15px;">Quote Valid for 30 Days from the date issed Except Ransomware Data Recovery</div>
-<div align="center" style="font-size:15px;">*Standard Terms and conditions apply. </div>
+<div align="center" style="font-size:14px;">Quote Valid for 30 Days from the date issed Except Ransomware Data Recovery</div>
+<div align="center" style="font-size:14px;">*Standard Terms and conditions apply. </div>
 <div align="center" ><b>Look Forward to Hear from You Soon :-)</b></div>
 <div align="center" style="font-size:11px;">SPACE RECOVERY, #108, First Floor, Azaiba Mall, Azaiba, Muscat, Sultanate Of Oman, www.spacedatarecovery.com </div>
 <div align="center" style="font-size:11px;">Email: mail@spacedatarecovery.com ,  Call: +968 963 12346 / 7</div>
@@ -1089,19 +1101,19 @@ body {
 <link href="css/colors/blue.css" id="theme" rel="stylesheet">
 
 div#header, div#footer {
-  padding: 10px;
+  padding: 5px;
   color: white;
   background-color: black;
 }
 
 div#content {
-  margin: 5px;
+  margin: 4px;
   padding: 10px;
   background-color: lightgrey;
 }
 
 div.article {
-  margin: 5px;
+  margin: 4px;
   padding: 10px;
   background-color: white;
 }
@@ -1132,11 +1144,10 @@ padding: 8px;
 }
 
 body {
-    margin-left:50;
-    margin-right:35px;
-    margin-top:10px;
-    margin-bottom:15px;
-    font-family: "Times New Roman";
+    margin-left:30px;
+    margin-right:25px;
+    margin-top:0px;
+    margin-bottom:0px;
 }
 
 #customers {
@@ -1191,61 +1202,61 @@ body {
 <body>
 <div>
 <img src="assets/images/logo_medium.png"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<label style="font-size:40px;color:#3FC3F3;" align="right"><b>SPACE RECOVERY</b> </label>
+<label style="font-size:35px;color:#3FC3F3;" align="right"><b>SPACE RECOVERY</b> </label>
 <label style="font-size:14px;" align="center"> #108, First Floor, Azaiba Mall, Azaiba, Muscat, Oman, www.spacedatarecovery.com, Ph:+968 963 12346 / 7 </label>
 </div>
 <br>
 <div>
-<label style="font-size:25px;color:#3B6489;" align="left"><b>MEDIA EVALUATION REPORT #'.$job_id.'</b> </label><br>
-<label style="font-size:20px;color:#3B6489;" align="left"><b>'."25/01/2019 ".'</b> </label>
+<label style="font-size:23px;color:#3B6489;" align="left"><b>MEDIA EVALUATION REPORT #'.$job_id.'</b> </label><br>
+<label style="font-size:18px;color:#3B6489;" align="left"><b>'."25/01/2019 ".'</b> </label>
 </div>
 <br>
 <div>
-<label style="font-size:20px;color:#122F6B;" align="right"><b>Media Details</b> </label><br>
-<label style="font-size:15px;color:#122F6B;">Case ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:15px;">'.$job_id.'</label><br>
-<label style="font-size:15px;color:#122F6B;">Media Type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:15px;">'.$device->type.'</label><br>
-<label style="font-size:15px;color:#122F6B;">Brand&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:15px;">'.$device->brand.'</label><br>
-<label style="font-size:15px;color:#122F6B;">Capacity&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:15px;">'.$device->capacity.'</label><br>
-<label style="font-size:15px;color:#122F6B;">Model&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:15px;">'.$device->model.'</label><br>
-<label style="font-size:15px;color:#122F6B;">Serial Number&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:15px;">'.$device->serial.'</label><br>
-<label style="font-size:15px;color:#122F6B;">DOM&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:15px;">'.$device->dom.'</label><br>
-<label style="font-size:15px;color:#122F6B;">Platter/Head&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:15px;">'.$device->platter_head.'</label><br>
-<label style="font-size:15px;color:#122F6B;">Made In&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:15px;">'.$device->made_in.'</label><br>
+<label style="font-size:18px;color:#122F6B;" align="right"><b>Media Details</b> </label><br>
+<label style="font-size:14px;color:#122F6B;">Case ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:14px;">'.$job_id.'</label><br>
+<label style="font-size:14px;color:#122F6B;">Media Type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:14px;">'.$device->type.'</label><br>
+<label style="font-size:14px;color:#122F6B;">Brand&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:14px;">'.$device->brand.'</label><br>
+<label style="font-size:14px;color:#122F6B;">Capacity&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:14px;">'.$device->capacity.'</label><br>
+<label style="font-size:14px;color:#122F6B;">Model&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:14px;">'.$device->model.'</label><br>
+<label style="font-size:14px;color:#122F6B;">Serial Number&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:14px;">'.$device->serial.'</label><br>
+<label style="font-size:14px;color:#122F6B;">DOM&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:14px;">'.$device->dom.'</label><br>
+<label style="font-size:14px;color:#122F6B;">Platter/Head&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:14px;">'.$device->platter_head.'</label><br>
+<label style="font-size:14px;color:#122F6B;">Made In&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:14px;">'.$device->made_in.'</label><br>
 </div>
 <br>
 <div>
-<label style="font-size:20px;color:#122F6B;" align="right"><b>Drive Status</b> </label><br>
-<label style="font-size:15px;color:#122F6B;">PCB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:15px;">'.$job_id.'</label><br>
-<label style="font-size:15px;color:#122F6B;">Motor&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:15px;">'.$device->type.'</label><br>
-<label style="font-size:15px;color:#122F6B;">Firmware&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:15px;">'.$device->brand.'</label><br>
-<label style="font-size:15px;color:#122F6B;">Encryption&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:15px;">'.$device->capacity.'</label><br>
-<label style="font-size:15px;color:#122F6B;">Head&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:15px;">'.$device->model.'</label><br>
+<label style="font-size:18px;color:#122F6B;" align="right"><b>Drive Status</b> </label><br>
+<label style="font-size:14px;color:#122F6B;">PCB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:14px;">'.$device->PCB.'</label><br>
+<label style="font-size:14px;color:#122F6B;">Motor&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:14px;">'.$device->motor.'</label><br>
+<label style="font-size:14px;color:#122F6B;">Firmware&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:14px;">'.$device->firmware.'</label><br>
+<label style="font-size:14px;color:#122F6B;">Encryption&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:14px;">'.$device->encryption.'</label><br>
+<label style="font-size:14px;color:#122F6B;">Head&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:14px;">'.$device->heads.'</label><br>
 </div>
 <br>
 <div>
-<label style="font-size:20px;color:#122F6B;" align="right"><b>Analysis</b> </label><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:15px;">&bull;&nbsp;&nbsp;&nbsp;'."Drive was already opened and mishandled.".'</label><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:15px;">&bull;&nbsp;&nbsp;&nbsp;'."R/W Heads are damaged".'</label><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:15px;">&bull;&nbsp;&nbsp;&nbsp;'."Found minor damages on the platter surface.".'</label><br>
+<label style="font-size:18px;color:#122F6B;" align="right"><b>Analysis</b> </label>
+&nbsp;&nbsp;&nbsp;&nbsp;<textarea style="font-size:14px;border:none;" type="text" rows="5">' .$device->diagnosis. '</textarea>
+</div><br>
+<div>
+<label style="font-size:18px;color:#122F6B;" align="right"><b>Consultation </b> </label>
+&nbsp;&nbsp;&nbsp;&nbsp;<textarea style="font-size:14px;border:none;" type="text" rows="5">' .$device->consultation. '</textarea>
+</div><br>
+<div>
+<label style="font-size:18px;color:#122F6B;" align="right"><b>Recovery Time/Cost </b> </label>
+&nbsp;&nbsp;&nbsp;&nbsp;<textarea style="font-size:14px;border:none;" type="text" rows="5">' .$device->recover. '</textarea>
+</div>
+<div>
+<label style="font-size:18px;color:#122F6B;" align="right"><b>Approval and Authority to Proceed  </b> </label><br>
+<label style="font-size:14px;">We Approve the Job as described above, and authorize SPACE team to proceed </label><br>
 </div>
 <br>
 <div>
-<label style="font-size:20px;color:#122F6B;" align="right"><b>Consultation </b> </label><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:15px;">&bull;&nbsp;&nbsp;&nbsp;'."Drive is Recoverable ".'</label><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:15px;">&bull;&nbsp;&nbsp;&nbsp;'."Head Replacement required to recover possible data. ".'</label><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:15px;">&bull;&nbsp;&nbsp;&nbsp;'."Some of the files may be damaged in result due to bad surface. ".'</label><br>
+<label style="font-size:13px;" align="right">Approved by  </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<label style="font-size:13px;">Date </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<label style="font-size:13px;">Seal </label>
 </div>
 <br>
-<div>
-<label style="font-size:20px;color:#122F6B;" align="right"><b>Recovery Time/Cost </b> </label><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:15px;">&bull;&nbsp;&nbsp;&nbsp;'."Minimum 4-6 Working Days ".'</label><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:15px;">&bull;&nbsp;&nbsp;&nbsp;'."Recovery Charges OMR 120 /- ".'</label><br>
-</div>
-<br>
-<div>
-<label style="font-size:20px;color:#122F6B;" align="right"><b>Approval and Authority to Proceed  </b> </label><br>
-<label style="font-size:15px;">We Approve the Job as described above, and authorize SPACE team to proceed </label><br>
-</div>
+<div align="center" style="font-size:12px;">Email: mail@spacedatarecovery.com ,  Call: +968 963 12346 / 7</div>
 </body>
 </html>';
         return $output;

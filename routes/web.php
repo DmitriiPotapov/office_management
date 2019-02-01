@@ -63,6 +63,7 @@ Route::group(
         Route::get('/deleteJob/{id}', 'JobController@deleteJob')->name('delete_job');
         Route::post('/updateJob', 'JobController@updateJob')->name('update_Job');
         Route::post('/sendComment', 'JobController@sendComment')->name('send_comment');
+        Route::post('/updateDevice', 'JobController@updateDevice')->name('update_device');
         Route::post('/addDevice', 'JobController@addDevice')->name('add_device');
         Route::post('/updateService', 'JobController@updateServcie')->name('update_service');
         Route::post('/assignJob', 'JobController@assignJob')->name('assign_job');

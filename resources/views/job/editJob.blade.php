@@ -175,15 +175,7 @@
                                                 </div>
                                             </div>
                                         </form>
-                                        <div >
-                                            <h4>Comment</h4>
-                                            <form action="{{ route('send_comment') }}" method="POST">
-                                            @csrf
-                                            <textarea type="text" class="form-control" rows="3" id="comment" name="comment" placeholder="">{{ $job['last_comment'] }}</textarea>
-                                            <input type="hidden" name="comjob_id" value="{{ $job['job_id'] }}">
-                                            <button type="submit" class="btn btn-success" > <i class="fa fa-comment"></i> Send comment</button>
-                                            </form>
-                                        </div>
+                                        
                                     </div>
                                     <div class="col-lg-7">
                                         <div class="card">
@@ -217,7 +209,8 @@
                                                     <label class="col-lg-4 control-label"><b>Phone:</b></label>
                                                     <label class="col-lg-6 control-label">{{ $client['phone_value'] }}</label>
                                                 </div>
-                                                <h4 class="card-title">Patent Devices</h4>
+                                                <br>
+                                                <h4 class="card-title">Device</h4>
                                                 <div class="table-responsive">
                                                     <table class="table color-bordered-table info-bordered-table">
                                                         <thead>
@@ -233,7 +226,6 @@
                                                         </thead>
                                                         <tbody>
                                                             @foreach($devices as $item)
-                                                            @if($item['role'] == 'Patient')
                                                             <tr>
                                                                 <td>{{ $item['type'] }}</td>
                                                                 <td>{{ $item['manufacturer'] }}</td>
@@ -243,13 +235,12 @@
                                                                 <td>{{ $item['diagnosis'] }}</td>
                                                                 <td>{{ $item['note'] }}</td>
                                                             </tr>
-                                                            @endif
                                                             @endforeach
                                                         </tbody>
                                                     </table>
                                                 </div>
                                                 <hr>
-                                                <h4 class="card-title">Job Clones</h4>
+                                                <!--<h4 class="card-title">Job Clones</h4>
                                                 <div class="table-responsive">
                                                     <table class="table color-bordered-table info-bordered-table">
                                                         <thead>
@@ -341,6 +332,15 @@
                                                             @endforeach
                                                         </tbody>
                                                     </table>
+                                                </div>-->
+                                                <div >
+                                                    <h4>Comment</h4>
+                                                    <form action="{{ route('send_comment') }}" method="POST">
+                                                    @csrf
+                                                    <textarea type="text" class="form-control" rows="3" id="comment" name="comment" placeholder="">{{ $job['last_comment'] }}</textarea>
+                                                    <input type="hidden" name="comjob_id" value="{{ $job['job_id'] }}">
+                                                    <button type="submit" class="btn btn-success" > <i class="fa fa-comment"></i> Send comment</button>
+                                                    </form>
                                                 </div>
                                             </div>
                                         </div>
@@ -495,7 +495,7 @@
                                 </form>
                                 <div class="row">
                                     <div class="col-lg-12">
-                                    <h4 class="card-title">Patient Devices</h4>
+                                    <h4 class="card-title">Device</h4>
                                         <div class="table-responsive">
                                             <table class="table color-bordered-table info-bordered-table">
                                                 <thead>
@@ -506,14 +506,13 @@
                                                         <th>Model</th>
                                                         <th>Serial</th>
                                                         <th>Location</th>
-                                                        <th>Diagnosis</th>
+                                                        <th style="width:300px;">Diagnosis</th>
                                                         <th>Note</th>
                                                         <th></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     @foreach($devices as $item)
-                                                    @if($item['role'] == 'Patient')
                                                     <tr>
                                                         <td><input type="checkbox"></td>
                                                         <td>{{ $item['type'] }}</td>
@@ -524,17 +523,16 @@
                                                         <td>{{ $item['diagnosis'] }}</td>
                                                         <td>{{ $item['note'] }}</td>
                                                         <td class="text-nowrap">
-                                                            <a href="#" data-toggle="tooltip" data-original-title="Edit"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
+                                                            <!--<a href="#" data-toggle="tooltip" data-original-title="Edit"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>-->
                                                             <a href="{{ route('delete_device', ['id' => $item['id']]) }}" data-toggle="tooltip" data-original-title="Delete"> <i class="fa fa-close text-danger"></i> </a>
                                                         </td>
                                                     </tr>
-                                                    @endif
                                                     @endforeach
                                                 </tbody>
                                             </table>
                                         </div>
                                         <hr>
-                                        <h4 class="card-title">Job Clones</h4>
+                                        <!--<h4 class="card-title">Job Clones</h4>
                                         <div class="table-responsive">
                                             <table class="table color-bordered-table info-bordered-table">
                                                 <thead>
@@ -647,7 +645,26 @@
                                                     @endforeach
                                                 </tbody>
                                             </table>
-                                        </div>
+                                        </div>-->
+                                    </div>
+                                    <div class="col-lg-12">
+                                    <form action="{{ route('update_device') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="device_id" value="{{ $devices[0]['id'] }}">
+                                    <div >
+                                        <h4>Diagnosis</h4>                                                                                
+                                        <textarea type="text" class="form-control" rows="5" id="dev_diagnosis" name="dev_diagnosis" placeholder="">{{ $devices[0]['diagnosis'] }}</textarea>
+                                    </div>
+                                    <div >
+                                        <h4>Consultation</h4>
+                                        <textarea type="text" class="form-control" rows="5" id="dev_consultation" name="dev_consultation" placeholder="">{{ $devices[0]['consultation'] }}</textarea>
+                                    </div>
+                                    <div >
+                                        <h4>Recover Time/Cost</h4>
+                                        <textarea type="text" class="form-control" rows="5" id="dev_recover" name="dev_recover" placeholder="">{{ $devices[0]['recover'] }}</textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-success" > <i class="fa fa-update"></i> Update Device </button>
+                                    </form>
                                     </div>
                                 </div>
                             </div>
@@ -838,11 +855,13 @@
                                                     </thead>
                                                     <tbody>
                                                         <tr>
+                                                            @if ($invoice)
                                                             <td>{{ $invoice->id }}</td>
                                                             <td>{{ $invoice->status }}</td>
                                                             <td>{{ $invoice->item_total_price }}</td>
                                                             <td>{{ $invoice->created_by }}</td>
                                                             <td>{{ $invoice->created_at }}</td>
+                                                            @endif
                                                         </tr>
                                                     </tbody>
                                                 </table>
