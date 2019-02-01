@@ -13,7 +13,7 @@
 
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/images/favicon.png')}}">
-    <title>Office Management System</title>
+    <title>SpaceData Recovery</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -48,7 +48,7 @@
 
         <!-- footer -->
         <footer class="footer">
-            © 2019 Office Management 
+            © 2019 SpaceData Recover Admin
         </footer>
         <!-- End footer -->
     </div>

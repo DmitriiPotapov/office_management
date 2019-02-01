@@ -10,7 +10,7 @@
     <meta name="author" content="">
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/images/favicon.png')}}">
-    <title>Office Management System</title>
+    <title>SpaceData Recovery</title>
     <!-- Bootstrap Core CSS -->
     <!-- Styles -->
     <link href="{{ asset('assets/plugins/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
