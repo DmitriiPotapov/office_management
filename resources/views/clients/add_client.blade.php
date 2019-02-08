@@ -20,14 +20,6 @@
                           <input type="text" class="form-control" aria-describedby="basic-addon1" name = "client_name">  
                       </div>
                     </div>
-                    <div class = "col-md-4" style = "display: flex; margin:0px; padding: 0px;">                      
-                        <div class="input-group">
-                          <div class="input-group-prepend">
-                              <span class="input-group-text" id="basic-addon1">PIB/JMBG</span>
-                          </div>
-                          <input type="text" class="form-control" aria-describedby="basic-addon1" name = "pib_jmbg">  
-                        </div>                                             
-                    </div>
                 </div>                
                 <br>
                 <span>Address</span>
@@ -35,60 +27,21 @@
                     <div class = "col-md-7" style = "margin: 0px; padding: 0px;">
                       <div class="input-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon1">Street</span>
+                            <span class="input-group-text" id="basic-addon1">City</span>
                         </div>
                         <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" name = "street">  
                       </div>
-                    </div>
-                  <div class = "col-md-5" style = "display: flex; margin: 0px; padding: 0px;">
-                    <div class="col-md-6" style = "margin: 0px; padding: 0px;">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1">Number</span>
-                            </div>
-                            <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" name = "number">  
-                        </div>
-                    </div>
-                    <div class="col-md-6" style = "margin: 0px; padding: 0px;">
-                        <div class="input-group">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1">Apt</span>
-                            </div>
-                            <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" name = "apt">  
-                        </div>
-                    </div>
-                </div>                   
-                </div>              
-                <br>               
-                <div class = "row">
-                    <div class="col-md-4" style = "margin: 0px; padding: 0px;">
+                    </div> 
+                    <div class="col-md-5" style = "margin: 0px; padding: 0px;">
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">Postal code</span>
                             </div>
                             <input type="text" class="form-control" aria-describedby="basic-addon1" name = "postal_code">  
                         </div>
-                    </div>
-                    <div class="col-md-8" style = "display: flex; margin: 0px; padding: 0px;">
-                        <div class="col-md-6" style = "margin: 0px; padding: 0px;">
-                            <div class="input-group" style = "margin: 0px; padding: 0px;">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="basic-addon1">PAK</span>
-                                </div>
-                                <input type="text" class="form-control" aria-describedby="basic-addon1" name = "pak">  
-                            </div>
-                        </div>
-                        <div class="col-md-6" style = "margin: 0px; padding: 0px;">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="basic-addon1">City name</span>
-                                </div>
-                                <input type="text" class="form-control" aria-describedby="basic-addon1" name = "city_name">  
-                            </div>
-                        </div>
-                    </div>
-                </div>                
-               <br /> 
+                    </div>                
+                </div>              
+                <br> 
                <div class = "row">
                  <div class="input-group">
                      <div class="input-group-prepend">
@@ -130,13 +83,7 @@
                       <select class="custom-select col-12" id="inlineFormCustomSelect" name = "ui_language">
                         <option selected="">Choose...</option>
                         <option value="1">English</option>
-                        <option value="2">Russian</option>
-                        <option value="3">Bengali</option>
-                        <option value="4">Portuguese</option>
-                        <option value="5">Japan</option>
                         <option value="6">Arabic</option>
-                        <option value="7">Hindi</option>
-                        <option value="8">Spanish</option>
                     </select>
                   </div>
                 </div>

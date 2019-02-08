@@ -39,7 +39,7 @@
                             <thead>
                                 <tr>
                                     <th></th>
-                                    <th>No</th>
+                                    <th>Job ID</th>
                                     <th>Priority</th>
                                     <th>Client</th>
                                     <th>Status</th>

@@ -64,6 +64,7 @@ Route::group(
         Route::post('/updateJob', 'JobController@updateJob')->name('update_Job');
         Route::post('/sendComment', 'JobController@sendComment')->name('send_comment');
         Route::post('/updateDevice', 'JobController@updateDevice')->name('update_device');
+        Route::post('/updateMedia', 'JobController@updateMedia')->name('update_media_info');
         Route::post('/addDevice', 'JobController@addDevice')->name('add_device');
         Route::post('/updateService', 'JobController@updateServcie')->name('update_service');
         Route::post('/assignJob', 'JobController@assignJob')->name('assign_job');

@@ -17,13 +17,8 @@ class CreateClientsTable extends Migration
         Schema::create('clients', function (Blueprint $table) {
             $table->increments('id');
             $table->string('client_name')->nullable();
-            $table->string('pib_jmbg')->nullable();
             $table->string('street')->nullable();
-            $table->string('number')->nullable();
-            $table->string('apt')->nullable();
             $table->string('postal_code')->nullable();
-            $table->string('pak')->nullable();
-            $table->string('city_name')->nullable();
             $table->string('country')->nullable();
             $table->string('ui_language')->nullable();
             $table->string('email_value')->nullable();

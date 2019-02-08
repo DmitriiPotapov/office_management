@@ -1,12 +1,20 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Auth;
+use App\User;
 use Illuminate\Http\Request;
 use App\Models\Client;
 
 class ClientsController extends Controller
 {
+
+    public function __constuct() 
+    {
+        parent::__constuct();
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,6 +22,9 @@ class ClientsController extends Controller
      */
     public function index()
     {
+        if( !Auth::check() )
+            return redirect()->route('login');
+
         $clients = Client::all();
 
         return view('clients/all_clients', compact('clients'));
@@ -26,6 +37,8 @@ class ClientsController extends Controller
      */
     public function create()
     {
+        if( !Auth::check() )
+            return redirect()->route('login');
         return view('clients/add_client');
     }
 
@@ -39,13 +52,8 @@ class ClientsController extends Controller
     public function store(Request $request)
     {
         $client_name = $request->client_name;
-        $pib_jmbg = $request->pib_jmbg;
         $street = $request->street;
-        $number = $request->number;
-        $apt = $request->apt;
         $postal_code = $request->postal_code;
-        $pak = $request->pak;
-        $city_name = $request->city_name;
         $country = $request->country;
         $ui_language = $request->ui_language;
         $email_value = $request->email_value;
@@ -58,13 +66,8 @@ class ClientsController extends Controller
         
         $client = new Client();
         $client->client_name = $client_name;
-        $client->pib_jmbg = $pib_jmbg;
         $client->street = $street;
-        $client->number = $number;
-        $client->apt = $apt;
         $client->postal_code = $postal_code;
-        $client->pak = $pak;
-        $client->city_name = $city_name;
         $client->country = $country;
         $client->ui_language = $ui_language;
         $client->email_value = $email_value;
@@ -78,8 +81,7 @@ class ClientsController extends Controller
         $client->save();
 
         if($request->submitType == 0) {
-            $clients = Client::all();
-            return view('clients/all_clients', compact('clients'));
+            return redirect(route('allclients'));
         }else{
             return redirect(route('show_add_job', ['client_id' => $client->id]));
         }

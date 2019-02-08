@@ -26,6 +26,9 @@ class UserController extends Controller
 
     public function showAddUser()
     {
+        if( !Auth::check() )
+            return redirect()->route('login');
+            
         $roles = BaseRoles::where('inuse', 1)->get()->toArray();
         $groups = BaseUserGroups::where('inuse', 1)->get()->toArray();
         $permissions = BasePermissions::where('inuse', 1)->get()->toArray();
@@ -34,6 +37,9 @@ class UserController extends Controller
 
     public function addnewuser(Request $request)
     {
+        if( !Auth::check() )
+            return redirect()->route('login');
+
         $validator = Validator::make($request->all(), [
             'fullname' => ['required', 'string', 'max:255'],
             'username' => ['required', 'string', 'max:255'],
@@ -83,6 +89,9 @@ class UserController extends Controller
 
     public function updateUser(Request $request)
     {
+        if( !Auth::check() )
+            return redirect()->route('login');
+
         $validator = Validator::make($request->all(), [
             'fullname' => ['required', 'string', 'max:255'],
             'username' => ['required', 'string', 'max:255'],
@@ -127,6 +136,9 @@ class UserController extends Controller
 
     public function showAllUser()
     {
+        if( !Auth::check() )
+            return redirect()->route('login');
+
         $users = User::where('inuse', 1)->get()->toArray();
         return view('user.showalluser',compact('users'));
     }
@@ -141,6 +153,9 @@ class UserController extends Controller
 
     public function showeditUser($id)
     {
+        if( !Auth::check() )
+            return redirect()->route('login');
+
         $seluser = User::find($id);
         $roles = BaseRoles::where('inuse', 1)->get()->toArray();
         $groups = BaseUserGroups::where('inuse', 1)->get()->toArray();
@@ -159,6 +174,9 @@ class UserController extends Controller
 
     public function showAddUsergroup()
     {
+        if( !Auth::check() )
+            return redirect()->route('login');
+
         return view('user.addusergroup');
     }
 
@@ -183,6 +201,9 @@ class UserController extends Controller
 
     public function showAllUsergroup()
     {
+        if( !Auth::check() )
+            return redirect()->route('login');
+
         $groups = BaseUserGroups::where('inuse', 1)->get()->toArray();
         return view('user.showallusergroup',compact('groups'));
     }
@@ -197,12 +218,18 @@ class UserController extends Controller
 
     public function showeditUsergroup($id)
     {
+        if( !Auth::check() )
+            return redirect()->route('login');
+
         $selgroup = BaseUserGroups::find($id);
         return view('user.editusergroup',compact('selgroup'));
     }
 
     public function showAddPermission()
     {
+        if( !Auth::check() )
+            return redirect()->route('login');
+
         return view('user.addPermission');
     }
 
@@ -241,6 +268,9 @@ class UserController extends Controller
 
     public function showeditPermission($id)
     {
+        if( !Auth::check() )
+            return redirect()->route('login');
+
         $selpermission = BasePermissions::find($id);
         return view('user.editPermission',compact('selpermission'));
     }
@@ -271,6 +301,9 @@ class UserController extends Controller
 
     public function showAllrole()
     {
+        if( !Auth::check() )
+            return redirect()->route('login');
+
         $roles = BaseRoles::where('inuse', 1)->get()->toArray();
         return view('user.showallrole',compact('roles'));
     }
@@ -285,6 +318,9 @@ class UserController extends Controller
 
     public function showeditrole($id)
     {
+        if( !Auth::check() )
+            return redirect()->route('login');
+            
         $selrole = BaseRoles::find($id);
         return view('user.editrole',compact('selrole'));
     }

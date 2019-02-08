@@ -42,8 +42,8 @@
                                         <select class="form-control custom-select" id="item_role" name="item_role">
                                             <option value="Received">Clone</option>
                                             <option value="In process">Patient</option>
-                                            <option value="Waiting for parts">Donor</option>
-                                            <option value="Paid">Paid</option>
+                                            <option value="Waiting for parts">Backup</option>
+                                            <option value="Donor">Paid</option>
                                         </select>
                                     </div>
                                 </div>
@@ -206,17 +206,6 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="basic-addon1">
-                                                LBA Number
-                                            </span>
-                                        </div>
-                                        <input type="text" id="LBA_number" name="LBA_number" class="form-control" placeholder="" required>
-                                        <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
-                                    </div>
-                                </div>
                             </div>
                             <hr>
                             <h4 class="card-title">Extra info </h4>
@@ -262,17 +251,6 @@
                                         <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
                                     </div>
                                 </div>
-                                <div class="col-md-2">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="basic-addon1">
-                                                RPM
-                                            </span>
-                                        </div>
-                                        <input type="text" id="RPM" name="RPM" class="form-control" placeholder="" required>
-                                        <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
-                                    </div>
-                                </div>
                             </div> 
                             <hr>
                             <h4 class="card-title">PCB info </h4>
@@ -309,28 +287,6 @@
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1">
-                                                Controller
-                                            </span>
-                                        </div>
-                                        <input type="text" id="pcb_controller" name="pcb_controller" class="form-control" placeholder="" required>
-                                        <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="basic-addon1">
-                                                Motor driver
-                                            </span>
-                                        </div>
-                                        <input type="text" id="motor_driver" name="motor_driver" class="form-control" placeholder="" required>
-                                        <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
-                                    </div>
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="basic-addon1">
                                                 Connection
                                             </span>
                                         </div>
@@ -356,7 +312,7 @@
                                         <small class="form-control-feedback"><a href="javascript:void(0)"> </a></small> </div>
                                 </div>
                             </div> 
-                            <h4 class="card-title">Heads</h4>
+                            <h4 class="card-title">Heads/Platter info</h4>
                             <div class="row p-t-20">
                                 <div class="col-md-2">
                                     <div class="input-group">
@@ -376,7 +332,7 @@
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1">
-                                                Heads info
+                                                Platter Number
                                             </span>
                                         </div>
                                         
@@ -387,7 +343,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-5">
+                                <div class="col-md-3">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1">
@@ -408,6 +364,17 @@
                                             <option value="Finland">Finland</option>
                                             <option value="Germany">Germany</option>
                                         </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon1">
+                                                PH
+                                            </span>
+                                        </div>
+                                        <input type="text" id="PH" name="PH" class="form-control" placeholder="" required>
+                                        <small class="form-control-feedback"><a href="javascript:void(0)"> </a></small> 
                                     </div>
                                 </div>
                             </div>

@@ -9,7 +9,16 @@
 
 @section('content')
 
+@if (session('alert'))
+    <div class="alert alert-danger">
+        {{ session('alert') }}
+    </div>
+@endif
+
 <div class="container-fluid">
+    <div class="col-md-6 col-8 align-self-center">
+        <h3 class="text-themecolor m-b-0 m-t-0">{{ $job->job_id }} - {{$client->client_name}}</h3>
+    </div>
     <div class="row">
         <div class="col-lg-12">
             <div class="card card-outline-info">
@@ -17,10 +26,8 @@
                     <div class="row button-group">
                         <div class="col-lg-12 m-b-30">
                             <button class="btn btn-primary waves-effect waves-light" type="button" data-toggle="modal" data-target="#assignto"><span class="btn-label" ><i class="fa fa-user"></i></span>Assign job to engineer</button>
-                            <a class="btn btn-success waves-effect waves-light" href="{{ route('admission_form',['job_id' => $job['job_id']]) }}"><span class="btn-label"><i class="fa fa-book"></i></span>Admission form</a>
-                            <button class="btn btn-info waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-folder"></i></span>Go to file list</button>
+                            <a class="btn btn-success waves-effect waves-light" href="{{ route('admission_form',['job_id' => $job['job_id']]) }}"><span class="btn-label"><i class="fa fa-book"></i></span>Checkin form</a>
                             <button class="btn btn-warning waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-key"></i></span>Unlock client access</button>
-                            <button class="btn btn-danger waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-refresh"></i></span>Refresh file list info</button>
                             <button class="btn btn-danger waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-users"></i></span>Change client</button>
                             <a class="btn btn-danger waves-effect waves-light" href="{{ route('checkout_form',['job_id' => $job['job_id']]) }}" ><span class="btn-label"><i class="fa fa-check" ></i></span>Check-out form</a>
                             <a class="btn btn-success waves-effect waves-light" href="{{ route('generate_invoice',['job_id' => $job['job_id']]) }}"><span class="btn-label"><i class="fa fa-envelope-o"></i></span>Generate invoice</a>
@@ -68,7 +75,8 @@
                             <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#general" role="tab"><span class="hidden-sm-up"><i class="ti-home"></i></span> <span class="hidden-xs-down">General</span></a> </li>
                             <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#jobdevices" role="tab"><span class="hidden-sm-up"><i class="ti-user"></i></span> <span class="hidden-xs-down">Job Devices</span></a> </li>
                             <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#services" role="tab"><span class="hidden-sm-up"><i class="ti-email"></i></span> <span class="hidden-xs-down">Services</span></a> </li>
-                            <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#cloningmonitor" role="tab"><span class="hidden-sm-up"><i class="ti-email"></i></span> <span class="hidden-xs-down">Cloning monitor</span></a> </li>
+                            <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#mediainfo" role="tab"><span class="hidden-sm-up"><i class="ti-email"></i></span> <span class="hidden-xs-down">Media info</span></a> </li>
+                            <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#diagnosis" role="tab"><span class="hidden-sm-up"><i class="ti-email"></i></span> <span class="hidden-xs-down">Diagnosis</span></a> </li>
                             <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#attachments" role="tab"><span class="hidden-sm-up"><i class="ti-email"></i></span> <span class="hidden-xs-down">Attachments</span></a> </li>
                             <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#billing" role="tab"><span class="hidden-sm-up"><i class="ti-email"></i></span> <span class="hidden-xs-down">Billing</span></a> </li>
                             <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#jobhistory" role="tab"><span class="hidden-sm-up"><i class="ti-email"></i></span> <span class="hidden-xs-down">JobHistory</span></a> </li>
@@ -182,32 +190,26 @@
                                             <h4 class="card-title">Client info</h4>
                                             <div class="card-body">
                                                 <div class="form-group row">
-                                                    <label class="col-lg-4 control-label"><b>Ime kijentha:</b></label>
-                                                    <label class="col-lg-6 control-label">{{ $client['client_name'] }}</label>
+                                                    <label class="col-lg-2 control-label"><b>Ime kijentha:</b></label>
+                                                    <label class="col-lg-3 control-label">{{ $client['client_name'] }}</label>
+                                                    <label class="col-lg-2 control-label"><b>Adresa:</b></label>
+                                                    <label class="col-lg-3 control-label">{{ $client['street'] }}</label>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label class="col-lg-4 control-label"><b>Adresa:</b></label>
-                                                    <label class="col-lg-6 control-label">{{ $client['street'] }}</label>
+                                                    <label class="col-lg-2 control-label"><b>Grad:</b></label>
+                                                    <label class="col-lg-3 control-label">{{ $client['postal_code'].' '.$client['city_name'] }}</label>
+                                                    <label class="col-lg-2 control-label"><b>Drazava:</b></label>
+                                                    <label class="col-lg-3 control-label">{{ $client['country'] }}</label>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label class="col-lg-4 control-label"><b>Grad:</b></label>
-                                                    <label class="col-lg-6 control-label">{{ $client['postal_code'].' '.$client['city_name'] }}</label>
+                                                    <label class="col-lg-2 control-label"><b>Note:</b></label>
+                                                    <label class="col-lg-3 control-label">{{ $client['note'] }}</label>
+                                                    <label class="col-lg-2 control-label"><b>Email:</b></label>
+                                                    <label class="col-lg-3 control-label">{{ $client['email_value'] }}</label>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label class="col-lg-4 control-label"><b>Drazava:</b></label>
-                                                    <label class="col-lg-6 control-label">{{ $client['country'] }}</label>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label class="col-lg-4 control-label"><b>Note:</b></label>
-                                                    <label class="col-lg-6 control-label">{{ $client['note'] }}</label>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label class="col-lg-4 control-label"><b>Email:</b></label>
-                                                    <label class="col-lg-6 control-label">{{ $client['email_value'] }}</label>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label class="col-lg-4 control-label"><b>Phone:</b></label>
-                                                    <label class="col-lg-6 control-label">{{ $client['phone_value'] }}</label>
+                                                    <label class="col-lg-2 control-label"><b>Phone:</b></label>
+                                                    <label class="col-lg-3 control-label">{{ $client['phone_value'] }}</label>
                                                 </div>
                                                 <br>
                                                 <h4 class="card-title">Device</h4>
@@ -337,7 +339,7 @@
                                                     <h4>Comment</h4>
                                                     <form action="{{ route('send_comment') }}" method="POST">
                                                     @csrf
-                                                    <textarea type="text" class="form-control" rows="3" id="comment" name="comment" placeholder="">{{ $job['last_comment'] }}</textarea>
+                                                    <textarea type="text" class="form-control" rows="10" id="comment" name="comment" placeholder="">{{ $job['last_comment'] }}</textarea>
                                                     <input type="hidden" name="comjob_id" value="{{ $job['job_id'] }}">
                                                     <button type="submit" class="btn btn-success" > <i class="fa fa-comment"></i> Send comment</button>
                                                     </form>
@@ -647,25 +649,7 @@
                                             </table>
                                         </div>-->
                                     </div>
-                                    <div class="col-lg-12">
-                                    <form action="{{ route('update_device') }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="device_id" value="{{ $devices[0]['id'] }}">
-                                    <div >
-                                        <h4>Diagnosis</h4>                                                                                
-                                        <textarea type="text" class="form-control" rows="5" id="dev_diagnosis" name="dev_diagnosis" placeholder="">{{ $devices[0]['diagnosis'] }}</textarea>
-                                    </div>
-                                    <div >
-                                        <h4>Consultation</h4>
-                                        <textarea type="text" class="form-control" rows="5" id="dev_consultation" name="dev_consultation" placeholder="">{{ $devices[0]['consultation'] }}</textarea>
-                                    </div>
-                                    <div >
-                                        <h4>Recover Time/Cost</h4>
-                                        <textarea type="text" class="form-control" rows="5" id="dev_recover" name="dev_recover" placeholder="">{{ $devices[0]['recover'] }}</textarea>
-                                    </div>
-                                    <button type="submit" class="btn btn-success" > <i class="fa fa-update"></i> Update Device </button>
-                                    </form>
-                                    </div>
+                                    
                                 </div>
                             </div>
                             <div class="tab-pane p-20" id="services" role="tabpanel">
@@ -698,7 +682,233 @@
                                     </div>
                                 </form>
                             </div>
-                            <div class="tab-pane p-20" id="cloningmonitor" role="tabpanel">DEMO, NOT FOR ACTUAL USE YET!!</div>
+                            <div class="tab-pane p-20" id="services" role="tabpanel">
+                                <form action="{{ route('update_service') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="update_service_job_id" value="{{ $job['job_id'] }}">
+                                    @foreach ($services as $item)
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" id="basic-addon1">
+                                                            <input type="radio" id="urg9" name="service_name" value="{{ $item['service_name'] }}" {{ ($job['services'] == $item['service_name'] ? 'checked' : '') }}>
+                                                        </span>
+                                                    </div>
+                                                    <label for="urg9" id="lurg9" name="lurg9" class="form-control">{{$item['service_name']}}</label>
+                                                    <small class="form-control-feedback"></small> 
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                    @endforeach
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <hr>
+                                            <div class="input-group">
+                                                <button type="submit" class="btn btn-info waves-effect waves-light" ><span class="btn-label"><i class="fa fa-save"></i></span>Save</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="tab-pane p-20" id="mediainfo" role="tabpanel">
+                                <form action="{{ route('update_media_info') }}" method="POST">
+                                @csrf
+                                    <input type="hidden" name="media_id" value="{{ $devices[0]['id'] }}">
+                                    <h3>Drive Details</h3>
+                                    <div class="row p-t-20">
+                                        <div class="col-md-5">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="basic-addon1">
+                                                        PN
+                                                    </span>
+                                                </div>
+                                                <input type="text" id="PN" name="PN" class="form-control" placeholder="" value="{{ $devices[0]['PN'] }}">
+                                                <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="basic-addon1">
+                                                        DOM
+                                                    </span>
+                                                </div>
+                                                <input type="text" id="dom" name="dom" class="form-control" placeholder="" value="{{ $devices[0]['dom'] }}">
+                                                <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row p-t-20">
+                                        <div class="col-md-5">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="basic-addon1">
+                                                        DCM/MLC
+                                                    </span>
+                                                </div>
+                                                <input type="text" id="dcm_mlc" name="dcm_mlc" class="form-control" placeholder="" value="{{ $devices[0]['dcm_mlc'] }}">
+                                                <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="basic-addon1">
+                                                        PH
+                                                    </span>
+                                                </div>
+                                                <input type="text" id="PH" name="PH" class="form-control" placeholder="" value="{{ $devices[0]['PH'] }}">
+                                                <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row p-t-20">
+                                        <div class="col-md-5">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="basic-addon1">
+                                                        Heads
+                                                    </span>
+                                                </div>
+                                                <input type="text" id="heads" name="heads" class="form-control" placeholder="" value="{{ $devices[0]['heads'] }}">
+                                                <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="basic-addon1">
+                                                        Platters
+                                                    </span>
+                                                </div>
+                                                <input type="text" id="Platters" name="Platters" class="form-control" placeholder="" value="{{ $devices[0]['platter_head'] }}">
+                                                <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row p-t-20">
+                                        <div class="col-md-4">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="basic-addon1">
+                                                        PCB No
+                                                    </span>
+                                                </div>
+                                                <input type="text" id="pcb_no" name="pcb_no" class="form-control" placeholder="" value="{{ $devices[0]['pcb_no'] }}">
+                                                <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="basic-addon1">
+                                                        MADE IN
+                                                    </span>
+                                                </div>
+                                                <select class="form-control custom-select" id="madeIn" name="madeIn">
+                                                    <option value="Malaysia" {{ ($devices[0]['made_in'] == 'Malaysia') ? 'selected' : ''}}>Malaysia</option>
+                                                    <option value="Thailand" {{ ($devices[0]['made_in'] == 'Thailand') ? 'selected' : ''}}>Thailand</option>
+                                                    <option value="Philippines" {{ ($devices[0]['made_in'] == 'Philippines') ? 'selected' : ''}}>Philippines</option>
+                                                    <option value="Korea" {{ ($devices[0]['made_in'] == 'Korea') ? 'selected' : ''}}>Korea</option>
+                                                    <option value="WU" {{ ($devices[0]['made_in'] == 'WU') ? 'selected' : ''}}>WU</option>
+                                                    <option value="SU" {{ ($devices[0]['made_in'] == 'SU') ? 'selected' : ''}}>SU</option>
+                                                    <option value="TK" {{ ($devices[0]['made_in'] == 'TK') ? "selected" : ''}}>TK</option>
+                                                    <option value="Japan" {{ ($devices[0]['made_in'] == 'Japan') ? 'selected' : ''}}>Japan</option>
+                                                    <option value="China" {{ ($devices[0]['made_in'] == 'China') ? 'selected' : ''}}>China</option>
+                                                    <option value="Finland" {{ ($devices[0]['made_in'] == 'Finland') ? 'selected' : ''}}>Finland</option>
+                                                    <option value="Germany" {{ ($devices[0]['made_in'] == 'Germany') ? 'selected' : ''}}>Germany</option>
+                                                </select> 
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="basic-addon1">
+                                                        Encryption
+                                                    </span>
+                                                </div>
+                                                <input type="text" id="encryption" name="encryption" class="form-control" placeholder="" value="{{ $devices[0]['encryption'] }}">
+                                                <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
+                                            </div>
+                                        </div>
+                                    </div><hr>
+                                    <h3>Drive Status</h3>
+                                    <div class="row p-t-20">
+                                        <div class="col-md-5">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="basic-addon1">
+                                                        PCB
+                                                    </span>
+                                                </div>
+                                                <input type="text" id="pcb" name="pcb" class="form-control" placeholder="" value="{{ $devices[0]['PCB'] }}">
+                                                <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="basic-addon1">
+                                                        Motor
+                                                    </span>
+                                                </div>
+                                                <input type="text" id="motor" name="motor" class="form-control" placeholder="" value="{{ $devices[0]['motor'] }}">
+                                                <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row p-t-20">
+                                        <div class="col-md-5">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="basic-addon1">
+                                                        Firmware
+                                                    </span>
+                                                </div>
+                                                <input type="text" id="firmware" name="firmware" class="form-control" placeholder="" value="{{ $devices[0]['firmware'] }}">
+                                                <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="basic-addon1">
+                                                        R/W Heads
+                                                    </span>
+                                                </div>
+                                                <input type="text" id="r_w_heads" name="r_w_heads" class="form-control" placeholder="" value="{{ $devices[0]['r_w_heads'] }}">
+                                                <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <button type="submit" class="btn btn-success" > <i class="fa fa-update"></i> Update Device </button>
+                                </form>
+                            </div>
+                            <div class="tab-pane p-20" id="diagnosis" role="tabpanel">
+                                <div class="col-lg-12">
+                                    <form action="{{ route('update_device') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="device_id" value="{{ $devices[0]['id'] }}">
+                                    <div >
+                                        <h4>Analysis</h4>                                                                                
+                                        <textarea type="text" class="form-control" rows="5" id="dev_diagnosis" name="dev_diagnosis" placeholder="">{{ $devices[0]['diagnosis'] }}</textarea>
+                                    </div>
+                                    <div >
+                                        <h4>Consultation</h4>
+                                        <textarea type="text" class="form-control" rows="5" id="dev_consultation" name="dev_consultation" placeholder="">{{ $devices[0]['consultation'] }}</textarea>
+                                    </div>
+                                    <div >
+                                        <h4>Recover Time/Cost</h4>
+                                        <textarea type="text" class="form-control" rows="5" id="dev_recover" name="dev_recover" placeholder="">{{ $devices[0]['recover'] }}</textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-success" > <i class="fa fa-update"></i> Update Device </button>
+                                    </form>
+                                </div>
+                            </div>
                             <div class="tab-pane p-20" id="attachments" role="tabpanel">
                                 <div class="row">
                                     <div class="col-lg-12">

@@ -38,7 +38,7 @@
                                         @endif
                                         @if($client_id != 0)
                                         <div>
-                                            <input type="text" id="client_info" name="client_info" class="typeahead form-control" value="{{ $client['client_name'].', '.$client['street'].', '.$client['postal_code'].', '.$client['city_name'] }}" >
+                                            <input type="text" id="client_info" name="client_info" class="typeahead form-control" value="{{ $client['client_name'].', '.$client['street'].', '.$client['postal_code'].', '.$client['country'] }}" >
                                         </div>
                                         <a style="margin-left: 30px;" href="{{ route('addClinet') }}"> New Client </a> </div>
                                         <input type="hidden" name="client_id" value="{{ $client_id }}">
@@ -69,7 +69,7 @@
                                                 <input type="checkbox" id="hitan8" name="hitan8">
                                             </span>
                                         </div>
-                                        <label for="hitan8" id="hita" name="hita" class="form-control">Hitan start 8-18h</label>
+                                        <label for="hitan8" id="hita" name="hita" class="form-control">Start 0-24hrs</label>
                                         <small class="form-control-feedback"></small> </div>
                                 </div>
                                 <div class="col-md-3">
@@ -79,33 +79,35 @@
                                                 <input type="checkbox" id="hitan24" name="hitan24">
                                             </span>
                                         </div>
-                                        <label for="hitan24" id="hita" name="hita" class="form-control">Hitan start 00-24h</label>
-                                        <small class="form-control-feedback"></small> </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="basic-addon1">
-                                                <input type="checkbox" id="raid" name="raid">
-                                            </span>
-                                        </div>
-                                        <label for="raid" id="raids" name="raids" class="form-control">RAID</label>
+                                        <label for="hitan24" id="hita" name="hita" class="form-control">Start 24-48hrs</label>
                                         <small class="form-control-feedback"></small> </div>
                                 </div>
                             </div>
                             <hr>
                             <h4 class="card-title">Devices</h4>
                             <input type="hidden" name="device_count" id="device_count" value="1">
-                            <div class="row p-t-20">
-                                <div class="col-md-2">
-                                    <div class="form-group">
-                                        <a class="btn btn-circle btn-sm btn-success" onclick="onDeviceAdd()"><i class="fa fa-plus"></i></a>
-                                        <a class="btn btn-circle btn-sm btn-danger" onclick="remove_device()"><i class="fa fa-times"></i></a>
-                                    </div>
-                                </div>
-                            </div>
                             <div id="adult">
                             <div class="row p-t-20">
+                                <div class="col-md-3">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="basic-addon1">
+                                                    Category
+                                                </span>
+                                            </div>
+                                            <select class="form-control custom-select" id="devcategory" name="devcategory">
+                                                <option value="Laptop Drive">Laptop Drive</option>
+                                                <option value="Desktop Drive">Desktop Drive</option>
+                                                <option value="External Drive">External Drive</option>
+                                                <option value="Server Drive">Server Drive</option>
+                                                <option value="Mobile Phone">Mobile Phone</option>
+                                                <option value="Flash Drive">Flash Drive</option>
+                                                <option value="Smart Devices">Smart Devices</option>
+                                                <option value="Other">Other</option>
+                                            </select>
+                                            <small class="form-control-feedback"></small> 
+                                        </div>
+                                    </div>
                                 <div class="col-md-2">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
@@ -121,7 +123,7 @@
                                         <small class="form-control-feedback"></small> 
                                     </div>
                                 </div>
-                                <div class="col-md-1.5">
+                                <div class="col-md-2">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1">
@@ -170,6 +172,8 @@
                                         <input type="text" id="model" name="model1" class="form-control" placeholder="" >
                                         <small class="form-control-feedback"></small> </div>
                                 </div>
+                            </div>
+                            <div class="row p-t-20">
                                 <div class="col-md-2">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
@@ -184,10 +188,10 @@
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1">
-                                                Location
+                                                Capacity
                                             </span>
                                         </div>
-                                        <input type="text" id="location" name="location1" class="form-control" placeholder="" >
+                                        <input type="text" id="capacity" name="capacity1" class="form-control" placeholder="" >
                                         <small class="form-control-feedback"></small> </div>
                                 </div>
                             </div>
@@ -306,7 +310,7 @@ var substringMatcher = function(strs) {
 
   var states = [];
   @foreach ($clients as $item)
-    states.push("{{ $item['client_name'].', '.$item['street'].', '.$item['postal_code'].', '.$item['city_name'] }}");
+    states.push("{{ $item['client_name'].', '.$item['street'].', '.$item['postal_code'].', '.$item['country'] }}");
   @endforeach
   
   $('#the-basics .typeahead').typeahead({

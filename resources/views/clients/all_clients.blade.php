@@ -36,7 +36,6 @@
                                 <th>Address</th>
                                 <th>Phone</th>
                                 <th>Email</th>
-                                <th>PIB/JMBG</th>
                                 <th>Action</th>
                                                                  
                             </tr>
@@ -46,12 +45,11 @@
                             @foreach ($clients as $client)
                             <tr>
                             <td>{{ $client->client_name }}</td>
-                            <td>{{ $client->city_name }}{{ $client->postal_code }},{{ $client->pak }},{{ $client->country }}</td>
+                            <td>{{ $client->street }}, {{ $client->postal_code }}, {{ $client->country }}</td>
                             <td>{{ $client->phone_value }}</td>
-                            <td>{{ $client->email_value }}</td>
-                            <td>{{ $client->pib_jmbg }}</td>                              
+                            <td>{{ $client->email_value }}</td>                         
                             <td>
-                                <button type="button" class="btn-sm btn-info btn-circle"><i class="fa fa-file-text"></i></button>
+                                <!--<button type="button" class="btn-sm btn-info btn-circle"><i class="fa fa-file-text"></i></button>-->
                             <a href="{{ URL::to('clients/deleteAction?id=') }}{{ $client->id }}"><button class="btn-sm btn-danger btn-circle" type="button"> <i class="fa fa-trash" aria-hidden="true"></i> </button></a>
                             </td>
                             </tr>

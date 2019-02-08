@@ -42,7 +42,7 @@
                             @foreach($jobPriorities as $item)
                                 <tr>
                                     <td>{{$item->job_priority_name}}</td>
-                                    <td><a href = "{{URL::to('settings/lists/jobpriorities/deleteAction?id=')}}{{$item->id}}"><button class="btn btn-youtube waves-effect btn-circle waves-light" type="button"> <i class="fa fa-trash" aria-hidden="true"></i> </button></a></td>
+                                    <td><a href = "{{URL::to('settings/lists/jobpriorities/deleteAction?id=')}}{{$item->id}}"><button class="btn-sm btn-youtube waves-effect btn-circle waves-light" type="button"> <i class="fa fa-trash" aria-hidden="true"></i> </button></a></td>
                                 </tr>
                             @endforeach
   

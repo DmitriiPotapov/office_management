@@ -17,11 +17,17 @@ class InventoryController extends Controller
 
     public function showAddInventory()
     {
+        if( !Auth::check() )
+            return redirect()->route('login');
+
         return view('inventory.addInventory');
     }
 
     public function showAllInventory()
     {
+        if( !Auth::check() )
+            return redirect()->route('login');
+
         $inventories = DataInventory::all();
 
         return view('inventory.viewInventory', compact('inventories'));
@@ -29,11 +35,17 @@ class InventoryController extends Controller
 
     public function showEditInventory($id)
     {
+        if( !Auth::check() )
+            return redirect()->route('login');
+
         return view('inventory.editInventory');
     }
 
     public function showReleaseFrom()
     {
+        if( !Auth::check() )
+            return redirect()->route('login');
+
         $inventories = DataInventory::all();
 
         return view('inventory.releaseInventory',compact('inventories'));
@@ -41,6 +53,9 @@ class InventoryController extends Controller
 
     public function showInventoryUse()
     {
+        if( !Auth::check() )
+            return redirect()->route('login');
+            
         $inventories = DataInventory::all();
 
         return view('inventory.diskUseInventory',compact('inventories'));
@@ -83,6 +98,7 @@ class InventoryController extends Controller
         $inventory->heads_number = $request->input('heads_number');
         $inventory->heads_info = $request->input('heads_info');
         $inventory->madeIn = $request->input('madeIn');
+        $inventory->PH = $request->input('PH');
         $inventory->note = $request->input('note');
 
         $inventory->save();

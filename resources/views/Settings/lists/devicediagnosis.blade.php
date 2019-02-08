@@ -43,7 +43,7 @@
                                 <tr>
                                     <td>{{$item->device_name}}</td>
                                     <td>{{$item->device_type}}</td>
-                                    <td><a href = "{{URL::to('settings/lists/devicediagnosis/deleteAction?id=')}}{{$item->id}}"><button class="btn btn-youtube waves-effect btn-circle waves-light" type="button"> <i class="fa fa-trash" aria-hidden="true"></i></button></a></td>
+                                    <td><a href = "{{URL::to('settings/lists/devicediagnosis/deleteAction?id=')}}{{$item->id}}"><button class="btn-sm btn-youtube waves-effect btn-circle waves-light" type="button"> <i class="fa fa-trash" aria-hidden="true"></i></button></a></td>
                                 </tr>
                                 @endforeach                 
                             </tbody>

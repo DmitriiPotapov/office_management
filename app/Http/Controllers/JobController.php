@@ -56,12 +56,14 @@ class JobController extends Controller
         {
             $devices = new DataDevices();
             $devices->job_id = $job->job_id;
+            $devices->category = $request->input('devcategory');
             $devices->type = $request->input('device_type'.$i);
             $devices->role = $request->input('role'.$i);
-            $devices->manufacturer = $request->input('manufacturer'.$i);
+            $devices->manufacturer = $request->input('manufacturer');
+            $devices->brand = $request->input('manufacturer');
             $devices->model = $request->input('model'.$i);
             $devices->serial = $request->input('serial'.$i);
-            $devices->location = $request->input('location'.$i);
+            $devices->capacity = $request->input('capacity1');
 
             $devices->save();
         }
@@ -88,12 +90,17 @@ class JobController extends Controller
         $log->action = 'create';
         $log->description = 'New job created, number '.$job->job_id.' , client '.$job->client_name;
         $log->save();
+
+        $jobNumber = $job->job_id;
+        $password = $job->job_password;
         
-        return redirect('/job/showAllJob');
+        return view('job.successJob', compact('jobNumber', 'password'));
     }
 
     public function showAddJob($client_id)
     {
+        if( !Auth::check() )
+            return redirect()->route('login');
         $priorities = JobPriority::all();
         $types = DeviceType::all();
         $client = Client::find($client_id);
@@ -104,48 +111,64 @@ class JobController extends Controller
 
     public function showAllJob()
     {
+        if( !Auth::check() )
+            return redirect()->route('login');
         $jobs = DataJobs::all();
         return view('job.viewJobs', compact('jobs'));
     }
 
     public function showAllPriorityJob()
     {
+        if( !Auth::check() )
+            return redirect()->route('login');
         $jobs = DataJobs::where('priority','!=','Standard')->get()->toArray();
         return view('job.viewJobs', compact('jobs'));
     }
 
     public function showOverview()
     {
+        if( !Auth::check() )
+            return redirect()->route('login');
         $jobs = DataJobs::all();
         return view('job.overView',compact('jobs'));
     }
 
     public function viewUrgent()
     {
+        if( !Auth::check() )
+            return redirect()->route('login');
         $jobs = DataJobs::all()->toArray();
         return view('job.viewJobs', compact('jobs'));
     }
 
     public function viewCompleted()
     {
+        if( !Auth::check() )
+            return redirect()->route('login');
         $jobs = DataJobs::where('status', 'Completed successfully')->get()->toArray();
         return view('job.viewJobs', compact('jobs'));
     }
 
     public function viewPaymentPending()
     {
+        if( !Auth::check() )
+            return redirect()->route('login');
         $jobs = DataJobs::where('status', 'Payment pending')->get()->toArray();
         return view('job.viewJobs', compact('jobs'));
     }
 
     public function viewPaid()
     {
+        if( !Auth::check() )
+            return redirect()->route('login');
         $jobs = DataJobs::where('status', 'Paid')->get()->toArray();
         return view('job.viewJobs', compact('jobs'));
     }
 
     public function showEditJob($job_id)
     {
+        if( !Auth::check() )
+            return redirect()->route('login');
         $job = DataJobs::where('job_id', $job_id)->first();
         $client = Client::find($job->client_id);
         $statuses = BaseJobStatuse::all();
@@ -371,12 +394,37 @@ class JobController extends Controller
         return redirect()->back();
     }
 
+    public function updateMedia(Request $request)
+    {
+        $device_id = $request->input('media_id');
+        $device = DataDevices::find($device_id);
+
+        $device->PN = $request->input('PN');
+        $device->dom = $request->input('dom');
+        $device->dcm_mlc = $request->input('dcm_mlc');
+        $device->PH = $request->input('PH');
+        $device->heads = $request->input('heads');
+        $device->platter_head = $request->input('Platters');
+        $device->pcb_no = $request->input('pcb_no');
+        $device->made_in = $request->input('madeIn');
+        $device->encryption = $request->input('encryption');
+
+        $device->PCB = $request->input('pcb');
+        $device->motor = $request->input('motor');
+        $device->firmware = $request->input('firmware');
+        $device->r_w_heads = $request->input('r_w_heads');
+        
+        $device->update();
+
+        return redirect()->back();
+    }
+
     public function addmissionForm($job_id)
     {
         $pdf = \App::make('dompdf.wrapper');
         $pdf->loadHTML($this->convert_job_data_to_admission_form($job_id));
         $pdf->stream();
-        $file_path = 'admission_form_'.$job_id.'.pdf';
+        $file_path = 'checkin_form_'.$job_id.'.pdf';
         return $pdf->download($file_path);
 
     }
@@ -392,20 +440,36 @@ class JobController extends Controller
     
     public function generateInvoice($job_id)
     {
-        $pdf = \App::make('dompdf.wrapper');
-        $pdf->loadHTML($this->convert_job_data_to_invoice($job_id));
-        $pdf->stream();
-        $file_path = 'invoice_'.$job_id.'.pdf';
-        return $pdf->download($file_path);
+        $invoice = Invoice::where('job_id', $job_id)->first();
+        if($invoice)
+        {
+            $pdf = \App::make('dompdf.wrapper');
+            $pdf->loadHTML($this->convert_job_data_to_invoice($job_id));
+            $pdf->stream();
+            $file_path = 'invoice_'.$job_id.'.pdf';
+            return $pdf->download($file_path);
+        }
+        else
+        {
+            return redirect()->back()->with('alert', ' No invoce data!');
+        }
     }
 
     public function generateQuote($job_id)
     {
-        $pdf = \App::make('dompdf.wrapper');
-        $pdf->loadHTML($this->convert_job_data_to_quote($job_id));
-        $pdf->stream();
-        $file_path = 'quote_'.$job_id.'.pdf';
-        return $pdf->download($file_path);
+        $invoice = Invoice::where('job_id', $job_id)->first();
+        if($invoice)
+        {
+            $pdf = \App::make('dompdf.wrapper');
+            $pdf->loadHTML($this->convert_job_data_to_quote($job_id));
+            $pdf->stream();
+            $file_path = 'quote_'.$job_id.'.pdf';
+            return $pdf->download($file_path);
+        }
+        else
+        {
+            return redirect()->back()->with('alert', ' No invoce data!');
+        }
     }
 
     public function generateMediaReport($job_id)
@@ -868,7 +932,7 @@ body {
         </tr>
         <tr>
             <td>1.00</td>
-            <td>Backup '.$invoice->item_type.'</td>
+            <td>'.$invoice->item_type.'</td>
             <td>OMR   '.number_format($backup->total_price,3,".","").'</td>
             <td>OMR   '.number_format($backup->total_price,3,".","").'</td>
         </tr>

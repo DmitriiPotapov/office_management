@@ -8,13 +8,8 @@ class Client extends Model
 {
     protected $fillable = [
         'client_name',
-        'pib_jmbg',
         'street',
-        'number',
-        'apt',
         'postal_code',
-        'pak',
-        'city_name',
         'country',
         'ui_language',
         'email_value',

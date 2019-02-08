@@ -27,6 +27,9 @@ class InvoiceController extends Controller
 
     public function index()
     {
+        if( !Auth::check() )
+            return redirect()->route('login');
+
         $invoices = Invoice::all();
         return view('invoice/all_invoices', compact('invoices'));
     }
@@ -38,6 +41,9 @@ class InvoiceController extends Controller
      */
     public function create()
     {
+        if( !Auth::check() )
+            return redirect()->route('login');
+            
         $unique_id =  Date('Y:m:d').':'.rand();
         $jobIds = DB::table('data_jobs')->pluck('job_id');
         return view('invoice/add_invoice',compact('unique_id', 'jobIds'));
