@@ -59,7 +59,7 @@
                                 <td>{{ $item['model'] }}</td>
                                 <td>{{ $item['serial_number'] }}</td>
                                 <td>{{ $item['firmware'] }}</td>
-                                <td>{{ $item['capacity'].'GB' }}</td>
+                                <td>{{ $item['capacity'] }}</td>
                                 <td>{{ $item['PCB_id'] }}</td>
                                 <td>{{ $item['location'] }}</td>
                                 <td>{{ $item['Form_factor'] }}</td>

@@ -401,6 +401,7 @@ class JobController extends Controller
 
         $device->PN = $request->input('PN');
         $device->dom = $request->input('dom');
+        $device->interface = $request->input('interface');
         $device->dcm_mlc = $request->input('dcm_mlc');
         $device->PH = $request->input('PH');
         $device->heads = $request->input('heads');
@@ -486,665 +487,650 @@ class JobController extends Controller
         $job = DataJobs::where('job_id',$job_id)->first();
         $client = Client::find($job->client_id);
         $output = '
-        <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML>
 <html lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-<title>HTML4</title>
-<style>
-body {
-  font-family: Verdana,sans-serif;
-  font-size: 0.9em;
-}
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+  <title>HTML4</title>
+  <style>
+  body {
+    font-family: Times New Roman;
+    font-size: 0.9em;
+    margin-top:25px;
+    margin-left:45px;
+    margin-right:45px;
+    margin-bottom:35px;
+  }
 
-div#header, div#footer {
-  padding: 10px;
-  color: white;
-  background-color: black;
-}
+  div#header, div#footer {
+    padding: 10px;
+    color: white;
+    background-color: black;
+  }
 
-div#content {
-  margin: 5px;
-  padding: 10px;
-  background-color: lightgrey;
-}
+  div#content {
+    margin: 5px;
+    padding: 10px;
+    background-color: lightgrey;
+  }
 
-div.article {
-  margin: 5px;
-  padding: 10px;
-  background-color: white;
-}
+  div.article {
+    margin: 5px;
+    padding: 10px;
+    background-color: white;
+  }
 
-div#menu ul {
-  padding: 0;
-}
+  div#menu ul {
+    padding: 0;
+  }
 
-div#menu ul li {
-  display: inline;
-  margin: 5px;
-}
-.title_block {
-    border-bottom: 1px solid #000;
-    padding-bottom: 1px;
-    margin-bottom: 1px;
-}
-table {
-font-family: arial, sans-serif;
-border-collapse: collapse;
-width: 100%;
-}
+  div#menu ul li {
+    display: inline;
+    margin: 5px;
+  }
+  .title_block {
+      border-bottom: 1px solid #000;
+      padding-bottom: 1px;
+      margin-bottom: 1px;
+  }
+  table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  }
 
-td, th {
-border: 1px solid #dddddd;
-text-align: left;
-padding: 8px;
-}
+  td, th {
+  border: 0px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+  }
 
-</style>
+  </style>
 </head>
 <body>
-<div><img src="assets/images/logo_medium.png"></div>
-<div class="title_block">
-<h3>Company slogan</h3>
-</div>
-<p>
-</p>
-<div class="title_block">
-<h5>Address:</h5>
-<h5>Tel:</h5>
-<h5>Fax:</h5>
-<h5>Skype:</h5>
-<h5>Web:</h5>
-<h5>Email:</h5>
-</div>
-<p>
-</p>
-<div class="title_block">
-<h3 align="center">CASE NUMBER:</h3>
-<h3 align="center">'.$job->job_id.'</h3>
-<h5>Client name:'.$client->client_name.'</h5>
-<h5>Address:'.$client->street.'</h5>
-<h5>City:'.$client->city_name.'</h5>
-<h5>Case Password:'.$job->job_password.'</h5>
-<h5>Date:'.$job->created_at.'</h5>
-<h5>Service:'.$job->services.'</h5>
-<h5>E-mail:'.$client->email_value.'</h5>
-<h5>Mobile phone:'.$client->phone_value.'</h5>
-</div>
-<p>
-</p>
-<div class="title_block">
-<table>
-    <thead>
-        <tr>
-            <td><b>Type</b></td>
-            <td><b>Manufacturer</b></td>
-            <td><b>Model</b></td>
-            <td><b>Serial Number</b></td>
-        </tr>
-    </thead>
-    <tbody>';
+  <div>
+    <img align="left" src="assets/images/logo-icon4.png" width="280" height="80" />
+    <div align="right">
+      <b><label style="font-size:12px;">#108, First Floor, Azaiba Mall</label><br>
+      <label style="font-size:12px;">Azaba, Muscat, Oman</label><br></b>
+      <label style="font-size:12px;">+968 963 12346 /47 </label><img style="margin-top:2px;" src="assets/images/icon-tel.png" width="14" height="12" /><br>
+      <label style="font-size:12px;">info@spacedatarecovery.com</label><img style="margin-top:2px;" src="assets/images/icon-mail.png" width="14" height="12" /><br>
+      <label style="font-size:12px;">www.spacedatarecovery.com</label><img style="margin-top:2px;" src="assets/images/icon-space.png" width="14" height="12" /><br>
+    </div>
+  </div>
+  <br><br><br><br>
+  <div>
+    <img align="left" src="assets/images/check-in.png" width="280" height="75" />
+    <div align="right">
+      <b><label style="font-size:16px;">'.$client->client_name.'</label><br></b>
+      <label style="font-size:16px;">'.$client->company.'</label><br>
+      <label style="font-size:16px;">'.$client->street.'</label><br>
+      <label style="font-size:16px;">'.$client->country.'</label><br>
+    </div>
+  </div>
+  <br><br>
+  <div>
+    <label style="font-size:15px;">CaseID</label>
+    <label style="font-size:15px;padding-left:5em;">Date</label>
+    <label style="font-size:15px;padding-left:5em;">Service</label>
+    <label style="font-size:15px;padding-left:18em;text-align:right;">'.$client->phone_value.'</label>
+  </div>
+  <div>
+    <b><label style="font-size:15px;">'.$job->job_id.'</label>
+    <label style="font-size:15px;padding-left:5.5em;">'.date_format($job->created_at,"d/m/Y").'</label>
+    <label style="font-size:15px;padding-left:2em;">'.$job->services.'</label>
+    <label style="font-size:15px;padding-left:10em;text-align:right;">'.$client->email_value.'</label></b>
+  </div>
+  <br><br><br>
+  <table >
+      <thead style="border-bottom:3pt solid black;color:#3092C3;">
+          <tr >
+              <td><b>#</b></td>
+              <td><b>Brand</b></td>
+              <td><b>Category</b></td>
+              <td><b>Capacity</b></td>
+              <td><b>Serian No</b></td>
+          </tr>
+      </thead>
+      <tbody style="border-bottom:1pt solid grey;">';
 
     $devices = DataDevices::where('job_id', $job_id)->get()->toArray();
+    $i = 1;
     foreach($devices as $item)
     {
         $output .= '
         <tr>
-        <td>'.$item["type"].'</td>
-        <td>'.$item["manufacturer"].'</td>
-        <td>'.$item["model"].'</td>
+        <td>'.number_format($i).'</td>
+        <td>'.$item["brand"].'</td>
+        <td>'.$item["category"].'</td>
+        <td>'.$item["capacity"].'</td>
         <td>'.$item["serial"].'</td>
         </tr>';
+        $i ++;
     }
     $output .=
-'</tbody>
-</table>
-</div>
-<p>
-</p>
-</div>
-<div class="title_block">
-<h3>TERMS OF SERVICE</h3>
-</div>
-<p>
-Thank you for using our service. Our service is Recovery Service. You are welcome!!!Thank you for using our service. Our service is Recovery Service. You are welcome!!!<br>
-Thank you for using our service. Our service is Recovery Service. You are welcome!!!
-</p>
-
-</div>
-</body>
+'     </tbody>
+    </table>
+  </div>
+  <br><br><hr /><br><br><br><br><br><br><br><br><br><br><br><br><br>
+  <div>
+    <img align="right" src="assets/images/nithin.png" width="77" height="35" />
+    <div align="left">
+      <b><label style="font-size:17px;">TRACK YOUR SERVICE</label><br></b>
+      <label style="font-size:12px;">To get the latest status of your service</label><br>
+      <label style="font-size:12px;">please visit the following link:</label><br>
+      <label style="font-size:12px;color:#3092C3;">www.spacedatarecover.com/Jobtrack</label><br>
+    </div>
+  </div>
+  <br>
+  <div align="left">
+    <label style="font-size:17px;">'.$job->user_name.': '.$job->job_id.'</label><br>
+    <label style="font-size:12px;">Password: '.$job->job_password.'</label><br>
+  </div>
+  <div align="right">
+    <b><label style="font-size:22px;color:#3092C3;">Thank you</label><br></b>
+    <b><label style="font-size:22px;color:#3092C3;">For Submitting your Case!</label><br></b>
+  </div>
+  </div>
+  </body>
 </html>';
         return $output;
     }
 
     function convert_job_data_to_checkout_form($job_id)
     {
-        $job = DataJobs::where('job_id',$job_id)->first();
-        $client = Client::find($job->client_id);
-        $output = '
-        <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html lang="en">
-<head>
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-<title>HTML4</title>
-<style>
-body {
-  font-family: Verdana,sans-serif;
-  font-size: 0.9em;
-}
-
-div#header, div#footer {
-  padding: 10px;
-  color: white;
-  background-color: black;
-}
-
-div#content {
-  margin: 5px;
-  padding: 10px;
-  background-color: lightgrey;
-}
-
-div.article {
-  margin: 5px;
-  padding: 10px;
-  background-color: white;
-}
-
-div#menu ul {
-  padding: 0;
-}
-
-div#menu ul li {
-  display: inline;
-  margin: 5px;
-}
-.title_block {
-    border-bottom: 1px solid #000;
-    padding-bottom: 1px;
-    margin-bottom: 1px;
-}
-table {
-font-family: arial, sans-serif;
-border-collapse: collapse;
-width: 100%;
-}
-
-td, th {
-border: 1px solid #dddddd;
-text-align: left;
-padding: 8px;
-}
-
-</style>
-</head>
-<body>
-<div>
-<img src="assets/images/logo_medium.png"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<label style="font-size:30px;color:#3FC3F3;" align="right"><b>SIGN OUT FORM</b> </label>
-</div>
-<br>
-<div><label style="font-size:16px;">Customer Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:16px;">'.$client->client_name.'</label></div>
-<div class="row">
-<label style="font-size:16px;">Street Address&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:16px;">'.$client->street.', '.$client->apt.', '.$client->number.'</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<label style="font-size:16px;color:#2E74B5;"><b>JOB NUMBER # </b> </label>&nbsp;<label style="font-size:16px;">'.$job->job_id.'</label>
-</div>
-<div><label style="font-size:16px;">City, ST ZIP Code&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:16px;">'.$client->city_name.'</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<label style="font-size:16px;color:#2E74B5;"><b> OUT DATE </b> </label>&nbsp;<label style="font-size:16px;">'.$job->created_at.'</label></div>
-<div><label style="font-size:16px;">Phone </label>&nbsp;&nbsp;<label style="font-size:16px;">'.$client->phone_value.'</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;
-<label style="font-size:16px;">Fax </label>&nbsp;&nbsp;<label style="font-size:16px;">'.'  '.'</label></div>
-<div><label style="font-size:16px;">Email&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:16px;">'.$client->email_value.'</label></div>
-<br>
-';
-
-    $output .=
-'
-<h3 style="color:#2E74B5;">MEDIA DETAILS</h3>
-<div class="title_block" style="border-style:solid;">';
-
-    $devices = DataDevices::where('job_id', $job_id)->get()->toArray();
-    foreach($devices as $item)
-    {
-        $output .= '
-        <label style="font-size:16px;">'.$item['manufacturer'].' '.$item['capacity'].'</label><br>
-        <label style="font-size:16px;"> Serial Number: '.$item["serial"].'</label><br><br>';
-    }
-
-
-    $output .=
-'
-</div>
-<br>
-<br>
-<div><label style="font-size:16px;">Customer Name&nbsp;&nbsp;&nbsp;:  </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:16px;">'.$client->client_name.'</label></div>
-<div><label style="font-size:16px;">Mobile Number&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:16px;">'.$client->phone_value.'</label></div>
-<div><label style="font-size:16px;">National ID No.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:16px;">'.$client->nationalId.'</label></div>
-<div><label style="font-size:16px;">Signature&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:16px;">'.$client->signature.'</label></div>
-<br>
-<h6>Please read carefully before signing </h6>
-<h4>Your Feedback is really important for us to grow </h4>
-................................................................................................................................................................................................<br>
-................................................................................................................................................................................................<br>
-................................................................................................................................................................................................<br>
-<h6>How likely do you recommend our service to a friend?  </h6>
-<h5>Not Likely at all   0 1 2 3 4 5 6 7 8 9 10 Extremely Likely   </h5>
-SPACE RECOVERY <br>
-<label style="font-size:12px;">#108, First Floor, Azaiba Mall, Azaiba, Muscat, Sultanate Of Oman | +968 96312346 / 7 | <a>mail@spacedatarecovery.com</a> </label><br>
-<div align="center">ww.spacedatarecovery.com </div>
-<h2 align="center" style="color:rgb(147,183,217);">THANK YOU FOR YOUR BUSINESS!</h2>
-</body>
-</html>';
+      $job = DataJobs::where('job_id',$job_id)->first();
+      $client = Client::find($job->client_id);
+      $output = '
+      <!DOCTYPE HTML>
+      <html lang="en">
+      <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <title>HTML4</title>
+        <style>
+        body {
+          font-family: Times New Roman;
+          font-size: 0.9em;
+          margin-top:25px;
+          margin-left:45px;
+          margin-right:45px;
+          margin-bottom:35px;
+        }
+      
+        div#header, div#footer {
+          padding: 10px;
+          color: white;
+          background-color: black;
+        }
+      
+        div#content {
+          margin: 5px;
+          padding: 10px;
+          background-color: lightgrey;
+        }
+      
+        div.article {
+          margin: 5px;
+          padding: 10px;
+          background-color: white;
+        }
+      
+        div#menu ul {
+          padding: 0;
+        }
+      
+        div#menu ul li {
+          display: inline;
+          margin: 5px;
+        }
+        .title_block {
+            border-bottom: 1px solid #000;
+            padding-bottom: 1px;
+            margin-bottom: 1px;
+        }
+        table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+        }
+      
+        td, th {
+        border: 0px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+        }
+      
+        </style>
+      </head>
+      <body>
+        <div>
+          <img align="left" src="assets/images/logo-icon4.png" width="280" height="80" />
+          <div align="right">
+            <b><label style="font-size:12px;">#108, First Floor, Azaiba Mall</label><br>
+            <label style="font-size:12px;">Azaba, Muscat, Oman</label><br></b>
+            <label style="font-size:12px;">+968 963 12346 /47 </label><img style="margin-top:2px;" src="assets/images/icon-tel.png" width="14" height="12" /><br>
+            <label style="font-size:12px;">info@spacedatarecovery.com</label><img style="margin-top:2px;" src="assets/images/icon-mail.png" width="14" height="12" /><br>
+            <label style="font-size:12px;">www.spacedatarecovery.com</label><img style="margin-top:2px;" src="assets/images/icon-space.png" width="14" height="12" /><br>
+          </div>
+        </div>
+        <br><br><br><br>
+        <div>
+          <img align="left" src="assets/images/check-out.png" width="280" height="65" />
+          <div align="right">
+            <b><label style="font-size:16px;">'.$client->client_name.'</label><br></b>
+            <label style="font-size:16px;">'.$client->company.'</label><br>
+            <label style="font-size:16px;">'.$client->street.'</label><br>
+            <label style="font-size:16px;">'.$client->country.'</label><br>
+          </div>
+        </div>
+        <br><br>
+        <div>
+          <label style="font-size:15px;">CaseID</label>
+          <label style="font-size:15px;padding-left:5em;">Date</label>
+          <label style="font-size:15px;padding-left:5em;">Service</label>
+          <label style="font-size:15px;padding-left:18em;text-align:right;">'.$client->phone_value.'</label>
+        </div>
+        <div>
+          <b><label style="font-size:15px;">'.$job->job_id.'</label>
+          <label style="font-size:15px;padding-left:5.5em;">'.date_format($job->created_at,"d/m/Y").'</label>
+          <label style="font-size:15px;padding-left:2em;">'.$job->services.'</label>
+          <label style="font-size:15px;padding-left:10em;text-align:right;">'.$client->email_value.'</label></b>
+        </div>
+        <br><br><br>
+        <table >
+            <thead style="border-bottom:3pt solid black;color:#3092C3;">
+                <tr >
+                    <td><b>#</b></td>
+                    <td><b>Brand</b></td>
+                    <td><b>Category</b></td>
+                    <td><b>Capacity</b></td>
+                    <td><b>Serian No</b></td>
+                </tr>
+            </thead>
+            <tbody style="border-bottom:1pt solid grey;">';
+      
+          $devices = DataDevices::where('job_id', $job_id)->get()->toArray();
+          $i = 1;
+          foreach($devices as $item)
+          {
+              $output .= '
+              <tr>
+              <td>'.number_format($i).'</td>
+              <td>'.$item["brand"].'</td>
+              <td>'.$item["category"].'</td>
+              <td>'.$item["capacity"].'</td>
+              <td>'.$item["serial"].'</td>
+              </tr>';
+              $i ++;
+          }
+          $output .=
+      '     </tbody>
+          </table>
+        </div>
+        <br><br><hr /><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+        <div>
+          <img align="right" src="assets/images/nithin.png" width="77" height="35" />
+          <div align="left">
+            <b><label style="font-size:15px;">COLLECTED BY</label><br></b>
+            <label style="font-size:12px;">Name:</label><br>
+            <label style="font-size:12px;">Contact No:</label><br>
+            <label style="font-size:12px;">Civil ID:</label><br>
+            <label style="font-size:12px;">Signature:</label><br>
+          </div>
+        </div>
+        <br>
+        <div align="right">
+          <b><label style="font-size:22px;color:#3092C3;">Thank you</label><br></b>
+          <b><label style="font-size:22px;color:#3092C3;">For Submitting your Case!</label><br></b>
+        </div>
+        </div>
+        </body>
+      </html>';
         return $output;
     }
     function convert_job_data_to_invoice($job_id)
     {
-        $job = DataJobs::where('job_id',$job_id)->first();
-        $invoice = Invoice::where('job_id', $job_id)->first();
-        $backup = Backup::where('job_id', $job_id)->first();
-        $client = Client::find($job->client_id);
-        $total_price = $invoice->item_total_price + $backup->total_price;
-        $output = '
-        <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html lang="en">
-<head>
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-<title>HTML4</title>
-<style>
-<link href="assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<link href="assets/plugins/summernote/summernote.css" rel="stylesheet" />
-<link href="css/style.css" rel="stylesheet"> 
-<link href="css/colors/blue.css" id="theme" rel="stylesheet">
-body {
-  font-family: Verdana,sans-serif;
-  font-size: 0.9em;
-}
-
-div#header, div#footer {
-  padding: 10px;
-  color: white;
-  background-color: black;
-}
-
-div#content {
-  margin: 5px;
-  padding: 10px;
-  background-color: lightgrey;
-}
-
-div.article {
-  margin: 5px;
-  padding: 10px;
-  background-color: white;
-}
-
-div#menu ul {
-  padding: 0;
-}
-
-div#menu ul li {
-  display: inline;
-  margin: 5px;
-}
-.title_block {
-    border-bottom: 3px solid #000;
-    padding-bottom: 1px;
-    margin-bottom: 1px;
-}
-table {
-font-family: arial, sans-serif;
-border-collapse: collapse;
-width: 100%;
-}
-
-td, th {
-border: 1px solid #dddddd;
-text-align: left;
-padding: 8px;
-}
-
-body {
-    margin-left:50;
-    margin-right:35px;
-    margin-top:50px;
-    margin-bottom:30px;
-}
-
-#customers {
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    font-size:14px;
-    border-collapse: collapse;
-    width: 100%;
-  }
-  
-  #customers td, #customers th {
-    border: 1px solid #ddd;
-    padding: 8px;
-  }
-  
-  #customers tr:nth-child(even){background-color: #f2f2f2;}
-  
-  #customers tr:hover {background-color: #ddd;}
-  
-  #customers th {
-    padding-top: 3px;
-    padding-bottom: 3px;
-    text-align: center;
-    background-color: #2E74B5;
-    color: black;
-  }
-  #customers1 {
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    font-size:14px;
-    border-collapse: collapse;
-    width: 100%;
-  }
-  
-  #customers1 td, #customers1 th {
-    border: 1px solid #ddd;
-    padding: 8px;
-  }
-  
-  #customers1 tr:nth-child(even){background-color: #f2f2f2;}
-  
-  #customers1 tr:hover {background-color: #ddd;}
-  
-  #customers1 th {
-    padding-top: 3px;
-    padding-bottom: 3px;
-    text-align: center;
-    background-color: #436784;
-    color: white;
-  }
-
-</style>
-</head>
-<body>
-<div class="title_block">
-<img src="assets/images/logo_medium.png"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<label style="font-size:50px;color:#2E74B5;" align="right"><b>Invoice</b> </label></div>
-<p></p>
-<br>
-<div class="title_block">
-<div class="row">
-<label style="font-size:18px;color:#2E74B5;"><b>SPACE RECOVERY</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<label style="font-size:16px;color:#2E74B5;"><b>Date:  </b> </label>&nbsp;<label style="font-size:16px;"> January 25, 2019</label>
-</div>
-<div class="row">
-<label style="font-size:16px;color:#2E74B5;">SMATCO IT DIVISION  </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<label style="font-size:16px;color:#2E74B5;"><b>Invoice #: </b> </label>&nbsp;<label style="font-size:16px;">No.</label>
-</div>
-<div class="row">
-<label style="font-size:16px;color:#2E74B5;"></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<label style="font-size:16px;color:#2E74B5;"><b>Customer Ref: </b> </label>&nbsp;<label style="font-size:16px;"></label>
-</div>
-<br>
-</div>
-
-<p></p>
-
-';
-
-    $output .=
-'
-<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:16px;color:#2E74B5;"><b>To:</b>  </label>&nbsp;<label style="font-size:16px;">'.$client->client_name.'</label></div>
-<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:16px;">Company Name</label></div>
-<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:16px;">Street Address</label></div>
-<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:16px;">City, ST ZIP Code</label></div>
-<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:16px;">Phone</label></div>
-<br>
-<div >
-    <table id="customers">
-        <thead>
-            <tr>
-                <th>Salesperson</th>
-                <th>Job</th>
-                <th>Payment terms</th>
-                <th>Due Date</th>
-            </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-        </tr>
-        </tbody>
-    </table>
-</div>
-<br>
-<div >
-    <table id="customers1">
-        <thead>
-            <tr>
-                <th style="width:50px;">Qty</th>
-                <th style="width:250px;">Description</th>
-                <th style="width:100px;">Unit Price</th>
-                <th style="width:100px;">Line total</th>
-            </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>1.00</td>
-            <td>'.$job->services.'</td>
-            <td>OMR   '.number_format($invoice->item_total_price,3,".","").'</td>
-            <td>OMR   '.number_format($invoice->item_total_price,3,".","").'</td>
-        </tr>
-        <tr>
-            <td>1.00</td>
-            <td>'.$invoice->item_type.'</td>
-            <td>OMR   '.number_format($backup->total_price,3,".","").'</td>
-            <td>OMR   '.number_format($backup->total_price,3,".","").'</td>
-        </tr>
-        </tbody>
-    </table>
-</div>
-<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<label style="font-size:16px;color:#2E74B5;"><b>Subtotal</b></label>&nbsp;&nbsp;&nbsp;<label style="font-size:16px;">OMR '.number_format($total_price,3,".","").'</label></div>
-<br>
-<br>
-<br>
-<div><label style="font-size:14px;"><b>Receiver Name:</b>  </label>&nbsp;<label style="font-size:16px;"></label></div>
-<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:14px;"><b>Signature :</b>  </label>&nbsp;<label style="font-size:16px;"></label></div>
-<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:14px;"><b>Date :</b>  </label>&nbsp;<label style="font-size:16px;"></label></div>
-<br>
-<div align="center" style="font-size:14px;">Make all checks payable to "SALMAN MOHAMMED ASHRAF TRDG. & COTG."</div>
-<div align="center" ><b>THANK YOU FOR YOUR BUSINESS!</b></div>
-<div align="center" style="font-size:11px;">SPACE RECOVERY, #108, First Floor, Azaiba Mall, Azaiba, Muscat, Sultanate Of Oman, www.spacedatarecovery.com </div>
-<div align="center" style="font-size:11px;">Email: mail@spacedatarecovery.com ,  Ph: +968 963 12346 / 7</div>
-</body>
-</html>';
+      $job = DataJobs::where('job_id',$job_id)->first();
+      $invoice = Invoice::where('job_id', $job_id)->first();
+      $backup = Backup::where('job_id', $job_id)->first();
+      $client = Client::find($job->client_id);
+      $total_price = $invoice->item_total_price + $backup->total_price;
+      $output = '
+      <!DOCTYPE HTML>
+      <html lang="en">
+      <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+        <title>HTML4</title>
+        <style>
+        body {
+          font-family: Times New Roman;
+          font-size: 0.9em;
+          margin-top:25px;
+          margin-left:45px;
+          margin-right:45px;
+          margin-bottom:15px;
+        }
+      
+        div#header, div#footer {
+          padding: 10px;
+          color: white;
+          background-color: black;
+        }
+      
+        div#content {
+          margin: 5px;
+          padding: 10px;
+          background-color: lightgrey;
+        }
+      
+        div.article {
+          margin: 5px;
+          padding: 10px;
+          background-color: white;
+        }
+      
+        div#menu ul {
+          padding: 0;
+        }
+      
+        div#menu ul li {
+          display: inline;
+          margin: 5px;
+        }
+        .title_block {
+            border-bottom: 1px solid #000;
+            padding-bottom: 1px;
+            margin-bottom: 1px;
+        }
+        table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+        }
+      
+        td, th {
+        border: 0px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+        }
+      
+        </style>
+      </head>
+      <body>
+        <div>
+          <img align="left" src="assets/images/logo-icon4.png" width="280" height="80" />
+          <div align="right">
+            <b><label style="font-size:12px;">#108, First Floor, Azaiba Mall</label><br>
+            <label style="font-size:12px;">Azaba, Muscat, Oman</label><br></b>
+            <label style="font-size:12px;">+968 963 12346 /47 </label><img style="margin-top:2px;" src="assets/images/icon-tel.png" width="14" height="12" /><br>
+            <label style="font-size:12px;">info@spacedatarecovery.com</label><img style="margin-top:2px;" src="assets/images/icon-mail.png" width="14" height="12" /><br>
+            <label style="font-size:12px;">www.spacedatarecovery.com</label><img style="margin-top:2px;" src="assets/images/icon-space.png" width="14" height="12" /><br>
+          </div>
+        </div>
+        <br><br><br><br>
+        <div>
+          <img align="left" src="assets/images/invoice.png" width="280" height="75" />
+          <div align="right">
+            <b><label style="font-size:17px;">Bill To</label></b>
+            <b><label style="font-size:16px;">'.$client->client_name.'</label><br></b>
+            <label style="font-size:16px;">'.$client->company.'</label><br>
+            <label style="font-size:16px;">'.$client->phone_value.'</label><br>
+            <label style="font-size:16px;">'.$client->street.'</label><br>
+            <label style="font-size:16px;">'.$client->country.'</label>
+          </div>
+        </div>
+        <br><br>
+        <div>
+          <label style="font-size:15px;">Invoice</label>
+          <label style="font-size:15px;padding-left:5em;">Date</label>
+        </div>
+        <div>
+          <b><label style="font-size:15px;">'.$job->job_id.'</label>
+          <label style="font-size:15px;padding-left:5.5em;">'.date_format($job->created_at,"d/m/Y").'</label>
+        </div>
+        <br><br><br>
+        <table >
+            <thead style="border-bottom:3pt solid black;color:#3092C3;">
+                <tr >
+                    <td><b>#</b></td>
+                    <td><b>Task Desciription</b></td>
+                    <td><b>Rate</b></td>
+                    <td><b>Qty</b></td>
+                    <td><b>Total</b></td>
+                </tr>
+            </thead>
+            <tbody style="border-bottom:1pt solid grey;">';
+      
+          $devices = DataDevices::where('job_id', $job_id)->get()->toArray();
+          $i = 1;
+          foreach($devices as $item)
+          {
+              $output .= '
+              <tr>
+              <td>'.number_format($i).'</td>
+              <td width="200">'.$job["services"].'-'.$item["category"].'-'.$item["brand"].'-'.$item["serial"].'</td>
+              <td>RO '.number_format($invoice->item_total_price,3,".","").'</td>
+              <td>1</td>
+              <td>RO '.number_format($invoice->item_total_price,3,".","").'</td>
+              </tr>';
+              $i ++;
+          }
+          $output .=
+      '     </tbody>
+          </table>
+        </div>
+        <br>
+        <br><hr /><br>
+        <div align="right">
+          <label style="font-size:16px;">Sub Total</label>
+          <label style="font-size:16px;padding-left:8em;">RO '.number_format($invoice->item_total_price,3,".","").'</label><br>
+        </div><br>
+        <div align="right">
+          <label style="font-size:16px;">Tax 00%</label>
+          <label style="font-size:16px;padding-left:8em;">RO '.number_format($invoice->item_total_price,3,".","").'</label><br>
+        </div><br>
+        <div align="right" >
+          <label style="background-color:#1483BB;color:white;font-size:20px;margin-top:5px;margin-bottom:5px;">Grand Total</label>
+          <label style="background-color:#1483BB;color:white;font-size:20px;padding-left:4em;padding-top:5px;padding-bottom:5px;">RO '.number_format($invoice->item_total_price,3,".","").'</label><br>
+        </div>
+        <br><br><br>
+        <div>
+          <img align="right" src="assets/images/nithin.png" width="77" height="35" />
+          <div align="left">
+            <b><label style="font-size:17px;">Payment Methods</label><br></b>
+            <label style="font-size:12px;">"We accept Cash, Visa, Master Card & Cheque"</label><br>
+          </div>
+        </div>
+        <br>
+        <div align="left">
+          <label style="font-size:12px;">Please make cheque payment to:</label><br>
+          <b><label style="font-size:12px;color:#3092C3;">Salman Mohammad Ashraf Trdg & Cotg.</label><br></b>
+          <label style="font-size:12px;">217-011519-001 | HSBC BANK OMAN S.A.O.G</label><br>
+        </div>
+        <br><br>
+        <div align="left">
+          <b><label style="font-size:15px;">TERMS & CONDITION</label><br></b>
+          <label style="font-size:12px;">No refund for any resason after delivery</label><br>
+        </div>
+        <div align="right">
+          <b><label style="font-size:22px;color:#3092C3;">Thank you</label><br></b>
+          <b><label style="font-size:22px;color:#3092C3;">For Submitting your Case!</label><br></b>
+        </div>
+        </div>
+        </body>
+      </html>';
         return $output;
     }
     function convert_job_data_to_quote($job_id)
     {
-        $job = DataJobs::where('job_id',$job_id)->first();
-        $invoice = Invoice::where('job_id', $job_id)->first();
-        $client = Client::find($job->client_id);
-        $output = '
-        <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html lang="en">
-<head>
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-<title>HTML4</title>
-<style>
-<link href="assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<link href="assets/plugins/summernote/summernote.css" rel="stylesheet" />
-<link href="css/style.css" rel="stylesheet"> 
-<link href="css/colors/blue.css" id="theme" rel="stylesheet">
-body {
-  font-family: Verdana,sans-serif;
-  font-size: 0.9em;
-}
-
-div#header, div#footer {
-  padding: 10px;
-  color: white;
-  background-color: black;
-}
-
-div#content {
-  margin: 5px;
-  padding: 10px;
-  background-color: lightgrey;
-}
-
-div.article {
-  margin: 5px;
-  padding: 10px;
-  background-color: white;
-}
-
-div#menu ul {
-  padding: 0;
-}
-
-div#menu ul li {
-  display: inline;
-  margin: 5px;
-}
-.title_block {
-    border-bottom: 3px solid #000;
-    padding-bottom: 1px;
-    margin-bottom: 1px;
-}
-table {
-font-family: arial, sans-serif;
-border-collapse: collapse;
-width: 100%;
-}
-
-td, th {
-border: 1px solid #dddddd;
-text-align: left;
-padding: 8px;
-}
-
-body {
-    margin-left:50;
-    margin-right:35px;
-    margin-top:50px;
-    margin-bottom:30px;
-}
-
-#customers {
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    font-size:14px;
-    border-collapse: collapse;
-    width: 100%;
-  }
-  
-  #customers td, #customers th {
-    border: 1px solid #ddd;
-    padding: 8px;
-  }
-  
-  #customers tr:nth-child(even){background-color: #f2f2f2;}
-  
-  #customers tr:hover {background-color: #ddd;}
-  
-  #customers th {
-    padding-top: 3px;
-    padding-bottom: 3px;
-    text-align: center;
-    background-color: #2E74B5;
-    color: black;
-  }
-  #customers1 {
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    font-size:14px;
-    border-collapse: collapse;
-    width: 100%;
-  }
-  
-  #customers1 td, #customers1 th {
-    border: 1px solid #ddd;
-    padding: 8px;
-  }
-  
-  #customers1 tr:nth-child(even){background-color: #f2f2f2;}
-  
-  #customers1 tr:hover {background-color: #ddd;}
-  
-  #customers1 th {
-    padding-top: 3px;
-    padding-bottom: 3px;
-    text-align: center;
-    background-color: #436784;
-    color: white;
-  }
-
-</style>
-</head>
-<body>
-<div class="title_block">
-<img src="assets/images/logo_medium.png"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<label style="font-size:50px;color:#2E74B5;" align="right"><b>Quotation</b> </label></div>
-<p></p>
-<br>
-<div class="title_block">
-<div class="row">
-<label style="font-size:18px;color:#2E74B5;"><b>SPACE RECOVERY</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<label style="font-size:16px;color:#2E74B5;"><b>Date:  </b> </label>&nbsp;<label style="font-size:16px;"> January 25, 2019</label>
-</div>
-<div class="row">
-<label style="font-size:16px;color:#2E74B5;">SMATCO IT DIVISION  </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<label style="font-size:16px;color:#2E74B5;"><b>Invoice #: </b> </label>&nbsp;<label style="font-size:16px;">No.</label>
-</div>
-<div class="row">
-<label style="font-size:16px;color:#2E74B5;"></label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<label style="font-size:16px;color:#2E74B5;"><b>Customer Ref: </b> </label>&nbsp;<label style="font-size:16px;"></label>
-</div>
-<br>
-</div>
-
-<p></p>
-
-';
-
-    $output .=
-'
-<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:16px;color:#2E74B5;"><b>To:</b>  </label>&nbsp;<label style="font-size:16px;">'.$client->client_name.'</label></div>
-<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:16px;">Company Name</label></div>
-<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:16px;">Street Address</label></div>
-<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:16px;">City, ST ZIP Code</label></div>
-<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label style="font-size:16px;">Phone</label></div>
-<br>
-<br>
-<br>
-<div >
-    <table id="customers1">
-        <thead>
+      $job = DataJobs::where('job_id',$job_id)->first();
+      $invoice = Invoice::where('job_id', $job_id)->first();
+      $client = Client::find($job->client_id);
+      $output = '
+      <!DOCTYPE HTML>
+    <html lang="en">
+    <head>
+      <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+      <title>HTML4</title>
+      <style>
+      body {
+        font-family: Times New Roman;
+        font-size: 0.9em;
+        margin-top:25px;
+        margin-left:45px;
+        margin-right:45px;
+        margin-bottom:10px;
+      }
+    
+      div#header, div#footer {
+        padding: 10px;
+        color: white;
+        background-color: black;
+      }
+    
+      div#content {
+        margin: 5px;
+        padding: 10px;
+        background-color: lightgrey;
+      }
+    
+      div.article {
+        margin: 5px;
+        padding: 10px;
+        background-color: white;
+      }
+    
+      div#menu ul {
+        padding: 0;
+      }
+    
+      div#menu ul li {
+        display: inline;
+        margin: 5px;
+      }
+      .title_block {
+          border-bottom: 1px solid #000;
+          padding-bottom: 1px;
+          margin-bottom: 1px;
+      }
+      table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+      }
+    
+      td, th {
+      border: 0px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+      }
+    
+      </style>
+    </head>
+    <body>
+      <div>
+        <img align="left" src="assets/images/logo-icon4.png" width="280" height="80" />
+        <div align="right">
+          <b><label style="font-size:12px;">#108, First Floor, Azaiba Mall</label><br>
+          <label style="font-size:12px;">Azaba, Muscat, Oman</label><br></b>
+          <label style="font-size:12px;">+968 963 12346 /47 </label><img style="margin-top:2px;" src="assets/images/icon-tel.png" width="14" height="12" /><br>
+          <label style="font-size:12px;">info@spacedatarecovery.com</label><img style="margin-top:2px;" src="assets/images/icon-mail.png" width="14" height="12" /><br>
+          <label style="font-size:12px;">www.spacedatarecovery.com</label><img style="margin-top:2px;" src="assets/images/icon-space.png" width="14" height="12" /><br>
+        </div>
+      </div>
+      <br><br><br><br>
+      <div>
+        <img align="left" src="assets/images/quote.png" width="280" height="75" />
+        <div align="right">
+          <b><label style="font-size:17px;">Bill To</label></b>
+          <b><label style="font-size:16px;">'.$client->client_name.'</label><br></b>
+          <label style="font-size:16px;">'.$client->company.'</label><br>
+          <label style="font-size:16px;">'.$client->phone_value.'</label><br>
+          <label style="font-size:16px;">'.$client->street.'</label><br>
+          <label style="font-size:16px;">'.$client->country.'</label>
+        </div>
+      </div>
+      <br><br>
+      <div>
+        <label style="font-size:15px;">Invoice</label>
+        <label style="font-size:15px;padding-left:5em;">Date</label>
+      </div>
+      <div>
+        <b><label style="font-size:15px;">'.$job->job_id.'</label>
+        <label style="font-size:15px;padding-left:5.5em;">'.date_format($job->created_at,"d/m/Y").'</label>
+      </div>
+      <br><br><br>
+      <table >
+          <thead style="border-bottom:3pt solid black;color:#3092C3;">
+              <tr >
+                  <td><b>#</b></td>
+                  <td><b>Task Desciription</b></td>
+                  <td><b>Rate</b></td>
+                  <td><b>Qty</b></td>
+                  <td><b>Total</b></td>
+              </tr>
+          </thead>
+          <tbody style="border-bottom:1pt solid grey;">';
+    
+        $devices = DataDevices::where('job_id', $job_id)->get()->toArray();
+        $i = 1;
+        foreach($devices as $item)
+        {
+            $output .= '
             <tr>
-                <th style="width:50px;">Qty</th>
-                <th style="width:250px;">Description</th>
-                <th style="width:100px;">Unit Price</th>
-                <th style="width:100px;">Line total</th>
-            </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>1.00</td>
-            <td>Data Recover Service</td>
-            <td>OMR   '.number_format($invoice->item_total_price,3,".","").'</td>
-            <td>OMR   '.number_format($invoice->item_total_price,3,".","").'</td>
-        </tr>
-        </tbody>
-    </table>
-</div>
-<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<label style="font-size:16px;color:#2E74B5;"><b>Subtotal</b></label>&nbsp;&nbsp;&nbsp;<label style="font-size:16px;">OMR&nbsp;'.number_format($invoice->item_total_price,3,".","").'</label></div>
-<br>
-<br>
-<br>
-<br>
-<div align="center" style="font-size:14px;">Quote Valid for 30 Days from the date issed Except Ransomware Data Recovery</div>
-<div align="center" style="font-size:14px;">*Standard Terms and conditions apply. </div>
-<div align="center" ><b>Look Forward to Hear from You Soon :-)</b></div>
-<div align="center" style="font-size:11px;">SPACE RECOVERY, #108, First Floor, Azaiba Mall, Azaiba, Muscat, Sultanate Of Oman, www.spacedatarecovery.com </div>
-<div align="center" style="font-size:11px;">Email: mail@spacedatarecovery.com ,  Call: +968 963 12346 / 7</div>
-</body>
-</html>';
+            <td>'.number_format($i).'</td>
+            <td width="200">'.$job["services"].'-'.$item["category"].'-'.$item["brand"].'-'.$item["serial"].'</td>
+            <td>RO '.number_format($invoice->item_total_price,3,".","").'</td>
+            <td>1</td>
+            <td>RO '.number_format($invoice->item_total_price,3,".","").'</td>
+            </tr>';
+            $i ++;
+        }
+        $output .=
+    '     </tbody>
+        </table>
+      </div>
+      <br>
+      <br><hr /><br>
+      <div align="right">
+        <label style="font-size:16px;">Sub Total</label>
+        <label style="font-size:16px;padding-left:8em;">RO '.number_format($invoice->item_total_price,3,".","").'</label><br>
+      </div><br>
+      <div align="right">
+        <label style="font-size:16px;">Tax 00%</label>
+        <label style="font-size:16px;padding-left:8em;">RO '.number_format($invoice->item_total_price,3,".","").'</label><br>
+      </div><br>
+      <div align="right" >
+        <label style="background-color:#1483BB;color:white;font-size:20px;margin-top:5px;margin-bottom:5px;">Grand Total</label>
+        <label style="background-color:#1483BB;color:white;font-size:20px;padding-left:4em;padding-top:5px;padding-bottom:5px;">RO '.number_format($invoice->item_total_price,3,".","").'</label><br>
+      </div>
+      <br><br><br>
+      <div>
+        <img align="right" src="assets/images/nithin.png" width="77" height="35" />
+        <div align="left">
+          <b><label style="font-size:17px;">Payment Methods</label><br></b>
+          <label style="font-size:12px;">"We accept Cash, Visa, Master Card & Cheque"</label><br>
+        </div>
+      </div>
+      <br>
+      <div align="left">
+        <label style="font-size:12px;">Please make cheque payment to:</label><br>
+        <b><label style="font-size:12px;color:#3092C3;">Salman Mohammad Ashraf Trdg & Cotg.</label><br></b>
+        <label style="font-size:12px;">217-011519-001 | HSBC BANK OMAN S.A.O.G</label><br>
+      </div>
+      <br>
+      <div align="left">
+        <b><label style="font-size:15px;">TERMS & CONDITION</label><br></b>
+        <label style="font-size:12px;">50% adavance to start the recovery process.</label><br>
+        <label style="font-size:12px;">50% upon readliness of possible data.</label><br>
+      </div>
+      <div align="right">
+        <b><label style="font-size:22px;color:#3092C3;">Thank you</label><br></b>
+        <b><label style="font-size:22px;color:#3092C3;">For Submitting your Case!</label><br></b>
+      </div>
+      </div>
+      </body>
+    </html>';
         return $output;
     }
     function convert_job_data_to_media($job_id)
@@ -1153,176 +1139,171 @@ body {
         $client = Client::find($job->client_id);
         $device = DataDevices::where('job_id', $job_id)->first();
         $output = '
-        <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html lang="en">
-<head>
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-<title>HTML4</title>
-<style>
-<link href="assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-<link href="assets/plugins/summernote/summernote.css" rel="stylesheet" />
-<link href="css/style.css" rel="stylesheet"> 
-<link href="css/colors/blue.css" id="theme" rel="stylesheet">
+  <!DOCTYPE HTML>
+  <html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <title>HTML4</title>
+    <style>
+    body {
+      font-family: Times New Roman;
+      font-size: 0.9em;
+      margin-top:25px;
+      margin-left:45px;
+      margin-right:45px;
+      margin-bottom:35px;
+    }
 
-div#header, div#footer {
-  padding: 5px;
-  color: white;
-  background-color: black;
-}
+    div#header, div#footer {
+      padding: 10px;
+      color: white;
+      background-color: black;
+    }
 
-div#content {
-  margin: 4px;
-  padding: 10px;
-  background-color: lightgrey;
-}
+    div#content {
+      margin: 5px;
+      padding: 10px;
+      background-color: lightgrey;
+    }
 
-div.article {
-  margin: 4px;
-  padding: 10px;
-  background-color: white;
-}
+    div.article {
+      margin: 5px;
+      padding: 10px;
+      background-color: white;
+    }
 
-div#menu ul {
-  padding: 0;
-}
+    div#menu ul {
+      padding: 0;
+    }
 
-div#menu ul li {
-  display: inline;
-  margin: 5px;
-}
-.title_block {
-    border-bottom: 3px solid #000;
-    padding-bottom: 1px;
-    margin-bottom: 1px;
-}
-table {
-font-family: arial, sans-serif;
-border-collapse: collapse;
-width: 100%;
-}
-
-td, th {
-border: 1px solid #dddddd;
-text-align: left;
-padding: 8px;
-}
-
-body {
-    margin-left:30px;
-    margin-right:25px;
-    margin-top:0px;
-    margin-bottom:0px;
-}
-
-#customers {
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    font-size:14px;
+    div#menu ul li {
+      display: inline;
+      margin: 5px;
+    }
+    .title_block {
+        border-bottom: 1px solid #000;
+        padding-bottom: 1px;
+        margin-bottom: 1px;
+    }
+    table {
+    font-family: arial, sans-serif;
     border-collapse: collapse;
     width: 100%;
-  }
-  
-  #customers td, #customers th {
-    border: 1px solid #ddd;
-    padding: 8px;
-  }
-  
-  #customers tr:nth-child(even){background-color: #f2f2f2;}
-  
-  #customers tr:hover {background-color: #ddd;}
-  
-  #customers th {
-    padding-top: 3px;
-    padding-bottom: 3px;
-    text-align: center;
-    background-color: #2E74B5;
-    color: black;
-  }
-  #customers1 {
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    font-size:14px;
-    border-collapse: collapse;
-    width: 100%;
-  }
-  
-  #customers1 td, #customers1 th {
-    border: 1px solid #ddd;
-    padding: 8px;
-  }
-  
-  #customers1 tr:nth-child(even){background-color: #f2f2f2;}
-  
-  #customers1 tr:hover {background-color: #ddd;}
-  
-  #customers1 th {
-    padding-top: 3px;
-    padding-bottom: 3px;
-    text-align: center;
-    background-color: #436784;
-    color: white;
-  }
+    }
 
-</style>
-</head>
-<body>
-<div>
-<img src="assets/images/logo_medium.png"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<label style="font-size:35px;color:#3FC3F3;" align="right"><b>SPACE RECOVERY</b> </label>
-<label style="font-size:14px;" align="center"> #108, First Floor, Azaiba Mall, Azaiba, Muscat, Oman, www.spacedatarecovery.com, Ph:+968 963 12346 / 7 </label>
-</div>
-<br>
-<div>
-<label style="font-size:23px;color:#3B6489;" align="left"><b>MEDIA EVALUATION REPORT #'.$job_id.'</b> </label><br>
-<label style="font-size:18px;color:#3B6489;" align="left"><b>'."25/01/2019 ".'</b> </label>
-</div>
-<br>
-<div>
-<label style="font-size:18px;color:#122F6B;" align="right"><b>Media Details</b> </label><br>
-<label style="font-size:14px;color:#122F6B;">Case ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:14px;">'.$job_id.'</label><br>
-<label style="font-size:14px;color:#122F6B;">Media Type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:14px;">'.$device->type.'</label><br>
-<label style="font-size:14px;color:#122F6B;">Brand&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:14px;">'.$device->brand.'</label><br>
-<label style="font-size:14px;color:#122F6B;">Capacity&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:14px;">'.$device->capacity.'</label><br>
-<label style="font-size:14px;color:#122F6B;">Model&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:14px;">'.$device->model.'</label><br>
-<label style="font-size:14px;color:#122F6B;">Serial Number&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:14px;">'.$device->serial.'</label><br>
-<label style="font-size:14px;color:#122F6B;">DOM&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:14px;">'.$device->dom.'</label><br>
-<label style="font-size:14px;color:#122F6B;">Platter/Head&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:14px;">'.$device->platter_head.'</label><br>
-<label style="font-size:14px;color:#122F6B;">Made In&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:14px;">'.$device->made_in.'</label><br>
-</div>
-<br>
-<div>
-<label style="font-size:18px;color:#122F6B;" align="right"><b>Drive Status</b> </label><br>
-<label style="font-size:14px;color:#122F6B;">PCB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:14px;">'.$device->PCB.'</label><br>
-<label style="font-size:14px;color:#122F6B;">Motor&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:14px;">'.$device->motor.'</label><br>
-<label style="font-size:14px;color:#122F6B;">Firmware&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:14px;">'.$device->firmware.'</label><br>
-<label style="font-size:14px;color:#122F6B;">Encryption&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:14px;">'.$device->encryption.'</label><br>
-<label style="font-size:14px;color:#122F6B;">Head&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:  </label><label style="font-size:14px;">'.$device->heads.'</label><br>
-</div>
-<br>
-<div>
-<label style="font-size:18px;color:#122F6B;" align="right"><b>Analysis</b> </label>
-&nbsp;&nbsp;&nbsp;&nbsp;<textarea style="font-size:14px;border:none;" type="text" rows="5">' .$device->diagnosis. '</textarea>
-</div><br>
-<div>
-<label style="font-size:18px;color:#122F6B;" align="right"><b>Consultation </b> </label>
-&nbsp;&nbsp;&nbsp;&nbsp;<textarea style="font-size:14px;border:none;" type="text" rows="5">' .$device->consultation. '</textarea>
-</div><br>
-<div>
-<label style="font-size:18px;color:#122F6B;" align="right"><b>Recovery Time/Cost </b> </label>
-&nbsp;&nbsp;&nbsp;&nbsp;<textarea style="font-size:14px;border:none;" type="text" rows="5">' .$device->recover. '</textarea>
-</div>
-<div>
-<label style="font-size:18px;color:#122F6B;" align="right"><b>Approval and Authority to Proceed  </b> </label><br>
-<label style="font-size:14px;">We Approve the Job as described above, and authorize SPACE team to proceed </label><br>
-</div>
-<br>
-<div>
-<label style="font-size:13px;" align="right">Approved by  </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<label style="font-size:13px;">Date </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<label style="font-size:13px;">Seal </label>
-</div>
-<br>
-<div align="center" style="font-size:12px;">Email: mail@spacedatarecovery.com ,  Call: +968 963 12346 / 7</div>
-</body>
-</html>';
+    td, th {
+    border: 0px solid #dddddd;
+    text-align: left;
+    padding: 2px;
+    }
+
+    </style>
+  </head>
+  <body>
+    <div>
+      <img align="left" src="assets/images/logo-icon4.png" width="280" height="80" />
+      <div align="right">
+        <b><label style="font-size:12px;">#108, First Floor, Azaiba Mall</label><br>
+        <label style="font-size:12px;">Azaba, Muscat, Oman</label><br></b>
+        <label style="font-size:12px;">+968 963 12346 /47 </label><img style="margin-top:2px;" src="assets/images/icon-tel.png" width="14" height="12" /><br>
+        <label style="font-size:12px;">info@spacedatarecovery.com</label><img style="margin-top:2px;" src="assets/images/icon-mail.png" width="14" height="12" /><br>
+        <label style="font-size:12px;">www.spacedatarecovery.com</label><img style="margin-top:2px;" src="assets/images/icon-space.png" width="14" height="12" /><br>
+      </div>
+    </div>
+    <br><br>
+    <div>
+      <img align="left" src="assets/images/report.png" width="280" height="75" />
+      <div align="right">
+        <b><label style="font-size:16px;">'.$client->client_name.'</label><br></b>
+        <label style="font-size:16px;">'.$client->company.'</label><br>
+        <label style="font-size:16px;">'.$client->street.'</label><br>
+        <label style="font-size:16px;">'.$client->country.'</label><br>
+      </div>
+    </div>
+    <br><br><br>
+    <div>
+      <label style="font-size:15px;">CaseID</label>
+      <label style="font-size:15px;padding-left:5em;">Date</label>
+      <label style="font-size:15px;padding-left:5em;">Service</label>
+      <label style="font-size:15px;padding-left:18em;text-align:right;">'.$client->phone_value.'</label>
+    </div>
+    <div>
+      <b><label style="font-size:15px;">'.$job->job_id.'</label>
+      <label style="font-size:15px;padding-left:5.5em;">'.date_format($job->created_at,"d/m/Y").'</label>
+      <label style="font-size:15px;padding-left:2em;">'.$job->services.'</label>
+      <label style="font-size:15px;padding-left:10em;text-align:right;">'.$client->email_value.'</label></b>
+    </div>
+    <br><br>
+    <div style="border-bottom: 4pt solid black;margin-bottom:5px;">
+      <b><label style="font-size:18px;color:#1483BB;">MEDIA EVALUATION REPORT</label><br>
+    </div>
+    <br>
+    <div>
+      <table style="border-bottom:0pt solid grey;">
+        <thead style="color:#1483BB;">
+          <tr>
+            <td>#MEDIA DETAILS</td>
+            <td>#MEDIA DETAILS</td>
+            <td>#MEDIA STATUS</td>
+          </tr>
+        </thead>
+        <tbody style="font-size:13px;margin:auto;">
+        <tr>
+          <td>Category: '.$device->category.'</td>
+          <td>Interface: '.$device->interface.'</td>
+          <td>PCB: '.$device->PCB.'</td>
+        </tr>
+        <tr>
+          <td>Media Type: '.$device->type.'</td>
+          <td>Platter: '.$device->platter_head[0].'</td>
+          <td>MOTOR: '.$device->motor.'</td>
+        </tr>
+        <tr>
+          <td>Brand: '.$device->brand.'</td>
+          <td>Heads: '.$device->platter_head[2].'</td>
+          <td>Firmware: '.$device->firmware.'</td>
+        </tr>
+        <tr>
+          <td>Capacity: '.$device->capacity.'</td>
+          <td>Made In: '.$device->made_in.'</td>
+          <td>ENCRYPTION: '.$device->encryption.'</td>
+        </tr>
+        <tr>
+          <td>Serian No: '.$device->serial.'</td>
+          <td>DOM: '.$device->dom.'</td>
+          <td>HEADS: '.$device->heads.'</td>
+        </tr>
+        <tr>
+          <td>Model: '.$device->model.'</td>
+          <td></td>
+          <td></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <br><br>
+    <div align="left">
+      <label style="font-size:15px;color:#1483BB;">#ANALYSIS</label><br>
+      <textarea style="font-size:13px;border:0px;">'.$device->diagnosis.'</textarea>
+    </div>
+    <br>
+    <div align="left">
+      <label style="font-size:15px;color:#1483BB;">#CONSULTATION</label><br>
+      <textarea style="font-size:13px;border:0px;">'.$device->consultation.'</textarea>
+    </div>
+    <br>
+    <div align="left">
+      <label style="font-size:15px;color:#1483BB;">#RECOVER TIME</label><br>
+      <textarea style="font-size:13px;border:0px;">'.$device->recover.'</textarea>
+    </div>
+    <br>
+    <div align="right">
+      <b><label style="font-size:22px;">REPORT BY</label><br></b>
+      <b><label style="font-size:22px;">Nithin Ziva</label><br></b>
+      <label style="font-size:22px;">CTO</label>
+    </div>
+    </body>
+  </html>';
         return $output;
     }
 }
