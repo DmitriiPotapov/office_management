@@ -82,8 +82,8 @@
                       </div>
                       <select class="custom-select col-12" id="inlineFormCustomSelect" name = "ui_language">
                         <option selected="">Choose...</option>
-                        <option value="1">English</option>
-                        <option value="6">Arabic</option>
+                        <option value="English">English</option>
+                        <option value="Arabic">Arabic</option>
                     </select>
                   </div>
                 </div>

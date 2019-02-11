@@ -48,7 +48,8 @@
                         <td>{{ $item->item_total_price }}</td>
                         <td>{{ $item->created_at }}</td>
                         <td>{{ $item->created_by }}</td>    
-                        <td>
+                        <td class="td_invoice">
+                            <a href="{{ route('editInvoice', ['id' => $item['id']]) }}" data-toggle="tooltip" data-original-title="Edit"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
                             <a href="{{ URL::to('invoice/deleteAction?id=') }}{{ $item->id }}"><button class="btn-sm btn-youtube waves-effect btn-circle waves-light" type="button"> <i class="fa fa-trash" aria-hidden="true"></i></button></a>
                         </td>
                         </tr>  
@@ -80,6 +81,12 @@
 <!-- end - This is for export functionality only -->
 <script>
     $(document).ready(function() {
+        $("body").on('click', "#example23 tbody td", function() {
+            if($(this).hasClass("td_invoice")) return;
+            obj = $(this).closest("tr").find('a[data-original-title="Edit"]');
+            document.location.replace(obj.attr("href"));
+        })
+
         $('#myTable').DataTable();
         $(document).ready(function() {
             var table = $('#example').DataTable({

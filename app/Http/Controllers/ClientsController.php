@@ -106,7 +106,11 @@ class ClientsController extends Controller
      */
     public function edit($id)
     {
-        //
+        if( !Auth::check() )
+            return redirect()->route('login');
+
+        $client = Client::where('id', $id)->first();
+        return view('clients.edit_client', compact('client'));
     }
 
     /**
@@ -116,9 +120,33 @@ class ClientsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+
+
+
+    public function update(Request $request)
     {
-        //
+        $id = $request->client_id;
+        $client = Client::where('id', $id)->first();
+        $client->client_name = $request->client_name;
+        $client->street = $request->street;
+        $client->postal_code = $request->postal_code;
+        $client->country = $request->country;
+        $client->company = $request->company;
+        $client->client_group = $request->client_group;
+        $client->ui_language = $request->ui_language;
+        $client->email_value = $request->email_value;
+        $client->phone_value = $request->phone_value;
+        $client->client_note = $request->client_note;
+
+        $client->update();
+
+
+        if($request->submitType == 0) {
+            return redirect(route('allclients'));
+        }else{
+            return redirect(route('show_add_job', ['client_id' => $client->id]));
+        }
+
     }
 
     /**

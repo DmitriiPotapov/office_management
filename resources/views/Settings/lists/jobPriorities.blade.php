@@ -26,8 +26,6 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">Data Export</h4>
-                    <h6 class="card-subtitle">Export data to Copy, CSV, Excel, PDF & Print</h6>
                     <div class="table-responsive m-t-40">
                         <table id="example23" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
                             <thead>
@@ -42,7 +40,10 @@
                             @foreach($jobPriorities as $item)
                                 <tr>
                                     <td>{{$item->job_priority_name}}</td>
-                                    <td><a href = "{{URL::to('settings/lists/jobpriorities/deleteAction?id=')}}{{$item->id}}"><button class="btn-sm btn-youtube waves-effect btn-circle waves-light" type="button"> <i class="fa fa-trash" aria-hidden="true"></i> </button></a></td>
+                                    <td>
+                                        <a href="{{ route('editJobPriority', ['id' => $item['id']]) }}" data-toggle="tooltip" data-original-title="Edit"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
+                                        <a href = "{{URL::to('settings/lists/jobpriorities/deleteAction?id=')}}{{$item->id}}"><button class="btn-sm btn-youtube waves-effect btn-circle waves-light" type="button"> <i class="fa fa-trash" aria-hidden="true"></i> </button></a>
+                                    </td>
                                 </tr>
                             @endforeach
   

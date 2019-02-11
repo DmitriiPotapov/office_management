@@ -15,14 +15,14 @@ class CreateBackupsTable extends Migration
     {
         Schema::create('backups', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('invoice_id');
-            $table->string('job_id');
-            $table->string('type');
-            $table->string('capacity');
-            $table->string('price');
-            $table->string('vat');
-            $table->string('disaccount');
-            $table->string('total_price');
+            $table->string('invoice_id')->nullable();
+            $table->string('job_id')->nullable();
+            $table->string('type')->nullable();
+            $table->string('capacity')->nullable();
+            $table->string('price')->nullable();
+            $table->string('vat')->nullable();
+            $table->string('disaccount')->nullable();
+            $table->string('total_price')->nullable();
             $table->timestamps();
         });
     }

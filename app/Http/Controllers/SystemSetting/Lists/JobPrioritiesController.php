@@ -63,7 +63,8 @@ class JobPrioritiesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $jobPriority = JobPriority::where('id', $id)->first();
+        return view('settings/lists/jobpriorities_edit', compact('jobPriority'));
     }
 
     /**
@@ -73,9 +74,14 @@ class JobPrioritiesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $id = $request->jobpriority_id;
+        $jobpriority = JobPriority::where('id', $id)->first();
+        $jobpriority->job_priority_name = $request->update_jobpriorityname;
+        $jobpriority->update();
+
+        return redirect(route('jobpriorities'));
     }
 
     /**

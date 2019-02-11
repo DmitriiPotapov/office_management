@@ -26,8 +26,6 @@
         <div class="col-12">
             <div class="card">
             <div class="card-body">
-                <h4 class="card-title">Data Export</h4>
-                <h6 class="card-subtitle">Export data to Copy, CSV, Excel, PDF & Print</h6>
                 <div class="table-responsive m-t-40">
                     <table id="example23" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
                         <thead>
@@ -53,9 +51,8 @@
                             <td>{{ $item->input_price }}</td>
                             <td>{{ $item->diler_info }}</td>
                             <td>{{ $item->created_at }}</td>    
-                                <td>
-                                    <button type="button" class="btn-sm btn-info btn-circle"><i class="fa fa-file-text"></i> </button>
-                                    <button type="button" class="btn-sm btn-info btn-circle"><i class="fa fa-exchange"></i> </button>
+                                <td class="td_stock">
+                                <a href="{{ route('editStock', ['id' => $item['id']]) }}" data-toggle="tooltip" data-original-title="Edit"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>  
                                 <a href="{{ URL::to('stock/deleteAction?id=') }}{{ $item->id }}"><button class="btn-sm btn-danger btn-circle" type="button"> <i class="fa fa-trash" aria-hidden="true"></i> </button></a>
                                 </td>
                               </tr>
@@ -85,6 +82,12 @@
 <!-- end - This is for export functionality only -->
 <script>
     $(document).ready(function() {
+        $("body").on('click', "#example23 tbody td", function() {
+            if($(this).hasClass("td_stock")) return;
+            obj = $(this).closest("tr").find('a[data-original-title="Edit"]');
+            document.location.replace(obj.attr("href"));
+        })
+
         $('#myTable').DataTable();
         $(document).ready(function() {
             var table = $('#example').DataTable({

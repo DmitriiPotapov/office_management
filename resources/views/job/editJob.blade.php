@@ -32,7 +32,7 @@
                             <a class="btn btn-danger waves-effect waves-light" href="{{ route('checkout_form',['job_id' => $job['job_id']]) }}" ><span class="btn-label"><i class="fa fa-check" ></i></span>Check-out form</a>
                             <a class="btn btn-success waves-effect waves-light" href="{{ route('generate_invoice',['job_id' => $job['job_id']]) }}"><span class="btn-label"><i class="fa fa-envelope-o"></i></span>Generate invoice</a>
                             <a class="btn btn-info waves-effect waves-light" href="{{ route('generate_quote',['job_id' => $job['job_id']]) }}"><span class="btn-label"><i class="fa fa-envelope-o"></i></span>Generate Quote</a>
-                            <a class="btn btn-success waves-effect waves-light" href="{{ route('generate_media_report',['job_id' => $job['job_id']]) }}"><span class="btn-label"><i class="fa fa-envelope-o"></i></span>Media Evolution Report</a>
+                            <a class="btn btn-success waves-effect waves-light" href="{{ route('generate_media_report',['job_id' => $job['job_id']]) }}"><span class="btn-label"><i class="fa fa-envelope-o"></i></span>Media Evaluation Report</a>
                         </div>
                         <div class="modal fade" id="assignto" tabindex="-1" role="dialog" >
                             <form action="{{ route('assign_job') }}" method="POST">
@@ -1210,6 +1210,7 @@
 
 <script>
 $(document).ready(function() {
+
     $('#example23').DataTable();
     $('.dropify').dropify();
 

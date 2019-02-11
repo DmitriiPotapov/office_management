@@ -65,7 +65,9 @@ class BasejobStatuesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $basejobstatus = BaseJobStatuse::where('id', $id)->first();
+       
+        return view('settings/lists/basejobstatues_edit', compact('basejobstatus'));
     }
 
     /**
@@ -75,9 +77,15 @@ class BasejobStatuesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $id = $request->job_status_id;
+        $basejobstatus = BaseJobStatuse::where('id', $id)->first();
+        $basejobstatus->status_name = $request->new_jobstatus;
+
+        $basejobstatus -> update();
+
+        return redirect(route('basejobstatuses'));
     }
 
     /**

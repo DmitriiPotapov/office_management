@@ -29,12 +29,12 @@
                 <li>
                     <a class="has-arrow " href="#" aria-expanded="false"><i class="ti-comments"></i><span class="hide-menu">Quotes </span></a>
                     <ul aria-expanded="false" class="collapse">
-                        <li><a href="#">All Quotes </a></li>
-                        <li><a href="#">New Quote </a></li>
+                        <li><a href="{{ URL::to('quote/allview') }}">All Quotes </a></li>
+                    <li><a href="{{ URL::to('quote/add') }}">New Quote </a></li>
                     </ul>
                 </li>            
                 <li>
-                    <a class="has-arrow " href="#" aria-expanded="false"><i class="fa fa-bank"></i><span class="hide-menu">Billing </span></a>
+                    <a class="has-arrow " href="#" aria-expanded="false"><i class="fa fa-bank"></i><span class="hide-menu">Invoices </span></a>
                     <ul aria-expanded="false" class="collapse">
                         <li><a href="{{ URL::to('invoice/allview') }}">All invoices </a></li>
                         <li><a href="{{ URL::to('invoice/add') }}">New invoice </a></li>
@@ -52,8 +52,8 @@
                 <li>
                     <a class="has-arrow " href="#" aria-expanded="false"><i class="ti-archive"></i><span class="hide-menu">Expenses </span></a>
                     <ul aria-expanded="false" class="collapse">
-                        <li><a href="#">All Expenses </a></li>
-                        <li><a href="#">New Expense </a></li>
+                    <li><a href="{{ URL::to('expense/allview') }}">All Expenses </a></li>
+                        <li><a href="{{ URL::to('expense/add') }}">New Expense </a></li>
                     </ul>
                 </li>   
                 <li>

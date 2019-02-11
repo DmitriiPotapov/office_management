@@ -40,10 +40,10 @@
                                             </span>
                                         </div>
                                         <select class="form-control custom-select" id="item_role" name="item_role">
-                                            <option value="Received">Clone</option>
-                                            <option value="In process">Patient</option>
-                                            <option value="Waiting for parts">Backup</option>
-                                            <option value="Donor">Paid</option>
+                                            <option value="Clone">Clone</option>
+                                            <option value="Patient">Patient</option>
+                                            <option value="Backup">Backup</option>
+                                            <option value="Paid">Paid</option>
                                         </select>
                                     </div>
                                 </div>
@@ -144,8 +144,8 @@
                                             </span>
                                         </div>
                                         <select class="form-control custom-select" id="interface" name="interface">
-                                            <option value="Western Digital">USB </option>
-                                            <option value="Seagate">SATA</option>
+                                            <option value="USB">USB </option>
+                                            <option value="SATA">SATA</option>
                                             <option value="mSATA">mSATA</option>
                                             <option value="PCi">PCi</option>
                                             <option value="SAS">SAS</option>

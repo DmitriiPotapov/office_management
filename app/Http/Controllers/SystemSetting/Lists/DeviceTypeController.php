@@ -63,7 +63,9 @@ class DeviceTypeController extends Controller
      */
     public function edit($id)
     {
-        //
+        $devicetype = DeviceType::where('id', $id)->first();
+        
+        return view('settings/lists/devicetype_edit', compact('devicetype'));
     }
 
     /**
@@ -73,9 +75,14 @@ class DeviceTypeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $id = $request->devicetype_id;
+        $devicetype = DeviceType::where('id', $id)->first();
+        $devicetype->device_name = $request->update_devicename;
+
+        $devicetype->update();
+        return redirect(route('devicetypes'));
     }
 
     /**

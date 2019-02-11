@@ -52,15 +52,10 @@
                         <span class="input-group-text">Language</span>
                     </div>
                     <select class="custom-select col-12 invoice_language" id="invoice_language" name="invoice_language">
-                        <option selected="">Choose...</option>
+                        
                         <option value="English">English</option>
-                        <option value="Russian">Russian</option>
-                        <option value="Bengali">Bengali</option>
-                        <option value="Portuguese">Portuguese</option>
-                        <option value="Japan">Japan</option>
                         <option value="Arabic">Arabic</option>
-                        <option value="Hindi">Hindi</option>
-                        <option value="Spanish">Spanish</option>
+                        
                     </select>
                 </div>
             </div>
@@ -72,21 +67,12 @@
                         <span class="input-group-text">Currency</span>
                     </div>
                     <select class="custom-select col-12 currency" id="currency" name="currency">
-                        <option selected="">Choose...</option>
-                        <option value="Peso">Peso</option>
-                        <option value="Australia Dollar">Australia Dollar</option>
-                        <option value="Bahamas Dollar">Bahamas Dollar</option>
-                        <option value="Belize Dollar">Belize Dollar</option>
-                        <option value="Brazil Dollar">Brazil Dollar</option>
-                        <option value="Pound">Pound</option>
-                        <option value="Canada Dollar">Canada Dollar</option>
-                        <option value="Cayman Dollar">Cayman Dollar</option>
-
-                        <option value="China Yuan">China Yuan</option>
-                        <option value="Euro">Euro</option>
-                        <option value="Rupee"> Rupee</option>
-                        <option value="Rupiah">Rupiah</option>
-                        <option value="Yen">Yen</option>
+                      
+                        <option value="INR">INR</option>
+                        <option value="RO">RO</option>
+                        <option value="Dhs">Dhs</option>
+                        <option value="USD">USD</option>
+                        <option value="EU">EU</option>  
                     </select>
                 </div>
             </div>
@@ -106,7 +92,7 @@
                                                 <th>Capacity</th>
                                                 <th>Price</th>
                                                 <th>VAT(%)</th>
-                                                <th>Disaccount(%)</th>
+                                                <th>Discount(%)</th>
                                                 <th>Total Price</th>
                                             </tr>
                                         </thead>
@@ -142,7 +128,7 @@
                                                 <th>Capacity</th>
                                                 <th>Price</th>
                                                 <th>VAT(%)</th>
-                                                <th>Disaccount(%)</th>
+                                                <th>Discount(%)</th>
                                                 <th>Total Price</th>
                                             </tr>
                                         </thead>
@@ -688,6 +674,28 @@
             $("#backup_disaccount").html(backup_disaccount);
             $("#backup_total_price").html(backup_total_price);
         });
+
+        $("#item_total_price").on('click', function() {
+            var item_price = $("#item_price").text();
+         
+            var item_disaccount = $("#item_disaccount").text();
+            var item_total_price = Number(item_price)-Number(item_disaccount);
+            $("#item_total_price").html(item_total_price);
+
+
+        });
+
+        $("#backup_total_price").on('click', function() {
+            var backup_price = $("#backup_price").text();
+         
+            var backup_disaccount = $("#backup_disaccount").text();
+            var backup_total_price = Number(backup_price)-Number(backup_disaccount);
+            $("#backup_total_price").html(backup_total_price);
+
+
+        });
+
+
 
   
     });        

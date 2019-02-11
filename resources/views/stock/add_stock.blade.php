@@ -22,9 +22,9 @@
                           </div>
                           <select class="custom-select col-12" id="inlineFormCustomSelect" name = "device_type">
                               <option selected="">Choose...</option>
-                              <option value="1">One</option>
-                              <option value="2">Two</option>
-                              <option value="3">Three</option>
+                              <option value="One">One</option>
+                              <option value="Two">Two</option>
+                              <option value="Three">Three</option>
                           </select>
                       </div>
                     </div>
@@ -36,17 +36,17 @@
                           </div>
                           <select class="custom-select col-12" id="inlineFormCustomSelect" name = "connection">
                               <option selected="">Choose...</option>
-                              <option value="1">M.2</option>
-                              <option value="2">mSATA</option>
-                              <option value="3">Other</option>
-                              <option value="4">PATA</option>
-                              <option value="5">PCI-Express</option>
-                              <option value="6">SAS</option>
-                              <option value="7">SATA</option>
-                              <option value="8">SATA Express</option>
-                              <option value="9">USB 2.0</option>
-                              <option value="9">USB 3.0</option>
-                              <option value="9">USB 3.1</option>
+                              <option value="M.2">M.2</option>
+                              <option value="mSATA">mSATA</option>
+                              <option value="Other">Other</option>
+                              <option value="PATA">PATA</option>
+                              <option value="PCI-Express">PCI-Express</option>
+                              <option value="SAS">SAS</option>
+                              <option value="SATA">SATA</option>
+                              <option value="SATA Express">SATA Express</option>
+                              <option value="USB 2.0">USB 2.0</option>
+                              <option value="USB 3.0">USB 3.0</option>
+                              <option value="USB 3.1">USB 3.1</option>
                           </select>
                         </div>  
                       </div>
@@ -57,13 +57,13 @@
                             </div>
                             <select class="custom-select col-12" id="inlineFormCustomSelect" name = "form_factor">
                                 <option selected="">Choose...</option>
-                                <option value="1">1.0"</option>
-                                <option value="2">1.3"</option>
-                                <option value="3">1.8"</option>
-                                <option value="4">2.5"</option>
-                                <option value="5">3.5"</option>
-                                <option value="6">5.25"</option>
-                                <option value="6">Other</option>
+                                <option value='1.0"'>1.0"</option>
+                                <option value='1.3"'>1.3"</option>
+                                <option value='1.8"'>1.8"</option>
+                                <option value='2.5"'>2.5"</option>
+                                <option value='3.5"'>3.5"</option>
+                                <option value='5.25"'>5.25"</option>
+                                <option value='Other'>Other</option>
                             </select>
                         </div>
                       </div>

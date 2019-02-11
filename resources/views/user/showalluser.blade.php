@@ -43,8 +43,8 @@
                                 <td>{{ $item['user_group'] }}</td>
                                 <td>{{ $item['role'] }}</td>
                                 <td>{{ $item['created_at'] }}</td>
-                                <td>
-                                <a class="btn btn-circle btn-sm btn-info" href="{{ route('show_edit_user',['id' => $item['id']]) }}"><i class="fa fa-pencil"></i></a>
+                                <td class="td_showalluser">
+                                <a class="btn btn-circle btn-sm btn-info" data-type = "Edit" href="{{ route('show_edit_user',['id' => $item['id']]) }}"><i class="fa fa-pencil"></i></a>
                                 <a class="btn btn-circle btn-sm btn-success"><i class="fa fa-lock"></i></a>
                                 <a class="btn btn-circle btn-sm btn-danger" href="{{ route('delete_user',['id' => $item['id']]) }}"><i class="fa fa-times"></i></a></td>
                             </tr>
@@ -74,6 +74,11 @@
 
 <script>
 $(document).ready(function() {
+    $("body").on('click', "#myTable tbody td", function() {
+            if($(this).hasClass("td_showalluser")) return;
+            obj = $(this).closest("tr").find('a[data-type="Edit"]');
+            document.location.replace(obj.attr("href"));
+        })
     $('#myTable').DataTable();
 });
 $('#myTable').DataTable({

@@ -12,11 +12,7 @@
 <!-- Bread crumb and right sidebar toggle -->
     <div class="row page-titles">
         <div class="col-md-6 col-8 align-self-center">
-            <h3 class="text-themecolor m-b-0 m-t-0">Users and Groups</h3>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="javascript:void(0)">User Groups</a></li>
-                <li class="breadcrumb-item active">Edit user group</li>
-            </ol>
+            <h3 class="text-themecolor m-b-0 m-t-0">Update Users and Groups</h3>
         </div>
     </div>
     <!-- End Bread crumb and right sidebar toggle -->
@@ -40,7 +36,7 @@
                             </div>
                         </div>
                         <div class="form-actions">
-                            <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Save</button>
+                            <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Update</button>
                             <button type="button" class="btn btn-inverse">Cancel</button>
                         </div>
                     </form>

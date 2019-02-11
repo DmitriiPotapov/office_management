@@ -46,7 +46,7 @@ class InvoiceController extends Controller
             
         $unique_id =  Date('Y:m:d').':'.rand();
         $jobIds = DB::table('data_jobs')->pluck('job_id');
-        return view('invoice/add_invoice',compact('unique_id', 'jobIds'));
+        return view('invoice/add_invoice', compact('unique_id', 'jobIds'));
     }
 
     public function getDetailJob(Request $request) {
@@ -117,6 +117,7 @@ class InvoiceController extends Controller
         $backup_vat = $request->backup_vat;
         $backup_disaccount = $request->backup_disaccount;
         $backup_total_price = $request->backup_total_price;
+   
 
         $backupItem = new Backup();
         $backupItem->invoice_id = $invoice_id;
@@ -154,7 +155,12 @@ class InvoiceController extends Controller
      */
     public function edit($id)
     {
-        //
+        $invoice = Invoice::where('id', $id)->first();
+        $invoice_id = DB::table('invoices')->where('id', $id)->value('invoice_id');
+        $job_status = DB::table('invoices')->where('id', $id)->value('status');
+        $job_id = DB::table('invoices')->where('id', $id)->value('job_id');
+        $backupItem = Backup::where('job_id', $job_id)->first();
+        return view('invoice/edit_invoice', compact('invoice', 'backupItem', 'invoice_id', 'job_id', 'job_status'));
     }
 
     /**
@@ -164,9 +170,72 @@ class InvoiceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $id = $request->update_invoice_id;
+        $invoice = Invoice::where('id', $id)->first();
+
+        $invoice_id = $request->invoice_id;
+        $job_id = $request->update_job_id;
+        $client_name = $request->client_name;
+        $job_status = $request->update_job_status;
+        $service_name = $request->service_name;
+        $invoice_language = $request->invoice_language;
+        $currency = $request->currency;
+        $invoice_note = $request->invoice_note;
+        
+        $item_type = $request->item_type;
+        $item_capacity = $request->item_capacity;
+        $item_price = $request->item_price;
+        $item_vat = $request->item_vat;
+        $item_disaccount = $request->item_disaccount;
+        $item_total_price = $request->item_total_price;
+
+
+        
+ 
+        $invoice->invoice_id = $invoice_id;
+        $invoice->job_id = $job_id;
+        $invoice->status = $job_status;
+        $invoice->client_name = $client_name;
+        $invoice->service = $service_name;
+        $invoice->invoice_language = $invoice_language;
+        $invoice->currency = $currency;
+        $invoice->invoice_note = $invoice_note;
+        $invoice->item_type = $item_type;
+        $invoice->item_capacity = $item_capacity;
+        $invoice->item_price = $item_price;
+        $invoice->item_vat = $item_vat;
+        $invoice->item_disaccount = $item_disaccount;
+        $invoice->item_total_price = $item_total_price;
+        $invoice->created_by = Auth::user()->username;
+
+        $invoice->update();
+
+        $backup_type = $request->backup_type;
+        $backup_capacity = $request->backup_capacity;
+        $backup_price = $request->backup_price;
+        $backup_vat = $request->backup_vat;
+        $backup_disaccount = $request->backup_disaccount;
+        $backup_total_price = $request->backup_total_price;
+
+        $backupItem = Backup::where('invoice_id', $invoice_id)->first();
+        
+        $backupItem->job_id = $job_id;
+        $backupItem->invoice_id = $invoice_id;
+        $backupItem->type = $backup_type;
+        $backupItem->capacity = $backup_capacity;
+        $backupItem->price = $backup_price;
+        $backupItem->vat = $backup_vat;
+        $backupItem->disaccount = $backup_disaccount;
+        $backupItem->total_price = $backup_total_price;
+
+
+        $backupItem->update();
+
+        return response()->json(array(
+            'response' => 'success'           
+        ));      
     }
 
     /**

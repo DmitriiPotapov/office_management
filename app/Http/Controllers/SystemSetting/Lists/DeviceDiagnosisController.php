@@ -65,7 +65,8 @@ class DeviceDiagnosisController extends Controller
      */
     public function edit($id)
     {
-        //
+        $deviceDiagnosis = DeviceDiagnosis::where('id', $id)->first();
+        return view('settings/lists/devicediagnosis_edit', compact('deviceDiagnosis'));
     }
 
     /**
@@ -75,9 +76,15 @@ class DeviceDiagnosisController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $id = $request->device_diagnosis_id;
+        $deviceDiagnosis = DeviceDiagnosis::where('id', $id)->first();
+        $deviceDiagnosis->device_name = $request->update_devicename;
+        $deviceDiagnosis->device_type = $request->update_devicetype;
+        $deviceDiagnosis->update();
+
+        return redirect(route('devicediagnosis'));
     }
 
     /**

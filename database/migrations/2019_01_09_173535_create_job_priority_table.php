@@ -15,7 +15,7 @@ class CreateJobPriorityTable extends Migration
     {
         Schema::create('job_priorities', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('job_priority_name');
+            $table->string('job_priority_name')->nullable();
             $table->timestamps();
         });
     }

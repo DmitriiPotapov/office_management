@@ -48,8 +48,8 @@
                             <td>{{ $client->street }}, {{ $client->postal_code }}, {{ $client->country }}</td>
                             <td>{{ $client->phone_value }}</td>
                             <td>{{ $client->email_value }}</td>                         
-                            <td>
-                                <!--<button type="button" class="btn-sm btn-info btn-circle"><i class="fa fa-file-text"></i></button>-->
+                            <td class="td_client">
+                            <a href="{{ route('editClient', ['id' => $client['id']]) }}" data-toggle="tooltip" data-original-title="Edit"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
                             <a href="{{ URL::to('clients/deleteAction?id=') }}{{ $client->id }}"><button class="btn-sm btn-danger btn-circle" type="button"> <i class="fa fa-trash" aria-hidden="true"></i> </button></a>
                             </td>
                             </tr>
@@ -79,6 +79,19 @@
 <!-- end - This is for export functionality only -->
 <script>
     $(document).ready(function() {
+        $("body").on('click', "#example23 tbody td", function(){
+            if($(this).hasClass("td_client")) return;
+            obj = $(this).closest("tr").find('a[data-original-title="Edit"]');
+            document.location.replace(obj.attr("href"));
+        })
+
+        $("body").on("click","#myTable tbody td",function(){
+        if($(this).hasClass("text-nowrap")) return;
+        obj = $(this).closest("tr").find('a[data-original-title="Edit"]');
+        document.location.replace(obj.attr("href"));
+    })
+
+
         $('#myTable').DataTable();
         $(document).ready(function() {
             var table = $('#example').DataTable({

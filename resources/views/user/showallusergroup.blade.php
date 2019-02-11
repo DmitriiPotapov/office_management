@@ -35,8 +35,8 @@
                             <tr>
                                 <td>{{ $item['group_name'] }}</td>
                                 <td>{{ $item['created_at'] }}</td>
-                                <td>
-                                <!--<a class="btn btn-circle btn-sm btn-info" href="{{ route('show_edit_user_group',['id' => $item['id']]) }}"><i class="fa fa-pencil"></i></a>-->
+                                <td class="td_usergroup">
+                                <a href="{{ route('editUsergroup', ['id' => $item['id']]) }}" data-toggle="tooltip" data-original-title="Edit"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
                                 <a class="btn btn-circle btn-sm btn-danger" href="{{ route('delete_user_group',['id' => $item['id']]) }}"><i class="fa fa-times"></i></a></td>
                             </tr>
                             @endforeach
@@ -65,6 +65,12 @@
 
 <script>
 $(document).ready(function() {
+    $("body").on('click', "#myTable tbody td", function() {
+        if($(this).hasClass("td_usergroup")) return;
+        obj = $(this).closest("tr").find('a[data-original-title="Edit"]');
+        document.location.replace(obj.attr("href"));
+    })   
+
     $('#myTable').DataTable();
 });
 $('#myTable').DataTable({

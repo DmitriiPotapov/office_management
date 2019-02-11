@@ -5,6 +5,11 @@
 @endpush
 
 @section('content')
+<style>
+    #myTable tbody td{
+        cursor: pointer;
+    }
+</style>
 <div class="container-fluid">
 <!-- Bread crumb and right sidebar toggle -->
     <div class="row">
@@ -95,6 +100,12 @@
 
 <script>
 $(document).ready(function() {
+    
+    $("body").on("click","#myTable tbody td",function(){
+        if($(this).hasClass("text-nowrap")) return;
+        obj = $(this).closest("tr").find('a[data-original-title="Edit"]');
+        document.location.replace(obj.attr("href"));
+    })
     $('#myTable').DataTable({
     dom: 'Bfrtip',
     buttons: [

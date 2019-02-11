@@ -53,7 +53,7 @@ class ServicesController extends Controller
      */
     public function show($id)
     {
-        //
+        
     }
 
     /**
@@ -64,7 +64,9 @@ class ServicesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $service = Service::where('id', $id)->first();
+        return view('settings/lists/services_edit', compact('service'));
+
     }
 
     /**
@@ -74,9 +76,14 @@ class ServicesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $id = $request->service_id;
+        $service = Service::where('id', $id)->first();
+        $service->service_name = $request->update_servicename;
+        $service->update();
+        
+        return redirect(route('services'));
     }
 
     /**

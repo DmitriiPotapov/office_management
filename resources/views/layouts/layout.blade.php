@@ -25,6 +25,7 @@
     <link href="{{ asset('css/style.css')}}" rel="stylesheet"> 
     <link href="{{ asset('css/colors/blue.css')}}" id="theme" rel="stylesheet">
 
+    
     @stack('header-style')
 </head>
 
@@ -79,6 +80,8 @@
 
     <!-- Style switcher -->
     <script src="{{ asset('assets/plugins/styleswitcher/jQuery.style.switcher.js')}}"></script>
+
+    
 
     @stack('footer-script')
     

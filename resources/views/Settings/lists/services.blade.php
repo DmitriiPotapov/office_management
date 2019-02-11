@@ -42,7 +42,10 @@
                             @foreach($services as $item)
                                 <tr>
                                     <td>{{$item->service_name}}</td>
-                                    <td><a href = "{{URL::to('settings/lists/services/deleteAction?id=')}}{{$item->id}}"><button class="btn-sm btn-youtube waves-effect btn-circle waves-light" type="button"> <i class="fa fa-trash" aria-hidden="true"></i> </button></a></td>
+                                    <td>
+                                        <a href="{{ route('editService', ['id' => $item['id']]) }}" data-toggle="tooltip" data-original-title="Edit"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
+                                        <a href = "{{URL::to('settings/lists/services/deleteAction?id=')}}{{$item->id}}"><button class="btn-sm btn-youtube waves-effect btn-circle waves-light" type="button"> <i class="fa fa-trash" aria-hidden="true"></i> </button></a>
+                                    </td>
                                 </tr>
                             @endforeach
   

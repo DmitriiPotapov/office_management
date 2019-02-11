@@ -118,6 +118,9 @@ class UserController extends Controller
             $labelstr[$i] = $request->input($str2);
             if($value[$i] == "")
                 $value[$i] = "off";
+            else {
+                $value[$i] = "on";
+            }
         }
         
         $permissions = BasePermissions::where('inuse', 1)->get()->toArray();
@@ -126,9 +129,17 @@ class UserController extends Controller
         {
             $permission_id = BasePermissions::where('permission_name', $labelstr[$i])->first()->id;
             $permissiondata = DataPermissions::where('user_id', $user->id)->where('permission_id', $permission_id)->first();
-            $permissiondata->value = $value[$i];
+            if ($permissiondata) {
+                $permissiondata->value = $value[$i];
+                $permissiondata->update();
+            } else {
+                $datapermission = new DataPermissions();
+                $datapermission->user_id = $user->id;
+                $datapermission->permission_id = $permission_id;
+                $datapermission->value = $value[$i];
+                $datapermission->save();
+            }
 
-            $permissiondata->update();
         }
 
         return redirect('/user/showAllUser');

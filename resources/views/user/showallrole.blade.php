@@ -33,8 +33,8 @@
                             @foreach($roles as $item)
                             <tr>
                                 <td>{{ $item['role_name'] }}</td>
-                                <td>
-                                <!--<a class="btn btn-circle btn-sm btn-info" href="{{ route('show_edit_role',['id' => $item['id']]) }}"><i class="fa fa-pencil"></i></a>-->
+                                <td class="td_roll">
+                                <a class="btn btn-circle btn-sm btn-info" data-type = "Edit" href="{{ route('show_edit_role',['id' => $item['id']]) }}"><i class="fa fa-pencil"></i></a>
                                 <a class="btn btn-circle btn-sm btn-danger" href="{{ route('delete_role',['id' => $item['id']]) }}"><i class="fa fa-times"></i></a></td>
                             </tr>
                             @endforeach
@@ -63,6 +63,12 @@
 
 <script>
 $(document).ready(function() {
+    $("body").on('click', "#myTable tbody td", function() {
+        if($(this).hasClass("td_roll")) return;
+        obj = $(this).closest("tr").find('a[data-type="Edit"]');
+        document.location.replace(obj.attr("href"));
+    })   
+
     $('#myTable').DataTable();
 });
 $('#myTable').DataTable({

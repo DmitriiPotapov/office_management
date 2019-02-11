@@ -94,7 +94,8 @@ class StockController extends Controller
      */
     public function edit($id)
     {
-        //
+        $stockitem = StockItem::where('id', $id)->first();
+        return view('stock.edit_stock', compact('stockitem'));
     }
 
     /**
@@ -104,9 +105,43 @@ class StockController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $id = $request->stock_id;
+        $stockItem = StockItem::where('id', $id)->first();
+
+        $device_type = $request->device_type;
+        $connection = $request->connection;
+        $form_factor = $request->form_factor;
+        $manufacturer = $request->manufacturer;
+        $model = $request->model;
+        $location = $request->location;
+        $diler_info = $request->diler_info;
+        $serial_number = $request->serial_number;
+        $input_price = $request->input_price;
+        $vat_value = $request->vat_value;
+        $interest = $request->interest;
+        $final_price = $request->final_price;
+        $stock_note = $request->stock_note;
+
+        $stockItem->device_type = $device_type;
+        $stockItem->connection = $connection;
+        $stockItem->form_factor = $form_factor;
+        $stockItem->manufacturer = $manufacturer;
+        $stockItem->stock_model = $model;
+        $stockItem->location = $location;
+        $stockItem->serial_number = $serial_number;
+        $stockItem->input_price = $input_price;
+        $stockItem->diler_info = $diler_info;
+        $stockItem->interest = $interest;
+        $stockItem->vat_value = $vat_value;
+        $stockItem->final_price = $final_price;
+        $stockItem->stock_note = $stock_note;
+
+        $stockItem->update();
+        return redirect(route('allstocks'));
+
+        
     }
 
     /**

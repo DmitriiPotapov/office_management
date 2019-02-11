@@ -58,7 +58,8 @@
                                 <td>{{ $item['note'] }}</td>
                                 <td>{{ $item['heads_info'] }}</td>
                                 <td>
-                                <a class="btn btn-circle btn-sm btn-danger"><i class="fa fa-trash"></i></a></td>
+                                    <a class="btn btn-circle btn-sm btn-danger"><i class="fa fa-trash"></i></a>
+                                </td>
                             </tr>
                             @endforeach
                             </tbody>

@@ -65,8 +65,10 @@
                                 <td>{{ $item['Form_factor'] }}</td>
                                 <td>{{ $item['note'] }}</td>
                                 <td>{{ $item['heads_info'] }}</td>
-                                <td>
-                                <a class="btn btn-circle btn-sm btn-danger"><i class="fa fa-trash"></i></a></td>
+                                <td style = "display: flex;" class="td_inventory"> 
+                                    <a href="{{ route('editInventory', ['id' => $item['id']]) }}" data-toggle="tooltip" data-original-title="Edit"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>  
+                                    <a href = "{{ URL::to('inventory/deleteAction?id=') }}{{ $item->id }}" class="btn btn-circle btn-sm btn-danger"><i class="fa fa-trash"></i></a>
+                                </td>
                             </tr>
                             @endforeach
                             </tbody>
@@ -94,6 +96,12 @@
 
 <script>
 $(document).ready(function() {
+    $("body").on('click', "#myTable tbody td", function() {
+            if($(this).hasClass("td_inventory")) return;
+            obj = $(this).closest("tr").find('a[data-original-title="Edit"]');
+            document.location.replace(obj.attr("href"));
+        })
+
     $('#myTable').DataTable();
 });
 $('#myTable').DataTable({
