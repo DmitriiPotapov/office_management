@@ -2,6 +2,12 @@
 
 @push('header-style')
 
+<style>
+tr:hover{
+  cursor: pointer;
+}
+</style>
+
 @endpush
 
 @section('content')
@@ -40,10 +46,9 @@
                         </div>
                     </div>
                     <div class="table-responsive m-t-40">
-                        <table id="myTable" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
+                        <table id="myTable" class="display nowrap table table-hover table-bordered" cellspacing="0" width="100%">
                             <thead>
                                 <tr>
-                                    <th></th>
                                     <th>Job ID</th>
                                     <th>Priority</th>
                                     <th>Client</th>
@@ -58,8 +63,7 @@
                             </thead>
                             <tbody>
                             @foreach($jobs as $item)
-                            <tr >
-                                <td><input type="checkbox"></td>
+                            <tr class='clickable-row' data-href="{{ route('show_edit_job', ['id' => $item['job_id']]) }}">
                                 <td>{{ $item['job_id'] }}</td>
                                 <td>{{ $item['priority'] }}</td>
                                 <td>{{ $item['client_name'] }}</td>
@@ -111,8 +115,16 @@ $(document).ready(function() {
     buttons: [
         'copy', 'csv', 'excel', 'pdf', 'print'
     ],
-    order: [9,'desc']
+    order: [8,'desc']
     });
+
+    $(".clickable-row").click(function() {
+        var href = $(this).data("href");
+        if (href) {
+            window.location = href;
+        }
+    });
+    
 });
 
 function onquickjump()

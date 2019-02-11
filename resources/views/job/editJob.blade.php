@@ -718,7 +718,7 @@
                                     <input type="hidden" name="media_id" value="{{ $devices[0]['id'] }}">
                                     <h3>Drive Details</h3>
                                     <div class="row p-t-20">
-                                        <div class="col-md-5">
+                                        <div class="col-md-4">
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="basic-addon1">
@@ -729,7 +729,7 @@
                                                 <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
                                             </div>
                                         </div>
-                                        <div class="col-md-5">
+                                        <div class="col-md-4">
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="basic-addon1">
@@ -738,6 +738,23 @@
                                                 </div>
                                                 <input type="text" id="dom" name="dom" class="form-control" placeholder="" value="{{ $devices[0]['dom'] }}">
                                                 <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="basic-addon1">
+                                                        Interface
+                                                    </span>
+                                                </div>
+                                                <select class="form-control custom-select" id="interface" name="interface">
+                                                    <option value="Western Digital">USB </option>
+                                                    <option value="Seagate">SATA</option>
+                                                    <option value="mSATA">mSATA</option>
+                                                    <option value="PCi">PCi</option>
+                                                    <option value="SAS">SAS</option>
+                                                    <option value="Others">Others</option>
+                                                </select>
                                             </div>
                                         </div>
                                     </div>
