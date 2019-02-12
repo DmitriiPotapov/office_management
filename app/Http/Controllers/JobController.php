@@ -12,6 +12,7 @@ use App\Models\BaseJobStatuse;
 use App\Models\DataComments;
 use App\Models\DataJobHistory;
 use App\Models\Invoice;
+use App\Models\Quote;
 use App\Models\Backup;
 use App\User;
 use App\Models\DataLogs;
@@ -458,7 +459,7 @@ class JobController extends Controller
 
     public function generateQuote($job_id)
     {
-        $invoice = Invoice::where('job_id', $job_id)->first();
+        $invoice = Quote::where('job_id', $job_id)->first();
         if($invoice)
         {
             $pdf = \App::make('dompdf.wrapper');
@@ -469,7 +470,7 @@ class JobController extends Controller
         }
         else
         {
-            return redirect()->back()->with('alert', ' No invoce data!');
+            return redirect()->back()->with('alert', ' No quote data!');
         }
     }
 
@@ -541,7 +542,6 @@ class JobController extends Controller
 
   td, th {
   border: 0px solid #dddddd;
-  text-align: left;
   padding: 8px;
   }
 
@@ -570,16 +570,22 @@ class JobController extends Controller
   </div>
   <br><br>
   <div>
-    <label style="font-size:15px;">CaseID</label>
-    <label style="font-size:15px;padding-left:5em;">Date</label>
-    <label style="font-size:15px;padding-left:5em;">Service</label>
-    <label style="font-size:15px;padding-left:18em;text-align:right;">'.$client->phone_value.'</label>
-  </div>
-  <div>
-    <b><label style="font-size:15px;">'.$job->job_id.'</label>
-    <label style="font-size:15px;padding-left:5.5em;">'.date_format($job->created_at,"d/m/Y").'</label>
-    <label style="font-size:15px;padding-left:2em;">'.$job->services.'</label>
-    <label style="font-size:15px;padding-left:10em;text-align:right;">'.$client->email_value.'</label></b>
+    <table style="border-bottom:0pt solid grey;width:100%">
+      <tbody style="font-size:15px;margin:auto;">
+        <tr>
+          <td width="80">CaseID</td>
+          <td width="80">Date</td>
+          <td width="80">Service</td>
+          <td align="right">'.$client->phone_value.'</td>
+        </tr>
+        <tr>
+          <td width="80"><b>'.$job->job_id.'</b></td>
+          <td width="80"><b>'.date_format($job->created_at,"d/m/Y").'</b></td>
+          <td width="80"><b>'.$job->services.'</b></td>
+          <td align="right"><b>'.$client->email_value.'</b></td>
+        </tr>
+      </tbody>
+    </table>
   </div>
   <br><br><br>
   <table >
@@ -589,7 +595,7 @@ class JobController extends Controller
               <td><b>Brand</b></td>
               <td><b>Category</b></td>
               <td><b>Capacity</b></td>
-              <td><b>Serian No</b></td>
+              <td><b>Serial No</b></td>
           </tr>
       </thead>
       <tbody style="border-bottom:1pt solid grey;">';
@@ -624,7 +630,7 @@ class JobController extends Controller
   </div>
   <br>
   <div align="left">
-    <label style="font-size:17px;">'.$job->user_name.': '.$job->job_id.'</label><br>
+    <label style="font-size:12px;">User ID: '.$job->job_id.'</label><br>
     <label style="font-size:12px;">Password: '.$job->job_password.'</label><br>
   </div>
   <div align="right">
@@ -728,7 +734,7 @@ class JobController extends Controller
           <label style="font-size:15px;">CaseID</label>
           <label style="font-size:15px;padding-left:5em;">Date</label>
           <label style="font-size:15px;padding-left:5em;">Service</label>
-          <label style="font-size:15px;padding-left:18em;text-align:right;">'.$client->phone_value.'</label>
+          <label style="font-size:15px;padding-left:15em;text-align:right;">'.$client->phone_value.'</label>
         </div>
         <div>
           <b><label style="font-size:15px;">'.$job->job_id.'</label>
@@ -744,7 +750,7 @@ class JobController extends Controller
                     <td><b>Brand</b></td>
                     <td><b>Category</b></td>
                     <td><b>Capacity</b></td>
-                    <td><b>Serian No</b></td>
+                    <td><b>Serial No</b></td>
                 </tr>
             </thead>
             <tbody style="border-bottom:1pt solid grey;">';
@@ -767,7 +773,7 @@ class JobController extends Controller
       '     </tbody>
           </table>
         </div>
-        <br><br><hr /><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+        <br><br><hr /><br><br><br><br><br><br><br><br><br><br><br><br>
         <div>
           <img align="right" src="assets/images/nithin.png" width="77" height="35" />
           <div align="left">
@@ -781,7 +787,7 @@ class JobController extends Controller
         <br>
         <div align="right">
           <b><label style="font-size:22px;color:#3092C3;">Thank you</label><br></b>
-          <b><label style="font-size:22px;color:#3092C3;">For Submitting your Case!</label><br></b>
+          <b><label style="font-size:22px;color:#3092C3;">For Your Business!</label><br></b>
         </div>
         </div>
         </body>
@@ -927,7 +933,7 @@ class JobController extends Controller
         </div><br>
         <div align="right">
           <label style="font-size:16px;">Tax 00%</label>
-          <label style="font-size:16px;padding-left:8em;">RO '.number_format($invoice->item_total_price,3,".","").'</label><br>
+          <label style="font-size:16px;padding-left:8em;">RO 000.00</label><br>
         </div><br>
         <div align="right" >
           <label style="background-color:#1483BB;color:white;font-size:20px;margin-top:5px;margin-bottom:5px;">Grand Total</label>
@@ -964,7 +970,7 @@ class JobController extends Controller
     function convert_job_data_to_quote($job_id)
     {
       $job = DataJobs::where('job_id',$job_id)->first();
-      $invoice = Invoice::where('job_id', $job_id)->first();
+      $invoice = Quote::where('job_id', $job_id)->first();
       $client = Client::find($job->client_id);
       $output = '
       <!DOCTYPE HTML>
@@ -1052,7 +1058,7 @@ class JobController extends Controller
       </div>
       <br><br>
       <div>
-        <label style="font-size:15px;">Invoice</label>
+        <label style="font-size:15px;">Quote</label>
         <label style="font-size:15px;padding-left:5em;">Date</label>
       </div>
       <div>
@@ -1098,7 +1104,7 @@ class JobController extends Controller
       </div><br>
       <div align="right">
         <label style="font-size:16px;">Tax 00%</label>
-        <label style="font-size:16px;padding-left:8em;">RO '.number_format($invoice->item_total_price,3,".","").'</label><br>
+        <label style="font-size:16px;padding-left:8em;">RO 00.000</label><br>
       </div><br>
       <div align="right" >
         <label style="background-color:#1483BB;color:white;font-size:20px;margin-top:5px;margin-bottom:5px;">Grand Total</label>
@@ -1193,7 +1199,6 @@ class JobController extends Controller
 
     td, th {
     border: 0px solid #dddddd;
-    text-align: left;
     padding: 2px;
     }
 
@@ -1210,7 +1215,7 @@ class JobController extends Controller
         <label style="font-size:12px;">www.spacedatarecovery.com</label><img style="margin-top:2px;" src="assets/images/icon-space.png" width="14" height="12" /><br>
       </div>
     </div>
-    <br><br>
+    <br><br><br>
     <div>
       <img align="left" src="assets/images/report.png" width="280" height="75" />
       <div align="right">
@@ -1220,22 +1225,30 @@ class JobController extends Controller
         <label style="font-size:16px;">'.$client->country.'</label><br>
       </div>
     </div>
-    <br><br><br>
+    <br>
     <div>
-      <label style="font-size:15px;">CaseID</label>
-      <label style="font-size:15px;padding-left:5em;">Date</label>
-      <label style="font-size:15px;padding-left:5em;">Service</label>
-      <label style="font-size:15px;padding-left:18em;text-align:right;">'.$client->phone_value.'</label>
-    </div>
-    <div>
-      <b><label style="font-size:15px;">'.$job->job_id.'</label>
-      <label style="font-size:15px;padding-left:5.5em;">'.date_format($job->created_at,"d/m/Y").'</label>
-      <label style="font-size:15px;padding-left:2em;">'.$job->services.'</label>
-      <label style="font-size:15px;padding-left:10em;text-align:right;">'.$client->email_value.'</label></b>
+      <table style="border-bottom:0pt solid grey;width:100%">
+        <tbody style="font-size:15px;margin:auto;">
+          <tr>
+            <td width="80">CaseID</td>
+            <td width="80">Date</td>
+            <td width="80">Service</td>
+            <td align="right">'.$client->phone_value.'</td>
+          </tr>
+          <tr>
+            <td width="80"><b>'.$job->job_id.'</b></td>
+            <td width="80"><b>'.date_format($job->created_at,"d/m/Y").'</b></td>
+            <td width="80"><b>'.$job->services.'</b></td>
+            <td align="right"><b>'.$client->email_value.'</b></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
     <br><br>
-    <div style="border-bottom: 4pt solid black;margin-bottom:5px;">
-      <b><label style="font-size:18px;color:#1483BB;">MEDIA EVALUATION REPORT</label><br>
+    <div style="margin-bottom:10px;">
+      <b><label style="font-size:18px;color:#1483BB;margin-bottom:2px;">MEDIA EVALUATION REPORT</label><br>
+    </div>
+    <div style="border-bottom: 2pt solid black;margin-bottom:5px;">
     </div>
     <br>
     <div>
@@ -1255,12 +1268,12 @@ class JobController extends Controller
         </tr>
         <tr>
           <td>Media Type: '.$device->type.'</td>
-          <td>Platter: '.$device->platter_head[0].'</td>
+          <td>Platter: '.$device->platter_head.'</td>
           <td>MOTOR: '.$device->motor.'</td>
         </tr>
         <tr>
           <td>Brand: '.$device->brand.'</td>
-          <td>Heads: '.$device->platter_head[2].'</td>
+          <td>Heads: '.$device->heads.'</td>
           <td>Firmware: '.$device->firmware.'</td>
         </tr>
         <tr>
@@ -1269,9 +1282,9 @@ class JobController extends Controller
           <td>ENCRYPTION: '.$device->encryption.'</td>
         </tr>
         <tr>
-          <td>Serian No: '.$device->serial.'</td>
+          <td>Serial No: '.$device->serial.'</td>
           <td>DOM: '.$device->dom.'</td>
-          <td>HEADS: '.$device->heads.'</td>
+          <td>HEADS: '.$device->r_w_heads.'</td>
         </tr>
         <tr>
           <td>Model: '.$device->model.'</td>
@@ -1298,9 +1311,9 @@ class JobController extends Controller
     </div>
     <br>
     <div align="right">
-      <b><label style="font-size:22px;">REPORT BY</label><br></b>
-      <b><label style="font-size:22px;">Nithin Ziva</label><br></b>
-      <label style="font-size:22px;">CTO</label>
+      <b><label style="font-size:16px;">REPORT BY</label><br></b>
+      <b><label style="font-size:16px;">Nithin Ziva</label><br></b>
+      <label style="font-size:16px;">CTO</label>
     </div>
     </body>
   </html>';

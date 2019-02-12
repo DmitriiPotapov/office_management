@@ -190,15 +190,15 @@
                                             <h4 class="card-title">Client info</h4>
                                             <div class="card-body">
                                                 <div class="form-group row">
-                                                    <label class="col-lg-2 control-label"><b>Ime kijentha:</b></label>
+                                                    <label class="col-lg-2 control-label"><b>Name:</b></label>
                                                     <label class="col-lg-3 control-label">{{ $client['client_name'] }}</label>
-                                                    <label class="col-lg-2 control-label"><b>Adresa:</b></label>
+                                                    <label class="col-lg-2 control-label"><b>Address:</b></label>
                                                     <label class="col-lg-3 control-label">{{ $client['street'] }}</label>
                                                 </div>
                                                 <div class="form-group row">
-                                                    <label class="col-lg-2 control-label"><b>Grad:</b></label>
+                                                    <label class="col-lg-2 control-label"><b>Postal Code:</b></label>
                                                     <label class="col-lg-3 control-label">{{ $client['postal_code'].' '.$client['city_name'] }}</label>
-                                                    <label class="col-lg-2 control-label"><b>Drazava:</b></label>
+                                                    <label class="col-lg-2 control-label"><b>Country:</b></label>
                                                     <label class="col-lg-3 control-label">{{ $client['country'] }}</label>
                                                 </div>
                                                 <div class="form-group row">

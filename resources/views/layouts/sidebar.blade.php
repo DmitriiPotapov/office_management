@@ -34,7 +34,7 @@
                     </ul>
                 </li>            
                 <li>
-                    <a class="has-arrow " href="#" aria-expanded="false"><i class="fa fa-bank"></i><span class="hide-menu">Invoices </span></a>
+                    <a class="has-arrow " href="#" aria-expanded="false"><i class="fa fa-bank"></i><span class="hide-menu">Billing </span></a>
                     <ul aria-expanded="false" class="collapse">
                         <li><a href="{{ URL::to('invoice/allview') }}">All invoices </a></li>
                         <li><a href="{{ URL::to('invoice/add') }}">New invoice </a></li>
