@@ -87,8 +87,8 @@
                             <h4 class="card-title">Devices</h4>
                             <input type="hidden" name="device_count" id="device_count" value="1">
                             <div id="adult">
-                            <div class="row p-t-20">
-                                <div class="col-md-3">
+                                <div class="row p-t-20">
+                                    <div class="col-md-3">
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1">
@@ -134,6 +134,8 @@
                                             <option value="Patient">Patient</option>
                                             <option value="Clone">Clone</option>
                                             <option value="Donor">Donor</option>
+                                            <option value="Donor">Data</option>
+                                            <option value="Donor">Backup</option>
                                             <option value="Other">Other</option>
                                         </select>
                                         <small class="form-control-feedback"></small> 
@@ -196,6 +198,87 @@
                                 </div>
                             </div>
                             <br>
+                            <div class="row p-t-20">
+                                <button class="btn btn-success waves-effect waves-light" type="button" data-toggle="modal" data-target="#addNewBackupModal"><span class="btn-label"><i class="fa fa-plus"></i></span>Add New Backup Device</button>
+                            </div>
+                            <br>
+                            <div class="row p-t-20" style="display:none;" id="backupDevice">
+                                <h4 class="card-title">Backup Devices</h4>
+                                <input type="hidden" id="isBackup" name="isBackup" value="0">
+                                <div class="row p-t-20">
+                                    <div class="col-md-2">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="basic-addon1">
+                                                    Category
+                                                </span>
+                                            </div>
+                                            <input type="text" id="backupCategory" name="backupCategory" class="form-control" placeholder="" >
+                                            <small class="form-control-feedback"></small> </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="basic-addon1">
+                                                    Type
+                                                </span>
+                                            </div>
+                                            <input type="text" id="backupType" name="backupType" class="form-control" placeholder="" >
+                                            <small class="form-control-feedback"></small> </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="basic-addon1">
+                                                    Role
+                                                </span>
+                                            </div>
+                                            <input type="text" id="backupRole" name="backupRole" class="form-control" placeholder="" >
+                                            <small class="form-control-feedback"></small> </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="basic-addon1">
+                                                    Manufacturer
+                                                </span>
+                                            </div>
+                                            <input type="text" id="backupManufacturer" name="backupManufacturer" class="form-control" placeholder="" >
+                                            <small class="form-control-feedback"></small> </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="basic-addon1">
+                                                    Model
+                                                </span>
+                                            </div>
+                                            <input type="text" id="backupModel" name="backupModel" class="form-control" placeholder="" >
+                                            <small class="form-control-feedback"></small> </div>
+                                    </div>
+                                </div>
+                                <div class="row p-t-20">
+                                    <div class="col-md-5">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="basic-addon1">
+                                                    Serial
+                                                </span>
+                                            </div>
+                                            <input type="text" id="backupSerial" name="backupSerial" class="form-control" placeholder="" >
+                                            <small class="form-control-feedback"></small> </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="basic-addon1">
+                                                    Capacity
+                                                </span>
+                                            </div>
+                                            <input type="text" id="backupCapacity" name="backupCapacity" class="form-control" placeholder="" >
+                                            <small class="form-control-feedback"></small> </div>
+                                    </div>
+                                </div>
                             </div>
                             <br>
                             <h4 class="card-title">Device malfunction information</h4>
@@ -250,11 +333,138 @@
                             <button type="button" class="btn btn-inverse">Cancel</button>
                         </div>
                     </form>
+                    
                 </div>
             </div>
         </div>
     </div>
-
+    <div class="modal fade" id="addNewBackupModal" tabindex="-1" role="dialog" >
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="exampleModalLabel1">Add Backup device</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">
+                                Type
+                            </span>
+                        </div>
+                        <select class="form-control custom-select" id="cr_device_name" name="cr_device_name">
+                            @foreach($types as $item)
+                            <option value="{{ $item['device_name'] }}" > {{ $item['device_name']}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <hr>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">
+                                Category
+                            </span>
+                        </div>
+                        <select class="form-control custom-select" id="cr_category" name="cr_category">
+                            <option value="Laptop Drive">Laptop Drive</option>
+                            <option value="Desktop Drive">Desktop Drive</option>
+                            <option value="External Drive">External Drive</option>
+                            <option value="Server Drive">Server Drive</option>
+                            <option value="Mobile Phone">Mobile Phone</option>
+                            <option value="Flash Drive">Flash Drive</option>
+                            <option value="Smart Devices">Smart Devices</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <small class="form-control-feedback"></small> 
+                    </div>
+                    <hr>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">
+                                Role
+                            </span>
+                        </div>
+                        <select class="form-control custom-select" id="cr_role" name="cr_role">
+                            <option value="Patient" >Patient</option>
+                            <option value="Data" >Data</option>
+                            <option value="Donor" >Donor</option>
+                        </select>
+                    </div>
+                    <hr>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">
+                                Manufacturer
+                            </span>
+                        </div>
+                        <select class="form-control custom-select" id="cr_manufacturer" name="cr_manufacturer">
+                            <option value="Western Digital">Western Digital </option>
+                            <option value="Seagate">Seagate</option>
+                            <option value="Samsung">Samsung</option>
+                            <option value="Toshiba">Toshiba</option>
+                            <option value="Apple">Apple</option>
+                            <option value="HGST">HGST</option>
+                            <option value="Fujistu">Fujistu</option>
+                            <option value="Dell">Dell</option>
+                            <option value="HP">HP</option>
+                            <option value="IBM">IBM</option>
+                            <option value="Maxtor">Maxtor</option>
+                            <option value="Others">Others</option>
+                        </select>
+                    </div>
+                    <hr>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">
+                                Model
+                            </span>
+                        </div>
+                        <input type="text" class="form-control" id="cr_model" name="cr_model">
+                    </div>
+                    <hr>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">
+                                Capacity
+                            </span>
+                        </div>
+                        <input type="text" class="form-control" id="cr_capacity" name="cr_capacity">
+                    </div>
+                    <hr>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">
+                                Serial
+                            </span>
+                        </div>
+                        <input type="text" class="form-control" id="cr_serial" name="cr_serial">
+                    </div>
+                    <hr>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">
+                                Location
+                            </span>
+                        </div>
+                        <input type="text" class="form-control" id="cr_location" name="cr_location">
+                    </div>
+                    <hr>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">
+                                Note
+                            </span>
+                        </div>
+                        <input type="text" class="form-control" id="cr_note" name="cr_note">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button onclick="onAddBakcup()" class="btn btn-primary" data-dismiss="modal">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 @endsection
@@ -267,6 +477,19 @@
 <script>
 
     var room = 1;
+    function onAddBakcup()
+    {
+        var obj = document.getElementById("backupDevice");
+        obj.setAttribute("style", "display:show;");
+        $("#isBackup").val("add");
+        $("#backupCategory").val($("#cr_category").val());
+        $("#backupType").val($("#cr_device_name").val());
+        $("#backupRole").val($("#cr_role").val());
+        $("#backupManufacturer").val($("#cr_manufacturer").val());
+        $("#backupModel").val($("#cr_model").val());
+        $("#backupSerial").val($("#cr_serial").val());
+        $("#backupCapacity").val($("#cr_capacity").val());
+    }
     function onDeviceAdd()
     {
         room++;

@@ -418,6 +418,25 @@
                                                     <div class="input-group">
                                                         <div class="input-group-prepend">
                                                             <span class="input-group-text" id="basic-addon1">
+                                                                Category
+                                                            </span>
+                                                        </div>
+                                                        <select class="form-control custom-select" id="cr_category" name="cr_category">
+                                                            <option value="Laptop Drive">Laptop Drive</option>
+                                                            <option value="Desktop Drive">Desktop Drive</option>
+                                                            <option value="External Drive">External Drive</option>
+                                                            <option value="Server Drive">Server Drive</option>
+                                                            <option value="Mobile Phone">Mobile Phone</option>
+                                                            <option value="Flash Drive">Flash Drive</option>
+                                                            <option value="Smart Devices">Smart Devices</option>
+                                                            <option value="Other">Other</option>
+                                                        </select>
+                                                        <small class="form-control-feedback"></small> 
+                                                    </div>
+                                                    <hr>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1">
                                                                 Role
                                                             </span>
                                                         </div>
@@ -457,6 +476,15 @@
                                                             </span>
                                                         </div>
                                                         <input type="text" class="form-control" id="cr_model" name="cr_model">
+                                                    </div>
+                                                    <hr>
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text" id="basic-addon1">
+                                                                Capacity
+                                                            </span>
+                                                        </div>
+                                                        <input type="text" class="form-control" id="cr_capacity" name="cr_capacity">
                                                     </div>
                                                     <hr>
                                                     <div class="input-group">

@@ -69,7 +69,22 @@ class JobController extends Controller
             $devices->save();
         }
 
-        
+        $isBackup = $request->input('isBackup');
+        if ($isBackup != "0")
+        {
+          $backupdevice = new DataDevices();
+          $backupdevice->job_id = $job->job_id;
+          $backupdevice->category = $request->input('backupCategory');
+          $backupdevice->type = $request->input('backupType');
+          $backupdevice->role = $request->input('backupRole');
+          $backupdevice->manufacturer = $request->input('backupManufacturer');
+          $backupdevice->brand = $request->input('backupManufacturer');
+          $backupdevice->model = $request->input('backupModel');
+          $backupdevice->serial = $request->input('backupSerial');
+          $backupdevice->capacity = $request->input('backupCapacity');
+
+          $backupdevice->save();
+        }
 
         $history = new DataJobHistory();
         $history->job_id = $job->job_id;
@@ -302,9 +317,12 @@ class JobController extends Controller
         $device = new DataDevices();
         $device->job_id = $request->input('sel_job_id_cr');
         $device->type = $request->input('cr_device_name');
-        $device->role = 'Other';
+        $device->role = $request->input('cr_role');
         $device->manufacturer = $request->input('cr_manufacturer');
+        $device->brand = $request->input('cr_manufacturer');
+        $device->category = $request->input('cr_category');
         $device->model = $request->input('cr_model');
+        $device->capacity = $request->input('cr_capacity');
         $device->serial = $request->input('cr_serial');
         $device->location = $request->input('cr_location');
         $device->note = $request->input('cr_note');
@@ -387,6 +405,16 @@ class JobController extends Controller
     {
         $device_id = $request->input('device_id');
         $device = DataDevices::find($device_id);
+        
+        $diagnosis = $request->input('dev_diagnosis');
+        $device->mediaDiagnosis = nl2br($diagnosis);
+
+        $consultation = $request->input('dev_consultation');
+        $device->mediaconsultation = nl2br($consultation);
+
+        $recover = $request->input('dev_recover');
+        $device->mediarecover = nl2br($recover);
+
         $device->diagnosis = $request->input('dev_diagnosis');
         $device->consultation = $request->input('dev_consultation');
         $device->recover = $request->input('dev_recover');
@@ -545,6 +573,11 @@ class JobController extends Controller
   padding: 8px;
   }
 
+  td.newtable, th.newtable {
+    border: 0px solid #dddddd;
+    padding: 2px;
+  }
+
   </style>
 </head>
 <body>
@@ -573,16 +606,16 @@ class JobController extends Controller
     <table style="border-bottom:0pt solid grey;width:100%">
       <tbody style="font-size:15px;margin:auto;">
         <tr>
-          <td width="80">CaseID</td>
-          <td width="80">Date</td>
-          <td width="80">Service</td>
-          <td align="right">'.$client->phone_value.'</td>
+          <td class="newtable" width="80">CaseID</td>
+          <td class="newtable" width="80">Date</td>
+          <td class="newtable" width="80">Service</td>
+          <td class="newtable" align="right">'.$client->phone_value.'</td>
         </tr>
         <tr>
-          <td width="80"><b>'.$job->job_id.'</b></td>
-          <td width="80"><b>'.date_format($job->created_at,"d/m/Y").'</b></td>
-          <td width="80"><b>'.$job->services.'</b></td>
-          <td align="right"><b>'.$client->email_value.'</b></td>
+          <td class="newtable" width="80"><b>'.$job->job_id.'</b></td>
+          <td class="newtable" width="80"><b>'.date_format($job->created_at,"d/m/Y").'</b></td>
+          <td class="newtable" width="80"><b>'.$job->services.'</b></td>
+          <td class="newtable" align="right"><b>'.$client->email_value.'</b></td>
         </tr>
       </tbody>
     </table>
@@ -598,7 +631,7 @@ class JobController extends Controller
               <td><b>Serial No</b></td>
           </tr>
       </thead>
-      <tbody style="border-bottom:1pt solid grey;">';
+      <tbody style="border-bottom:0pt solid grey;">';
 
     $devices = DataDevices::where('job_id', $job_id)->get()->toArray();
     $i = 1;
@@ -618,7 +651,7 @@ class JobController extends Controller
 '     </tbody>
     </table>
   </div>
-  <br><br><hr /><br><br><br><br><br><br><br><br><br><br><br><br><br>
+  <hr /><br><br><br><br><br><br><br><br><br><br><br>
   <div>
     <img align="right" src="assets/images/nithin.png" width="77" height="35" />
     <div align="left">
@@ -702,8 +735,12 @@ class JobController extends Controller
       
         td, th {
         border: 0px solid #dddddd;
-        text-align: left;
         padding: 8px;
+        }
+
+        td.newtable, th.newtable {
+          border: 0px solid #dddddd;
+          padding: 2px;
         }
       
         </style>
@@ -731,16 +768,22 @@ class JobController extends Controller
         </div>
         <br><br>
         <div>
-          <label style="font-size:15px;">CaseID</label>
-          <label style="font-size:15px;padding-left:5em;">Date</label>
-          <label style="font-size:15px;padding-left:5em;">Service</label>
-          <label style="font-size:15px;padding-left:15em;text-align:right;">'.$client->phone_value.'</label>
-        </div>
-        <div>
-          <b><label style="font-size:15px;">'.$job->job_id.'</label>
-          <label style="font-size:15px;padding-left:5.5em;">'.date_format($job->created_at,"d/m/Y").'</label>
-          <label style="font-size:15px;padding-left:2em;">'.$job->services.'</label>
-          <label style="font-size:15px;padding-left:10em;text-align:right;">'.$client->email_value.'</label></b>
+          <table style="border-bottom:0pt solid grey;width:100%">
+            <tbody style="font-size:15px;margin:auto;">
+              <tr>
+                <td class="newtable" width="80">CaseID</td>
+                <td class="newtable" width="80">Date</td>
+                <td class="newtable" width="80">Service</td>
+                <td class="newtable" align="right">'.$client->phone_value.'</td>
+              </tr>
+              <tr>
+                <td class="newtable" width="80"><b>'.$job->job_id.'</b></td>
+                <td class="newtable" width="80"><b>'.date_format($job->created_at,"d/m/Y").'</b></td>
+                <td class="newtable" width="80"><b>'.$job->services.'</b></td>
+                <td class="newtable" align="right"><b>'.$client->email_value.'</b></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
         <br><br><br>
         <table >
@@ -753,7 +796,7 @@ class JobController extends Controller
                     <td><b>Serial No</b></td>
                 </tr>
             </thead>
-            <tbody style="border-bottom:1pt solid grey;">';
+            <tbody style="border-bottom:0pt solid grey;">';
       
           $devices = DataDevices::where('job_id', $job_id)->get()->toArray();
           $i = 1;
@@ -773,7 +816,7 @@ class JobController extends Controller
       '     </tbody>
           </table>
         </div>
-        <br><br><hr /><br><br><br><br><br><br><br><br><br><br><br><br>
+        <hr /><br><br><br><br><br><br><br><br><br><br><br><br>
         <div>
           <img align="right" src="assets/images/nithin.png" width="77" height="35" />
           <div align="left">
@@ -894,7 +937,7 @@ class JobController extends Controller
           <b><label style="font-size:15px;">'.$job->job_id.'</label>
           <label style="font-size:15px;padding-left:5.5em;">'.date_format($job->created_at,"d/m/Y").'</label>
         </div>
-        <br><br><br>
+        <br><br>
         <table >
             <thead style="border-bottom:3pt solid black;color:#3092C3;">
                 <tr >
@@ -905,12 +948,15 @@ class JobController extends Controller
                     <td><b>Total</b></td>
                 </tr>
             </thead>
-            <tbody style="border-bottom:1pt solid grey;">';
+            <tbody style="border-bottom:0pt solid grey;">';
       
           $devices = DataDevices::where('job_id', $job_id)->get()->toArray();
           $i = 1;
+          $total_price = 0;
           foreach($devices as $item)
           {
+            if ($item["role"] == "Patient") {
+              $total_price += $invoice->item_total_price;
               $output .= '
               <tr>
               <td>'.number_format($i).'</td>
@@ -920,16 +966,34 @@ class JobController extends Controller
               <td>RO '.number_format($invoice->item_total_price,3,".","").'</td>
               </tr>';
               $i ++;
+            }
+          }
+          $backupDevices = Backup::where('job_id', $job_id)->get()->toArray();
+          if ($backupDevices) {
+            foreach($backupDevices as $item)
+            {
+              {
+                $total_price += $item["total_price"];
+                $output .= '
+                <tr>
+                <td>'.number_format($i).'</td>
+                <td width="200"> Backup Devices - '.$job["services"].'-'.$item["type"].'-'.$item["capacity"].'</td>
+                <td>RO '.number_format($item["total_price"],3,".","").'</td>
+                <td>1</td>
+                <td>RO '.number_format($item["total_price"],3,".","").'</td>
+                </tr>';
+                $i ++;
+              }
+            }
           }
           $output .=
       '     </tbody>
           </table>
         </div>
-        <br>
-        <br><hr /><br>
+        <hr /><br>
         <div align="right">
           <label style="font-size:16px;">Sub Total</label>
-          <label style="font-size:16px;padding-left:8em;">RO '.number_format($invoice->item_total_price,3,".","").'</label><br>
+          <label style="font-size:16px;padding-left:8em;">RO '.number_format($total_price,3,".","").'</label><br>
         </div><br>
         <div align="right">
           <label style="font-size:16px;">Tax 00%</label>
@@ -937,9 +1001,9 @@ class JobController extends Controller
         </div><br>
         <div align="right" >
           <label style="background-color:#1483BB;color:white;font-size:20px;margin-top:5px;margin-bottom:5px;">Grand Total</label>
-          <label style="background-color:#1483BB;color:white;font-size:20px;padding-left:4em;padding-top:5px;padding-bottom:5px;">RO '.number_format($invoice->item_total_price,3,".","").'</label><br>
+          <label style="background-color:#1483BB;color:white;font-size:20px;padding-left:4em;padding-top:5px;padding-bottom:5px;">RO '.number_format($total_price,3,".","").'</label><br>
         </div>
-        <br><br><br>
+        <br><br>
         <div>
           <img align="right" src="assets/images/nithin.png" width="77" height="35" />
           <div align="left">
@@ -1294,20 +1358,21 @@ class JobController extends Controller
         </tbody>
       </table>
     </div>
-    <br><br>
+    <br><br>';
+    $output .= '
     <div align="left">
       <label style="font-size:15px;color:#1483BB;">#ANALYSIS</label><br>
-      <textarea style="font-size:13px;border:0px;">'.$device->diagnosis.'</textarea>
+      <textarea type="text" rows="5" style="font-size:13px;border:0px;font-family: arial, sans-serif;">'.$device->mediaDiagnosis.'</textarea>
     </div>
     <br>
     <div align="left">
       <label style="font-size:15px;color:#1483BB;">#CONSULTATION</label><br>
-      <textarea style="font-size:13px;border:0px;">'.$device->consultation.'</textarea>
+      <textarea type="text" style="font-size:13px;border:0px;font-family: arial, sans-serif;" rows="5">'.$device->mediaConsultation.'</textarea>
     </div>
     <br>
     <div align="left">
       <label style="font-size:15px;color:#1483BB;">#RECOVER TIME</label><br>
-      <textarea style="font-size:13px;border:0px;">'.$device->recover.'</textarea>
+      <textarea type="text" style="font-size:13px;border:0px;font-family: arial, sans-serif;" rows="5">'.$device->mediaRecover.'</textarea>
     </div>
     <br>
     <div align="right">
