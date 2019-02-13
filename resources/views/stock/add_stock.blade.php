@@ -7,12 +7,12 @@
 
 @section('content')
 <!-- Container fluid  -->
+<form action="{{ route('createstock') }}" method="post">
+  @csrf
 <div class="container-fluid">
 <h1>Bulk add to stock</h1>
 <div class="row">
         <div class="col-sm-12 col-xs-12">
-          <form action="{{ route('createstock') }}" method="post">
-          @csrf
             <span>Device type</span>
                 <div class = "row">
                     <div class = "col-md-6" style = "margin: 0px; padding: 0px;">
@@ -117,18 +117,21 @@
                 <div class="row">
                   <div class="col-md-2">
                       <div class="form-group">
-                          <a class="btn btn-circle btn-sm btn-success" href="javascript:void(0)"><i class="fa fa-plus"></i></a>
-                          <a class="btn btn-circle btn-sm btn-danger" href="javascript:void(0)"><i class="fa fa-times"></i></a>
+                          <a class="btn btn-circle btn-sm btn-success" onclick="onSerialAdd()"><i class="fa fa-plus"></i></a>
+                          <a class="btn btn-circle btn-sm btn-danger" onclick="removeSerial()"><i class="fa fa-times"></i></a>
                       </div>
                   </div>
                 </div>
-                <div class="row">
-                    <div class="input-group" style="margin: 0px; padding: 0px;">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text" id="basic-addon1">Serial number</span>
+                <input type="hidden" name="serial_count" id="serial_count" value="1">
+                <div id="adult">
+                  <div class="row">
+                      <div class="input-group" style="margin: 5px; padding: 5px;">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text" id="basic-addon1">Serial Number1</span>
+                        </div>
+                        <input type="text" class="form-control" id="serial" name="serial1">  
                       </div>
-                      <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" name = "serial_number">  
-                    </div>
+                  </div>
                 </div>
                 <br />
                 <span>Pricing</span>
@@ -184,15 +187,44 @@
                     <button type="submit" class="btn btn-success"><i class="fa fa-check"></i> Save</button>
                     <a href = "{{URL::to('stock/resetAction')}}"><button type="button" class="btn btn-warning">Reset</button></a>
                 </div>              
-          </form>
         </div>
     </div>    
 </div>
+</form>
+
 <!-- End Container fluid  -->
 @endsection
 
 @push('footer-script')
 
 <script src="{{ asset('js/dashboard.js')}}"></script>
+
+<script>
+
+  var room = 1;
+  function onSerialAdd()
+  {
+    room ++;
+    $("#serial_count").val(room);
+    var objTo = document.getElementById("adult");
+    var divtest = document.createElement("div");
+    divtest.setAttribute("class", "row removeclass" + room);
+    divtest.innerHTML = '<div class="input-group" style="margin:5px;padding:5px;"><div class="input-group-prepend"><span class="input-group-text" id="basic-addon1">Serial Number'+room+'</span></div><input type="text" class="form-control" id="serial" name="serial'+room+'"></div>';
+
+    console.log(divtest);
+
+    objTo.appendChild(divtest);
+  }
+  function removeSerial()
+  {
+    $('.removeclass' + room).remove();
+    room --;
+    if (room < 1) {
+      room = 1;
+    }
+    $('#serial_count').val(room);
+  }
+
+</script>
 
 @endpush

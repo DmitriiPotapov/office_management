@@ -35,7 +35,6 @@
                                 <th>Serial number</th>
                                 <th>Location</th>
                                 <th>Price with VAT</th>
-                                <th>Acquired from</th>
                                 <th>Input date</th>
                                 <th> Action</th>                                   
                             </tr>
@@ -49,7 +48,6 @@
                             <td>{{ $item->serial_number }}</td>
                             <td>{{ $item->location }}</td>
                             <td>{{ $item->input_price }}</td>
-                            <td>{{ $item->diler_info }}</td>
                             <td>{{ $item->created_at }}</td>    
                                 <td class="td_stock">
                                 <a href="{{ route('editStock', ['id' => $item['id']]) }}" data-toggle="tooltip" data-original-title="Edit"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>  

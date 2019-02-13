@@ -118,14 +118,6 @@
                 <br />
                 <span>Serials</span>              
                 <div class="row">
-                  <div class="col-md-2">
-                      <div class="form-group">
-                          <a class="btn btn-circle btn-sm btn-success" href="javascript:void(0)"><i class="fa fa-plus"></i></a>
-                          <a class="btn btn-circle btn-sm btn-danger" href="javascript:void(0)"><i class="fa fa-times"></i></a>
-                      </div>
-                  </div>
-                </div>
-                <div class="row">
                     <div class="input-group" style="margin: 0px; padding: 0px;">
                       <div class="input-group-prepend">
                         <span class="input-group-text" id="basic-addon1">Serial number</span>

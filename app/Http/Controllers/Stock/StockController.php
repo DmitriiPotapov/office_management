@@ -38,37 +38,27 @@ class StockController extends Controller
     
     public function store(Request $request)
     {
+
+        $serial_count = $request->input('serial_count');
         
-        $device_type = $request->device_type;
-        $connection = $request->connection;
-        $form_factor = $request->form_factor;
-        $manufacturer = $request->manufacturer;
-        $model = $request->model;
-        $location = $request->location;
-        $diler_info = $request->diler_info;
-        $serial_number = $request->serial_number;
-        $input_price = $request->input_price;
-        $vat_value = $request->vat_value;
-        $interest = $request->interest;
-        $final_price = $request->final_price;
-        $stock_note = $request->stock_note;
-
-        $stockItem = new StockItem();
-        $stockItem->device_type = $device_type;
-        $stockItem->connection = $connection;
-        $stockItem->form_factor = $form_factor;
-        $stockItem->manufacturer = $manufacturer;
-        $stockItem->stock_model = $model;
-        $stockItem->location = $location;
-        $stockItem->serial_number = $serial_number;
-        $stockItem->input_price = $input_price;
-        $stockItem->diler_info = $diler_info;
-        $stockItem->interest = $interest;
-        $stockItem->vat_value = $vat_value;
-        $stockItem->final_price = $final_price;
-        $stockItem->stock_note = $stock_note;
-
-        $stockItem->save();
+        for ($i = 1 ; $i <= $serial_count ; $i ++)
+        {
+            $stockItem = new StockItem();
+            $stockItem->device_type = $request->input('device_type');
+            $stockItem->connection = $request->input('connection');
+            $stockItem->form_factor = $request->input('form_factor');
+            $stockItem->manufacturer = $request->input('manufacturer');
+            $stockItem->stock_model = $request->input('model');
+            $stockItem->location = $request->input('location');
+            $stockItem->serial_number = $request->input('serial'.$i);
+            $stockItem->input_price = $request->input('input_price');
+            $stockItem->diler_info = $request->input('diler_info');
+            $stockItem->interest = $request->input('interest');
+            $stockItem->vat_value = $request->input('vat_value');
+            $stockItem->final_price = $request->input('final_price');
+            $stockItem->stock_note = $request->input('stock_note');
+            $stockItem->save();
+        }    
          
         return redirect(route('allstocks'));
 
