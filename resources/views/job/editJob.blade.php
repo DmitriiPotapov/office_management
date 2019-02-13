@@ -26,13 +26,13 @@
                     <div class="row button-group">
                         <div class="col-lg-12 m-b-30">
                             <button class="btn btn-primary waves-effect waves-light" type="button" data-toggle="modal" data-target="#assignto"><span class="btn-label" ><i class="fa fa-user"></i></span>Assign job to engineer</button>
-                            <a class="btn btn-success waves-effect waves-light" href="{{ route('admission_form',['job_id' => $job['job_id']]) }}"><span class="btn-label"><i class="fa fa-book"></i></span>Checkin form</a>
+                            <a class="btn btn-success waves-effect waves-light" href="{{ route('admission_form',['job_id' => $job['job_id']]) }}"><span class="btn-label"><i class="fa fa-book"></i></span>Check-in form</a>
                             <button class="btn btn-warning waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-key"></i></span>Unlock client access</button>
                             <button class="btn btn-danger waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-users"></i></span>Change client</button>
                             <a class="btn btn-danger waves-effect waves-light" href="{{ route('checkout_form',['job_id' => $job['job_id']]) }}" ><span class="btn-label"><i class="fa fa-check" ></i></span>Check-out form</a>
-                            <a class="btn btn-success waves-effect waves-light" href="{{ route('generate_invoice',['job_id' => $job['job_id']]) }}"><span class="btn-label"><i class="fa fa-envelope-o"></i></span>Generate invoice</a>
-                            <a class="btn btn-info waves-effect waves-light" href="{{ route('generate_quote',['job_id' => $job['job_id']]) }}"><span class="btn-label"><i class="fa fa-envelope-o"></i></span>Generate Quote</a>
                             <a class="btn btn-success waves-effect waves-light" href="{{ route('generate_media_report',['job_id' => $job['job_id']]) }}"><span class="btn-label"><i class="fa fa-envelope-o"></i></span>Media Evaluation Report</a>
+                            <a class="btn btn-info waves-effect waves-light" href="{{ route('generate_quote',['job_id' => $job['job_id']]) }}"><span class="btn-label"><i class="fa fa-envelope-o"></i></span>Generate Quote</a>
+                            <a class="btn btn-success waves-effect waves-light" href="{{ route('generate_invoice',['job_id' => $job['job_id']]) }}"><span class="btn-label"><i class="fa fa-envelope-o"></i></span>Generate Invoice</a>
                         </div>
                         <div class="modal fade" id="assignto" tabindex="-1" role="dialog" >
                             <form action="{{ route('assign_job') }}" method="POST">
@@ -78,6 +78,7 @@
                             <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#mediainfo" role="tab"><span class="hidden-sm-up"><i class="ti-email"></i></span> <span class="hidden-xs-down">Media info</span></a> </li>
                             <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#diagnosis" role="tab"><span class="hidden-sm-up"><i class="ti-email"></i></span> <span class="hidden-xs-down">Diagnosis</span></a> </li>
                             <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#attachments" role="tab"><span class="hidden-sm-up"><i class="ti-email"></i></span> <span class="hidden-xs-down">Attachments</span></a> </li>
+                            <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#quotes" role="tab"><span class="hidden-sm-up"><i class="ti-email"></i></span> <span class="hidden-xs-down">Quotes</span></a> </li>
                             <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#billing" role="tab"><span class="hidden-sm-up"><i class="ti-email"></i></span> <span class="hidden-xs-down">Billing</span></a> </li>
                             <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#jobhistory" role="tab"><span class="hidden-sm-up"><i class="ti-email"></i></span> <span class="hidden-xs-down">JobHistory</span></a> </li>
                             <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#log" role="tab"><span class="hidden-sm-up"><i class="ti-email"></i></span> <span class="hidden-xs-down">Log</span></a> </li>
@@ -146,26 +147,26 @@
                                                         <div class="form-group row has-success">
                                                             <h4 class="card-title">Job info</h4>
                                                             <select class="form-control custom-select" id="device_malfunc_info" name="device_malfunc_info">
-                                                                <option value="Fell down" {{ ($job['device_malfunc_info'] == 'Fell down') ? 'checked' : ''}}>Fell down</option>
-                                                                <option value="Not working" {{ ($job['device_malfunc_info'] == 'Not working') ? 'checked' : ''}}>Not working</option>
-                                                                <option value="Clicking Sound" {{ ($job['device_malfunc_info'] == 'Clicking Sound') ? 'checked' : ''}}>Clicking Sound</option>
-                                                                <option value="Abnormal Noise" {{ ($job['device_malfunc_info'] == 'Abnormal Noise') ? 'checked' : ''}}>Abnormal Noise</option>
-                                                                <option value="Water Damage" {{ ($job['device_malfunc_info'] == 'Water Damage') ? 'checked' : ''}}>Water Damage</option>
-                                                                <option value="Fire Damage" {{ ($job['device_malfunc_info'] == 'Fire Damage') ? 'checked' : ''}}>Fire Damage</option>
-                                                                <option value="Deleted" {{ ($job['device_malfunc_info'] == 'Deleted') ? 'checked' : ''}}>Deleted</option>
-                                                                <option value="Formatted" {{ ($job['device_malfunc_info'] == 'Formatted') ? 'checked' : ''}}>Formatted</option>
-                                                                <option value="Rebuild" {{ ($job['device_malfunc_info'] == 'Rebuild') ? 'checked' : ''}}>Rebuild</option>
-                                                                <option value="PCB Burn" {{ ($job['device_malfunc_info'] == 'PCB Burn') ? 'checked' : ''}}>PCB Burn</option>
-                                                                <option value="Overwritten" {{ ($job['device_malfunc_info'] == 'Overwritten') ? 'checked' : ''}}>Overwritten</option>
-                                                                <option value="Virus issue" {{ ($job['device_malfunc_info'] == 'Virus issue') ? 'checked' : ''}}>Virus issue</option>
-                                                                <option value="Ransomware attack" {{ ($job['device_malfunc_info'] == 'Ransomware attack') ? 'checked' : ''}}>Ransomware attack</option>
-                                                                <option value="Password Forget" {{ ($job['device_malfunc_info'] == 'Password Forget') ? 'checked' : ''}}>Password Forget</option>
-                                                                <option value="Encryption" {{ ($job['device_malfunc_info'] == 'Encryption') ? 'checked' : ''}}>Encryption</option>
-                                                                <option value="File corruption / damage" {{ ($job['device_malfunc_info'] == 'File corruption / damage') ? 'checked' : ''}}>File corruption / damage</option>
-                                                                <option value="File missing" {{ ($job['device_malfunc_info'] == 'File missing') ? 'checked' : ''}}>File missing</option>
-                                                                <option value="Complete dead" {{ ($job['device_malfunc_info'] == 'Complete dead') ? 'checked' : ''}}>Complete dead</option>
-                                                                <option value="Display Broken" {{ ($job['device_malfunc_info'] == 'Display Broken') ? 'checked' : ''}}>Display Broken</option>
-                                                                <option value="Others" {{ ($job['device_malfunc_info'] == 'Others') ? 'checked' : ''}}>Others</option>
+                                                                <option value="Fell down" {{ ($job['device_malfunc_info'] == 'Fell down') ? 'selected' : ''}}>Fell down</option>
+                                                                <option value="Not working" {{ ($job['device_malfunc_info'] == 'Not working') ? 'selected' : ''}}>Not working</option>
+                                                                <option value="Clicking Sound" {{ ($job['device_malfunc_info'] == 'Clicking Sound') ? 'selected' : ''}}>Clicking Sound</option>
+                                                                <option value="Abnormal Noise" {{ ($job['device_malfunc_info'] == 'Abnormal Noise') ? 'selected' : ''}}>Abnormal Noise</option>
+                                                                <option value="Water Damage" {{ ($job['device_malfunc_info'] == 'Water Damage') ? 'selected' : ''}}>Water Damage</option>
+                                                                <option value="Fire Damage" {{ ($job['device_malfunc_info'] == 'Fire Damage') ? 'selected' : ''}}>Fire Damage</option>
+                                                                <option value="Deleted" {{ ($job['device_malfunc_info'] == 'Deleted') ? 'selected' : ''}}>Deleted</option>
+                                                                <option value="Formatted" {{ ($job['device_malfunc_info'] == 'Formatted') ? 'selected' : ''}}>Formatted</option>
+                                                                <option value="Rebuild" {{ ($job['device_malfunc_info'] == 'Rebuild') ? 'selected' : ''}}>Rebuild</option>
+                                                                <option value="PCB Burn" {{ ($job['device_malfunc_info'] == 'PCB Burn') ? 'selected' : ''}}>PCB Burn</option>
+                                                                <option value="Overwritten" {{ ($job['device_malfunc_info'] == 'Overwritten') ? 'selected' : ''}}>Overwritten</option>
+                                                                <option value="Virus issue" {{ ($job['device_malfunc_info'] == 'Virus issue') ? 'selected' : ''}}>Virus issue</option>
+                                                                <option value="Ransomware attack" {{ ($job['device_malfunc_info'] == 'Ransomware attack') ? 'selected' : ''}}>Ransomware attack</option>
+                                                                <option value="Password Forget" {{ ($job['device_malfunc_info'] == 'Password Forget') ? 'selected' : ''}}>Password Forget</option>
+                                                                <option value="Encryption" {{ ($job['device_malfunc_info'] == 'Encryption') ? 'selected' : ''}}>Encryption</option>
+                                                                <option value="File corruption / damage" {{ ($job['device_malfunc_info'] == 'File corruption / damage') ? 'selected' : ''}}>File corruption / damage</option>
+                                                                <option value="File missing" {{ ($job['device_malfunc_info'] == 'File missing') ? 'selected' : ''}}>File missing</option>
+                                                                <option value="Complete dead" {{ ($job['device_malfunc_info'] == 'Complete dead') ? 'selected' : ''}}>Complete dead</option>
+                                                                <option value="Display Broken" {{ ($job['device_malfunc_info'] == 'Display Broken') ? 'selected' : ''}}>Display Broken</option>
+                                                                <option value="Others" {{ ($job['device_malfunc_info'] == 'Others') ? 'selected' : ''}}>Others</option>
                                                             </select>
                                                         </div>
                                                         <div class="form-group row has-info">
@@ -173,7 +174,7 @@
                                                             <textarea class="form-control" rows="3" name="important_data">{{ $job['important_data'] }}</textarea>
                                                         </div>
                                                         <div class="form-group row has-danger">
-                                                            <h4 class="card-title">Cleint note</h4>
+                                                            <h4 class="card-title">Client note</h4>
                                                             <textarea class="form-control" rows="3" name="notes">{{ $job['notes'] }}</textarea>
                                                         </div>
                                                         <div class="form-actions">
@@ -218,7 +219,7 @@
                                                         <thead>
                                                             <tr>
                                                                 <th>Type</th>
-                                                                <th>Manufacturer</th>
+                                                                <th>Brand</th>
                                                                 <th>Model</th>
                                                                 <th>Serial</th>
                                                                 <th>Location</th>
@@ -532,7 +533,7 @@
                                                     <tr>
                                                         <th></th>
                                                         <th>Type</th>
-                                                        <th>Manufacturer</th>
+                                                        <th>Brand</th>
                                                         <th>Model</th>
                                                         <th>Serial</th>
                                                         <th>Location</th>
@@ -889,7 +890,11 @@
                                                         PCB
                                                     </span>
                                                 </div>
-                                                <input type="text" id="pcb" name="pcb" class="form-control" placeholder="" value="{{ $devices[0]['PCB'] }}">
+                                                <select class="form-control custom-select" id="pcb" name="pcb">
+                                                    <option value="OK" {{ ($devices[0]['PCB'] == 'OK') ? 'selected' : ''}}>OK</option>
+                                                    <option value="NOT OK" {{ ($devices[0]['PCB'] == 'NOT OK') ? 'selected' : ''}}>NOT OK</option>
+                                                    <option value="DAMAGED" {{ ($devices[0]['PCB'] == 'DAMAGED') ? 'selected' : ''}}>DAMAGED</option>
+                                                </select>
                                                 <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
                                             </div>
                                         </div>
@@ -900,7 +905,11 @@
                                                         Motor
                                                     </span>
                                                 </div>
-                                                <input type="text" id="motor" name="motor" class="form-control" placeholder="" value="{{ $devices[0]['motor'] }}">
+                                                <select class="form-control custom-select" id="motor" name="motor">
+                                                    <option value="OK" {{ ($devices[0]['motor'] == 'OK') ? 'selected' : ''}}>OK</option>
+                                                    <option value="NOT OK" {{ ($devices[0]['motor'] == 'NOT OK') ? 'selected' : ''}}>NOT OK</option>
+                                                    <option value="DAMAGED" {{ ($devices[0]['motor'] == 'DAMAGED') ? 'selected' : ''}}>DAMAGED</option>
+                                                </select>
                                                 <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
                                             </div>
                                         </div>
@@ -913,7 +922,11 @@
                                                         Firmware
                                                     </span>
                                                 </div>
-                                                <input type="text" id="firmware" name="firmware" class="form-control" placeholder="" value="{{ $devices[0]['firmware'] }}">
+                                                <select class="form-control custom-select" id="firmware" name="firmware">
+                                                    <option value="OK" {{ ($devices[0]['firmware'] == 'OK') ? 'selected' : ''}}>OK</option>
+                                                    <option value="NOT OK" {{ ($devices[0]['firmware'] == 'NOT OK') ? 'selected' : ''}}>NOT OK</option>
+                                                    <option value="DAMAGED" {{ ($devices[0]['firmware'] == 'DAMAGED') ? 'selected' : ''}}>DAMAGED</option>
+                                                </select>
                                                 <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
                                             </div>
                                         </div>
@@ -924,7 +937,11 @@
                                                         R/W Heads
                                                     </span>
                                                 </div>
-                                                <input type="text" id="r_w_heads" name="r_w_heads" class="form-control" placeholder="" value="{{ $devices[0]['r_w_heads'] }}">
+                                                <select class="form-control custom-select" id="r_w_heads" name="r_w_heads">
+                                                    <option value="OK" {{ ($devices[0]['r_w_heads'] == 'OK') ? 'selected' : ''}}>OK</option>
+                                                    <option value="NOT OK" {{ ($devices[0]['r_w_heads'] == 'NOT OK') ? 'selected' : ''}}>NOT OK</option>
+                                                    <option value="DAMAGED" {{ ($devices[0]['r_w_heads'] == 'DAMAGED') ? 'selected' : ''}}>DAMAGED</option>
+                                                </select>
                                                 <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
                                             </div>
                                         </div>
@@ -947,7 +964,7 @@
                                         <textarea type="text" class="form-control" rows="5" id="dev_consultation" name="dev_consultation" placeholder="">{{ $devices[0]['consultation'] }}</textarea>
                                     </div>
                                     <div >
-                                        <h4>Recover Time/Cost</h4>
+                                        <h4>Recovery Time</h4>
                                         <textarea type="text" class="form-control" rows="5" id="dev_recover" name="dev_recover" placeholder="">{{ $devices[0]['recover'] }}</textarea>
                                     </div>
                                     <button type="submit" class="btn btn-success" > <i class="fa fa-update"></i> Update Device </button>
@@ -998,6 +1015,43 @@
                                                 </div>
                                             </div>
                                         </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane p-20" id="quotes" role="tabpanel">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <hr>
+                                        <h5 class="card-title">Quotes</h5>
+                                        <div class="row p-t-20">
+                                            <div class="table-responsive">
+                                                <table class="table color-bordered-table info-bordered-table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>No</th>
+                                                            <th>Type</th>
+                                                            <th>Capacity</th>
+                                                            <th>Price</th>
+                                                            <th>Created by</th>
+                                                            <th>Created at</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            @if ($quote)
+                                                            <td>{{ $quote->id }}</td>
+                                                            <td>{{ $quote->item_type }}</td>
+                                                            <td>{{ $quote->item_capacity }}</td>
+                                                            <td>{{ $quote->item_total_price }}</td>
+                                                            <td>{{ $quote->created_by }}</td>
+                                                            <td>{{ $quote->created_at }}</td>
+                                                            @endif
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <hr>
                                     </div>
                                 </div>
                             </div>

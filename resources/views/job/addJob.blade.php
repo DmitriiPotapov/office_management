@@ -32,8 +32,8 @@
                                         @if($client_id == 0)
                                         <div id="the-basics">
                                             <input type="text" id="client_info" name="client_info" class="typeahead form-control" placeholder="Cleint info" >
-                                        </div>
-                                        <a style="margin-left: 30px;" href="{{ route('addClinet') }}"> New Client </a> </div>
+                                        </div><br>
+                                        <a class="btn-sm btn-success waves-effect waves-light" href="{{ route('addClinet') }}"><span class="btn-label"><i class="fa fa-plus"></i></span>New Client</a> </div>
                                         <input type="hidden" name="client_id" value="1">
                                         @endif
                                         @if($client_id != 0)
@@ -96,6 +96,8 @@
                                                 </span>
                                             </div>
                                             <select class="form-control custom-select" id="devcategory" name="devcategory">
+                                                <option value="Laptop">Laptop</option>
+                                                <option value="Desktop">Desktop</option>
                                                 <option value="Laptop Drive">Laptop Drive</option>
                                                 <option value="Desktop Drive">Desktop Drive</option>
                                                 <option value="External Drive">External Drive</option>
@@ -145,7 +147,7 @@
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1">
-                                                Manufacturer
+                                                Brand
                                             </span>
                                         </div>
                                         <select class="form-control custom-select" id="manufacturer1" name="manufacturer">
@@ -240,7 +242,7 @@
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1">
-                                                    Manufacturer
+                                                    Brand
                                                 </span>
                                             </div>
                                             <input type="text" id="backupManufacturer" name="backupManufacturer" class="form-control" placeholder="" >
@@ -366,6 +368,8 @@
                             </span>
                         </div>
                         <select class="form-control custom-select" id="cr_category" name="cr_category">
+                            <option value="Laptop">Laptop</option>
+                            <option value="Desktop">Desktop</option>
                             <option value="Laptop Drive">Laptop Drive</option>
                             <option value="Desktop Drive">Desktop Drive</option>
                             <option value="External Drive">External Drive</option>
@@ -394,7 +398,7 @@
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1">
-                                Manufacturer
+                                Brand
                             </span>
                         </div>
                         <select class="form-control custom-select" id="cr_manufacturer" name="cr_manufacturer">

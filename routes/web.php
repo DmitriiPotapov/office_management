@@ -167,6 +167,8 @@ Route::group(
     ['prefix'=>'invoice'], function(){
         Route::get('/add', 'InvoiceController@create')->name('add_invoice');
         Route::get('/allview', 'InvoiceController@index')->name('allInvoices');
+        Route::get('/unpaidInvoice', 'InvoiceController@unpaid')->name('unpaidInvoices');
+        Route::get('/paidInvoice', 'InvoiceController@paid')->name('paidInvoices');
         Route::post('/createAction', 'InvoiceController@store')->name('createInvoice');
         Route::post('/invoiceDetails/createjob', 'InvoiceController@storeJob')->name('createInvoiceJob');
         Route::post('/getdetailjob', 'InvoiceController@getDetailJob');

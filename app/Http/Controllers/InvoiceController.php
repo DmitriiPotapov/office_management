@@ -34,6 +34,24 @@ class InvoiceController extends Controller
         return view('invoice/all_invoices', compact('invoices'));
     }
 
+    public function unpaid()
+    {
+        if( !Auth::check() )
+            return redirect()->route('login');
+
+        $invoices = Invoice::all();
+        return view('invoice/unpaid_invoices', compact('invoices'));
+    }
+
+    public function paid()
+    {
+        if( !Auth::check() )
+            return redirect()->route('login');
+
+        $invoices = Invoice::all();
+        return view('invoice/paid_invoices', compact('invoices'));
+    }
+
     /**
      * Show the form for creating a new resource.
      *

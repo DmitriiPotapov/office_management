@@ -13,8 +13,7 @@
                 <!-- ============================================================== -->
     <div class="row page-titles">
         <div class="col-md-6 col-8 align-self-center">
-            <h3 class="text-themecolor m-b-0 m-t-0">All Stock Items</h3>
-            <a href = "{{URL::to('stock/create')}}"><button type="button" class="btn btn-info"><i class="ti-plus text" aria-hidden="true"></i>Add New Stock</button></a>
+            <h3 class="text-themecolor m-b-0 m-t-0">Paid Invoices</h3>
         </div>
         
     </div>
@@ -26,37 +25,37 @@
         <div class="col-12">
             <div class="card">
             <div class="card-body">
-                <div class="table-responsive m-t-40">
+                <div class="table-responsive">
                     <table id="example23" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
                         <thead>
                             <tr>                                
-                                <th>Brand</th>
-                                <th>Model</th>
-                                <th>Serial number</th>
-                                <th>Location</th>
-                                <th>Price with VAT</th>
-                                <th>Acquired from</th>
-                                <th>Input date</th>
+                                <th>Job ID</th>
+                                <th>Status</th>
+                                <th>Client Name</th>
+                                <th>Total</th>
+                                <th>Created at</th>
+                                <th>Created by</th>                               
                                 <th> Action</th>                                   
                             </tr>
                         </thead>
                         
-                        <tbody> 
-                            @foreach ($stockItems as $item)                      
-                            <tr>
-                            <td>{{ $item->manufacturer }}</td>
-                            <td>{{ $item->stock_model }}</td>
-                            <td>{{ $item->serial_number }}</td>
-                            <td>{{ $item->location }}</td>
-                            <td>{{ $item->input_price }}</td>
-                            <td>{{ $item->diler_info }}</td>
-                            <td>{{ $item->created_at }}</td>    
-                                <td class="td_stock">
-                                <a href="{{ route('editStock', ['id' => $item['id']]) }}" data-toggle="tooltip" data-original-title="Edit"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>  
-                                <a href="{{ URL::to('stock/deleteAction?id=') }}{{ $item->id }}"><button class="btn-sm btn-danger btn-circle" type="button"> <i class="fa fa-trash" aria-hidden="true"></i> </button></a>
-                                </td>
-                              </tr>
-                            @endforeach                                
+                        <tbody>
+                        @foreach ($invoices as $item)
+                        <tr>                         
+                        <td>{{ $item->job_id }}</td>
+                        <td>{{ $item->status }}</td>
+                        <td>{{ $item->client_name }}</td>
+                        <td>{{ $item->item_total_price }}</td>
+                        <td>{{ $item->created_at }}</td>
+                        <td>{{ $item->created_by }}</td>    
+                        <td class="td_invoice">
+                            <a href="{{ route('editInvoice', ['id' => $item['id']]) }}" data-toggle="tooltip" data-original-title="Edit"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
+                            <a href="{{ URL::to('invoice/deleteAction?id=') }}{{ $item->id }}"><button class="btn-sm btn-youtube waves-effect btn-circle waves-light" type="button"> <i class="fa fa-trash" aria-hidden="true"></i></button></a>
+                        </td>
+                        </tr>  
+                        @endforeach                                                   
+                        
+                                                        
                         </tbody>
                     </table>
                 </div>
@@ -83,7 +82,7 @@
 <script>
     $(document).ready(function() {
         $("body").on('click', "#example23 tbody td", function() {
-            if($(this).hasClass("td_stock")) return;
+            if($(this).hasClass("td_invoice")) return;
             obj = $(this).closest("tr").find('a[data-original-title="Edit"]');
             document.location.replace(obj.attr("href"));
         })

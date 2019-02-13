@@ -9,6 +9,11 @@
 @section('content')
 
 <div class="container-fluid">
+    <div class="row page-titles">
+        <div class="col-md-6 col-8 align-self-center">
+            <h3 class="text-themecolor m-b-0 m-t-0">New Item</h3>
+        </div>
+    </div>
     <div class="row">
         <div class="col-lg-12">
             <div class="card card-outline-info">
@@ -43,7 +48,6 @@
                                             <option value="Clone">Clone</option>
                                             <option value="Patient">Patient</option>
                                             <option value="Backup">Backup</option>
-                                            <option value="Paid">Paid</option>
                                         </select>
                                     </div>
                                 </div>
@@ -174,7 +178,7 @@
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1">
-                                                GB
+                                                Capacity
                                             </span>
                                         </div>
                                         <select class="form-control custom-select" id="capacity" name="capacity">
@@ -255,7 +259,7 @@
                             <hr>
                             <h4 class="card-title">PCB info </h4>
                             <div class="row p-t-20">
-                                <div class="col-md-1.5">
+                                <div class="col-md-2">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1">
@@ -272,11 +276,11 @@
                                         <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
                                     </div>
                                 </div>
-                                <div class="col-md-1.5">
+                                <div class="col-md-2">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1">
-                                                PCB id
+                                                PCB ID
                                             </span>
                                         </div>
                                         <input type="text" id="pcb_id" name="pcb_id" class="form-control" placeholder="" required>
@@ -307,40 +311,38 @@
                             <h4 class="card-title">Location</h4>
                             <div class="row p-t-20">
                                 <div class="col-md-8">
-                                    <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon1">
+                                                Location
+                                            </span>
+                                        </div>
                                         <input type="text" id="location" name="location" class="form-control" placeholder="" required>
                                         <small class="form-control-feedback"><a href="javascript:void(0)"> </a></small> </div>
                                 </div>
-                            </div> 
+                            </div> <br>
                             <h4 class="card-title">Heads/Platter info</h4>
                             <div class="row p-t-20">
                                 <div class="col-md-2">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1">
-                                                Heads Number
+                                                    Heads Number
                                             </span>
                                         </div>
-                                        <select class="form-control custom-select" id="heads_number" name="heads_number">
-                                            @for ($i = 1; $i <= 6; $i++)
-                                                <option value="{{ $i }}">{{ $i }}</option>
-                                            @endfor
-                                        </select>
+                                        <input type="text" id="heads_number" name="heads_number" class="form-control" placeholder="" required>
+                                        <small class="form-control-feedback"><a href="javascript:void(0)"> </a></small> 
                                     </div>
                                 </div>
                                 <div class="col-md-3">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1">
-                                                Platter Number
+                                                    Platter Number
                                             </span>
                                         </div>
-                                        
-                                        <select class="form-control custom-select" id="heads_info" name="heads_info">
-                                            @for ($i = 1; $i <= 12; $i++)
-                                                <option value="{{ $i }}">{{ $i }}</option>
-                                            @endfor
-                                        </select>
+                                        <input type="text" id="heads_number" name="heads_info" class="heads_info-control" placeholder="" required>
+                                        <small class="form-control-feedback"><a href="javascript:void(0)"> </a></small> 
                                     </div>
                                 </div>
                                 <div class="col-md-3">

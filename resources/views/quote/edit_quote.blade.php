@@ -13,7 +13,11 @@
 @section('content')
 <!-- Container fluid  -->
 <div class="container-fluid">
-    <h1>Update Quote</h1>
+        <div class="row page-titles">
+                <div class="col-md-6 col-8 align-self-center">
+                    <h3 class="text-themecolor m-b-0 m-t-0">Update Quote</h3>
+                </div>
+            </div>
     <div class="row">
         <div class="col-sm-12 col-xs-12">
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal2"
@@ -46,25 +50,28 @@
             <br>
             <span>Quote language</span>
             <div class="row">
+                <div class="col-md-12">
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text">Language</span>
                     </div>
-                    <select class="custom-select col-12 invoice_language" id="quote_language" name="quote_language">
+                    <select class="custom-select invoice_language" id="quote_language" name="quote_language">
                       
                         <option <?php echo $quote->quote_language == 'English' ? 'selected' : '';?> value="English">English</option>
                         <option <?php echo $quote->quote_language == 'Arabic' ? 'selected' : '';?> value="Arabic">Arabic</option>                     
                     </select>
                 </div>
             </div>
+            </div>
             <br>
             <span>Currency</span>
             <div class="row">
+                    <div class="col-md-12">
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text">Currency</span>
                     </div>
-                    <select class="custom-select col-12 currency" id="currency" name="currency">                    
+                    <select class="custom-select currency" id="currency" name="currency">                    
                             <option <?php echo $quote->currency == 'INR' ? 'selected' : '';?> value="INR">INR </option>
                             <option <?php echo $quote->currency == 'RO' ? 'selected' : '';?> value="RO">RO </option>
                             <option <?php echo $quote->currency == 'Dhs' ? 'selected' : '';?> value="Dhs">Dhs </option>
@@ -72,11 +79,13 @@
                             <option <?php echo $quote->currency == 'EU' ? 'selected' : '';?> value="EU">EU   </option>          
                     </select>
                 </div>
+                    </div>
             </div>
             <br />
-            <span>Quote items</span>
+            
 
             <div class="card-body">
+                    <span>Quote items</span>
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
@@ -89,7 +98,7 @@
                                                 <th>Capacity</th>
                                                 <th>Price</th>
                                                 
-                                                <th>Discount(%)</th>
+                                                <th>Discount</th>
                                                 <th>Total Price</th>
                                             </tr>
                                         </thead>

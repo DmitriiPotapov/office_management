@@ -17,14 +17,14 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">Quick jump</h4>
+                    <h4 class="card-title">Quick Search</h4>
                     <div class="row p-t-20">
                         <div class="col-md-4">
                             <div class="input-group">
                                 <input type="text" class="form-control" id="inventoryNumber" placeholder="Inventory Number">
                                 <div class="input-group-append">
                                     <span class="input-group-text" id="basic-addon2">
-                                        <a href="javascript:void(0)"><i class="ti-hand-point-right"></i></a>
+                                        <button onclick="onquickjump()"><a href="javascript:void(0)"><i class="ti-hand-point-right"></i></a></button>
                                     </span>
                                 </div>
                             </div>
@@ -37,7 +37,7 @@
                                 <tr>
                                     <th></th>
                                     <th>ID</th>
-                                    <th>Manufacturer</th>
+                                    <th>Brand</th>
                                     <th>Model</th>
                                     <th>Serial Number</th>
                                     <th>Firmware</th>
@@ -110,6 +110,13 @@ $('#myTable').DataTable({
         'copy', 'csv', 'excel', 'pdf', 'print'
     ]
 });
+
+function onquickjump()
+{
+    var id = $('#inventoryNumber').val();
+    window.location = '/inventory/edit/' + id;
+}
+
 </script>
 
 @endpush

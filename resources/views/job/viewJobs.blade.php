@@ -22,7 +22,7 @@ tr:hover{
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">Quick jump</h4>
+                    <h4 class="card-title">Quick search</h4>
                     <div class="row p-t-20">
                         <div class="col-md-4">
                             <div class="input-group">
@@ -35,7 +35,7 @@ tr:hover{
                             </div>
                         </div>
                     </div>
-                    <hr>
+                    <!--
                     <div class="row button-group">
                         <div class="col-lg-12 col-xlg-8 m-b-30">
                             <button class="btn btn-outline-primary waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-envelope-o"></i></span>Generate Invoice</button>
@@ -44,7 +44,7 @@ tr:hover{
                             <button class="btn btn-outline-warning waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-envelope-o"></i></span>Change Status</button>
                             <button class="btn btn-outline-danger waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-times"></i></span>Delete</button>
                         </div>
-                    </div>
+                    </div>-->
                     <div class="table-responsive m-t-40">
                         <table id="myTable" class="display nowrap table table-hover table-bordered" cellspacing="0" width="100%">
                             <thead>

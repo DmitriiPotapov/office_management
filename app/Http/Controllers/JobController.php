@@ -169,7 +169,7 @@ class JobController extends Controller
     {
         if( !Auth::check() )
             return redirect()->route('login');
-        $jobs = DataJobs::where('status', 'Payment pending')->get()->toArray();
+        $jobs = DataJobs::where('status', 'Waiting for Parts')->get()->toArray();
         return view('job.viewJobs', compact('jobs'));
     }
 
@@ -177,7 +177,7 @@ class JobController extends Controller
     {
         if( !Auth::check() )
             return redirect()->route('login');
-        $jobs = DataJobs::where('status', 'Paid')->get()->toArray();
+        $jobs = DataJobs::where('status', 'Delivered/Paid')->get()->toArray();
         return view('job.viewJobs', compact('jobs'));
     }
 
@@ -205,8 +205,10 @@ class JobController extends Controller
 
         $invoice = Invoice::where('job_id', $job_id)->first();
 
+        $quote = Quote::where('job_id', $job_id)->first();
 
-        return view('job.editJob' , compact('job', 'client' ,'statuses','priorities', 'devices', 'comments', 'types', 'histories', 'engineers', 'logs', 'services', 'invoice'));
+
+        return view('job.editJob' , compact('job', 'client' ,'statuses','priorities', 'devices', 'comments', 'types', 'histories', 'engineers', 'logs', 'services', 'invoice', 'quote'));
     }
 
     public function updateJob(Request $request)
@@ -606,9 +608,9 @@ class JobController extends Controller
     <table style="border-bottom:0pt solid grey;width:100%">
       <tbody style="font-size:15px;margin:auto;">
         <tr>
-          <td class="newtable" width="80">CaseID</td>
-          <td class="newtable" width="80">Date</td>
-          <td class="newtable" width="80">Service</td>
+          <td class="newtable" width="80">#CaseID</td>
+          <td class="newtable" width="80">#Date</td>
+          <td class="newtable" width="80">#Service</td>
           <td class="newtable" align="right">'.$client->phone_value.'</td>
         </tr>
         <tr>
@@ -771,9 +773,9 @@ class JobController extends Controller
           <table style="border-bottom:0pt solid grey;width:100%">
             <tbody style="font-size:15px;margin:auto;">
               <tr>
-                <td class="newtable" width="80">CaseID</td>
-                <td class="newtable" width="80">Date</td>
-                <td class="newtable" width="80">Service</td>
+                <td class="newtable" width="80">#CaseID</td>
+                <td class="newtable" width="80">#Date</td>
+                <td class="newtable" width="80">#Service</td>
                 <td class="newtable" align="right">'.$client->phone_value.'</td>
               </tr>
               <tr>
@@ -918,7 +920,7 @@ class JobController extends Controller
         </div>
         <br><br><br><br>
         <div>
-          <img align="left" src="assets/images/invoice.png" width="280" height="75" />
+          <img align="left" src="assets/images/invoice.png" width="280" height="80" />
           <div align="right">
             <b><label style="font-size:17px;">Bill To</label></b>
             <b><label style="font-size:16px;">'.$client->client_name.'</label><br></b>
@@ -928,10 +930,9 @@ class JobController extends Controller
             <label style="font-size:16px;">'.$client->country.'</label>
           </div>
         </div>
-        <br><br>
         <div>
-          <label style="font-size:15px;">Invoice</label>
-          <label style="font-size:15px;padding-left:5em;">Date</label>
+          <label style="font-size:15px;">#Invoice</label>
+          <label style="font-size:15px;padding-left:5em;">#Date</label>
         </div>
         <div>
           <b><label style="font-size:15px;">'.$job->job_id.'</label>
@@ -1024,7 +1025,7 @@ class JobController extends Controller
         </div>
         <div align="right">
           <b><label style="font-size:22px;color:#3092C3;">Thank you</label><br></b>
-          <b><label style="font-size:22px;color:#3092C3;">For Submitting your Case!</label><br></b>
+          <b><label style="font-size:22px;color:#3092C3;">For Your Business!</label><br></b>
         </div>
         </div>
         </body>
@@ -1110,26 +1111,25 @@ class JobController extends Controller
       </div>
       <br><br><br><br>
       <div>
-        <img align="left" src="assets/images/quote.png" width="280" height="75" />
+        <img align="left" src="assets/images/quote.png" width="280" height="80" />
         <div align="right">
-          <b><label style="font-size:17px;">Bill To</label></b>
-          <b><label style="font-size:16px;">'.$client->client_name.'</label><br></b>
+          <b><label style="font-size:17px;">Bill To</label></b><br>
+          <label style="font-size:16px;">'.$client->client_name.'</label><br>
           <label style="font-size:16px;">'.$client->company.'</label><br>
           <label style="font-size:16px;">'.$client->phone_value.'</label><br>
           <label style="font-size:16px;">'.$client->street.'</label><br>
           <label style="font-size:16px;">'.$client->country.'</label>
         </div>
       </div>
-      <br><br>
       <div>
-        <label style="font-size:15px;">Quote</label>
-        <label style="font-size:15px;padding-left:5em;">Date</label>
+        <label style="font-size:15px;">#Quote</label>
+        <label style="font-size:15px;padding-left:5em;">#Date</label>
       </div>
       <div>
         <b><label style="font-size:15px;">'.$job->job_id.'</label>
-        <label style="font-size:15px;padding-left:5.5em;">'.date_format($job->created_at,"d/m/Y").'</label>
+        <label style="font-size:15px;padding-left:5em;">'.date_format($job->created_at,"d/m/Y").'</label>
       </div>
-      <br><br><br>
+      <br><br>
       <table >
           <thead style="border-bottom:3pt solid black;color:#3092C3;">
               <tr >
@@ -1140,19 +1140,19 @@ class JobController extends Controller
                   <td><b>Total</b></td>
               </tr>
           </thead>
-          <tbody style="border-bottom:1pt solid grey;">';
+          <tbody style="border-bottom:0pt solid grey;">';
     
-        $devices = DataDevices::where('job_id', $job_id)->get()->toArray();
+        $devices = Quote::where('job_id', $job_id)->get()->toArray();
         $i = 1;
         foreach($devices as $item)
         {
             $output .= '
             <tr>
             <td>'.number_format($i).'</td>
-            <td width="200">'.$job["services"].'-'.$item["category"].'-'.$item["brand"].'-'.$item["serial"].'</td>
-            <td>RO '.number_format($invoice->item_total_price,3,".","").'</td>
+            <td width="200">'.$item["service"].'-'.$item["item_type"].'-'.$item["item_capacity"].'</td>
+            <td>RO '.number_format($item["item_total_price"],3,".","").'</td>
             <td>1</td>
-            <td>RO '.number_format($invoice->item_total_price,3,".","").'</td>
+            <td>RO '.number_format($item["item_total_price"],3,".","").'</td>
             </tr>';
             $i ++;
         }
@@ -1160,8 +1160,7 @@ class JobController extends Controller
     '     </tbody>
         </table>
       </div>
-      <br>
-      <br><hr /><br>
+      <hr /><br>
       <div align="right">
         <label style="font-size:16px;">Sub Total</label>
         <label style="font-size:16px;padding-left:8em;">RO '.number_format($invoice->item_total_price,3,".","").'</label><br>
@@ -1170,9 +1169,8 @@ class JobController extends Controller
         <label style="font-size:16px;">Tax 00%</label>
         <label style="font-size:16px;padding-left:8em;">RO 00.000</label><br>
       </div><br>
-      <div align="right" >
-        <label style="background-color:#1483BB;color:white;font-size:20px;margin-top:5px;margin-bottom:5px;">Grand Total</label>
-        <label style="background-color:#1483BB;color:white;font-size:20px;padding-left:4em;padding-top:5px;padding-bottom:5px;">RO '.number_format($invoice->item_total_price,3,".","").'</label><br>
+      <div align="right" style="height:50px;">
+        <label style="background-color:#1483BB;color:white;font-size:20px;margin-top:5px;margin-bottom:5px;height:50px;"> &nbsp;Grand Total&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RO '.number_format($invoice->item_total_price,3,".","").' &nbsp;</label>
       </div>
       <br><br><br>
       <div>
@@ -1196,7 +1194,7 @@ class JobController extends Controller
       </div>
       <div align="right">
         <b><label style="font-size:22px;color:#3092C3;">Thank you</label><br></b>
-        <b><label style="font-size:22px;color:#3092C3;">For Submitting your Case!</label><br></b>
+        <b><label style="font-size:22px;color:#3092C3;">For Your Enquiry!</label><br></b>
       </div>
       </div>
       </body>
@@ -1294,9 +1292,9 @@ class JobController extends Controller
       <table style="border-bottom:0pt solid grey;width:100%">
         <tbody style="font-size:15px;margin:auto;">
           <tr>
-            <td width="80">CaseID</td>
-            <td width="80">Date</td>
-            <td width="80">Service</td>
+            <td width="80">#CaseID</td>
+            <td width="80">#Date</td>
+            <td width="80">#Service</td>
             <td align="right">'.$client->phone_value.'</td>
           </tr>
           <tr>
@@ -1308,7 +1306,7 @@ class JobController extends Controller
         </tbody>
       </table>
     </div>
-    <br><br>
+    <br><br><br>
     <div style="margin-bottom:10px;">
       <b><label style="font-size:18px;color:#1483BB;margin-bottom:2px;">MEDIA EVALUATION REPORT</label><br>
     </div>
@@ -1360,19 +1358,19 @@ class JobController extends Controller
     </div>
     <br><br>';
     $output .= '
-    <div align="left">
+    <div align="left" style="font-size:13px;font-family: arial, sans-serif;">
       <label style="font-size:15px;color:#1483BB;">#ANALYSIS</label><br>
-      <textarea type="text" rows="5" style="font-size:13px;border:0px;font-family: arial, sans-serif;">'.$device->mediaDiagnosis.'</textarea>
+      '.$device->mediaDiagnosis.'
     </div>
     <br>
-    <div align="left">
+    <div align="left" style="font-size:13px;font-family: arial, sans-serif;">
       <label style="font-size:15px;color:#1483BB;">#CONSULTATION</label><br>
-      <textarea type="text" style="font-size:13px;border:0px;font-family: arial, sans-serif;" rows="5">'.$device->mediaConsultation.'</textarea>
+      '.$device->mediaConsultation.'
     </div>
     <br>
-    <div align="left">
+    <div align="left" style="font-size:13px;font-family: arial, sans-serif;">
       <label style="font-size:15px;color:#1483BB;">#RECOVER TIME</label><br>
-      <textarea type="text" style="font-size:13px;border:0px;font-family: arial, sans-serif;" rows="5">'.$device->mediaRecover.'</textarea>
+      '.$device->mediaRecover.'
     </div>
     <br>
     <div align="right">

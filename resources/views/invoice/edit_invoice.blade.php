@@ -13,7 +13,11 @@
 @section('content')
 <!-- Container fluid  -->
 <div class="container-fluid">
-    <h1>Update Invoice</h1>
+        <div class="row page-titles">
+                <div class="col-md-6 col-8 align-self-center">
+                    <h3 class="text-themecolor m-b-0 m-t-0">Update Invoice</h3>
+                </div>
+            </div>
     <div class="row">
         <div class="col-sm-12 col-xs-12">
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal2"
@@ -50,6 +54,7 @@
             <br>
             <span>Invoice language</span>
             <div class="row">
+                    <div class="col-md-12">
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text">Language</span>
@@ -61,10 +66,12 @@
                         
                     </select>
                 </div>
+                    </div>
             </div>
             <br>
             <span>Currency</span>
             <div class="row">
+                    <div class="col-md-12">
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text">Currency</span>
@@ -78,11 +85,13 @@
                             <option <?php echo $invoice->currency == 'EU' ? 'selected' : '';?> value="EU">EU</option> 
                     </select>
                 </div>
+                    </div>
             </div>
             <br />
-            <span>Invoice items</span>
+            
 
             <div class="card-body">
+                <span>Invoice items</span>
                 <div class="row">
                     <div class="col-12">
                         <div class="card">

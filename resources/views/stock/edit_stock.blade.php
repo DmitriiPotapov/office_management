@@ -23,9 +23,13 @@
                           </div>
                           <select class="custom-select col-12" id="inlineFormCustomSelect" name = "device_type">
                              
-                              <option <?php echo $stockitem->device_type == 'One' ? 'selected' : '';?> value="One">One</option>
-                              <option <?php echo $stockitem->device_type == 'Two' ? 'selected' : '';?> value="Two">Two</option>
-                              <option <?php echo $stockitem->device_type == 'Three' ? 'selected' : '';?> value="Three">Three</option>
+                              <option <?php echo $stockitem->device_type == 'Laptop Drive' ? 'selected' : '';?> value="Laptop Drive">Laptop Drive</option>
+                              <option <?php echo $stockitem->device_type == 'External Drive' ? 'selected' : '';?> value="External Drive">External Drive</option>
+                              <option <?php echo $stockitem->device_type == 'Desktop Drive' ? 'selected' : '';?> value="Desktop Drive">Desktop Drive</option>
+                              <option <?php echo $stockitem->device_type == 'SSD' ? 'selected' : '';?> value="SSD">SSD</option>
+                              <option <?php echo $stockitem->device_type == 'Flash Drive' ? 'selected' : '';?> value="Flash Drive">Flash Drive</option>
+                              <option <?php echo $stockitem->device_type == 'Memory card' ? 'selected' : '';?> value="Memory card">Memory card</option>
+                              <option <?php echo $stockitem->device_type == 'Server HDD' ? 'selected' : '';?> value="Server HDD">Server HDD</option>
 
                           </select>
                       </div>
@@ -79,7 +83,7 @@
                     <div class = "col-md-6" style = "margin: 0px; padding: 0px;">
                       <div class="input-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon1">Manufacturer</span>
+                            <span class="input-group-text" id="basic-addon1">Brand</span>
                         </div>
                     <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" name = "manufacturer" value="{{ $stockitem->manufacturer }}">  
                       </div>
@@ -105,17 +109,7 @@
                   </div>
                  </div> 
                </div>
-               <br /> 
-                <span>Diler info</span>
-                <div class = "row">
-                  <div class="input-group">
-                      <div class="input-group-prepend">
-                          <span class="input-group-text">Diler</span>
-                      </div>
-                      <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" name = "diler_info" value="{{ $stockitem->diler_info }}">
-                  </div>
-                </div>
-                <br />
+               <br />
                 <span>Serials</span>              
                 <div class="row">
                   <div class="col-md-2">
@@ -159,7 +153,7 @@
                       <div class = "col-md-6" style = "margin: 0px; padding: 0px;">
                         <div class="input-group">
                           <div class="input-group-prepend">
-                              <span class="input-group-text" id="basic-addon1">interest</span>
+                              <span class="input-group-text" id="basic-addon1">Interest</span>
                           </div>
                         <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" name = "interest" value="{{ $stockitem->interest }}"> 
                         </div>  
