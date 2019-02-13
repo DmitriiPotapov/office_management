@@ -10,6 +10,7 @@ use App\Models\DataJobs;
 use App\Models\DataDevices;
 use Illuminate\Support\Facades\Auth;
 use App\User;
+use App\Models\SotckItem;
 
 class InvoiceController extends Controller
 {
@@ -64,12 +65,12 @@ class InvoiceController extends Controller
             
         $unique_id =  Date('Y:m:d').':'.rand();
         $jobIds = DB::table('data_jobs')->pluck('job_id');
-        return view('invoice/add_invoice', compact('unique_id', 'jobIds'));
+        $stockIds = DB::table('stock_items')->pluck('id');
+
+        return view('invoice/add_invoice', compact('unique_id', 'jobIds', 'stockIds'));
     }
 
     public function getDetailJob(Request $request) {
-        $unique_id =  Date('Y:m:d').':'.rand();
-        $jobIds = DB::table('data_jobs')->pluck('job_id'); 
 
         $invoice_job_id = $request->invoice_job_id;
 
@@ -81,8 +82,18 @@ class InvoiceController extends Controller
             'invoiceJobDetail' => $invoiceJobDetail,
             'invoiceitems' => $invoiceitems
         ));
-   
-        
+    }
+
+    public function getStockDetail(Request $request) {
+
+        $invoice_stock_id = $request->invoice_stock_id;
+
+        $stockItem = DB::table('stock_items')->where('id', $invoice_stock_id)->first();
+
+        return response()->json(array(
+            'response' => 'success',
+            'stockItem' => $stockItem
+        ));
     }
 
     /**

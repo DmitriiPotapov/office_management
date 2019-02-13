@@ -22,7 +22,7 @@
         <div class="col-sm-12 col-xs-12">
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal2"
                 data-whatever="@mdo"><i class="fa fa-plus"></i> Select Job</button>
-            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal3"
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal4"
                 data-whatever="@mdo"><i class="fa fa-plus"></i> Add custom</button>
             <br />
             <br />
@@ -244,7 +244,7 @@
  
                         <form>
                             <div class="modal-header">
-                                <h4 class="modal-title" id="exampleModalLabel2">Select JobID</h4>
+                                <h4 class="modal-title" id="exampleModalLabel2">Input JobID</h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                         aria-hidden="true">&times;</span></button>
                             </div>
@@ -252,7 +252,7 @@
                                   <div class="card">
                                       <div class="card-body">   
                                           <div id="scrollable-dropdown-menu">
-                                            <input class="typeahead form-control" type="text" placeholder="JobID" id="invoice_job_id" name="invoice_job_id" class="typeahead form-control">
+                                            <input class="typeahead form-control" type="text" placeholder="JobID" id="invoice_job_id" name="invoice_job_id" >
                                           </div>
                                       </div>
                                   </div>                                                               
@@ -260,6 +260,33 @@
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                 <button type="button" class="btn btn-primary" id = "select_job_id" data-dismiss="modal">select</button>
+                            </div>
+                        </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="exampleModal4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel4">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+ 
+                        <form>
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="exampleModalLabel4">Input StockID</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                        aria-hidden="true">&times;</span></button>
+                            </div>
+                            <div class="modal-body">                                                                                  
+                                  <div class="card">
+                                      <div class="card-body">   
+                                          <div id="prefetch">
+                                            <input class="typeahead form-control" type="text" placeholder="StockID" id="invoice_stock_id" name="invoice_stok_id" >
+                                          </div>
+                                      </div>
+                                  </div>                                                               
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" id = "select_stock_id" data-dismiss="modal">select</button>
                             </div>
                         </form>
                         </div>
@@ -369,6 +396,12 @@
             states.push("{{ $item }}");
         @endforeach
 
+        var stockItemList = [];
+        @foreach ($stockIds as $item)
+            stockItemList.push("{{ $item }}");
+        @endforeach
+
+
         $('#the-basics .typeahead').typeahead({
         hint: true,
         highlight: true,
@@ -389,14 +422,20 @@
         local: states
         });
 
+        var stockItemList = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.whitespace,
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        local: stockItemList
+        });
+
         $('#bloodhound .typeahead').typeahead({
         hint: true,
         highlight: true,
         minLength: 1
         },
         {
-        name: 'states',
-        source: states
+        name: 'stockItemList',
+        source: stockItemList
         });
 
 
@@ -413,8 +452,9 @@
         // passing in `null` for the `options` arguments will result in the default
         // options being used
         $('#prefetch .typeahead').typeahead(null, {
-        name: 'countries',
-        source: countries
+        name: 'StockIds',
+        limit: 10,
+        source: stockItemList
         });
 
         // -------- Custom --------
@@ -490,10 +530,7 @@
         source: states
         });
 
-
         var invoice_language, currency;
-
-
         
         $("select.invoice_language").change(function () {
             var data = $(this).children("option:selected").val();
@@ -665,6 +702,35 @@
 
                 }
             }); 
+        });
+
+        $("#select_stock_id").on('click', function(e) {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            e.preventDefault(e);
+            var invoice_stock_id = $("#invoice_stock_id").val();
+            $.ajax({
+                type: 'POST',
+                url: '/invoice/getStockDetail',
+                data: {
+                    invoice_stock_id: invoice_stock_id
+                },
+                success: function(data) {
+
+                    var stockItem = data.stockItem;
+                    console.log(stockItem);
+
+                    $("#backup_type").html(stockItem.device_type);
+                    $("#backup_capacity").html(stockItem.capacity);
+                    $("#backup_price").html(stockItem.input_price);
+                    $("#backup_vat").html(stockItem.vat_value);
+                    $("#backup_disaccount").html(0);
+                    $("#backup_total_price").html(stockItem.final_price);
+                }
+            })
         });
         
 

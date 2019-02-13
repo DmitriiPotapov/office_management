@@ -132,9 +132,11 @@
                 </div>
 
                 <div class="form-actions">
-                <button type="button" class="btn btn-success" id="jobPost"><i class="fa fa-check"></i> Save</button>
-
+                    <button type="button" class="btn btn-success" id="jobPost"><i class="fa fa-check"></i> Save</button>
                     <a href="{{URL::to('quote/resetAction')}}"><button type="button" class="btn btn-warning">Reset</button></a>
+                    <a href = "#"><button type="button" class="btn btn-danger">Preview</button></a>
+                    <a href = "{{ route('generate_quote',['job_id' => $job_id]) }}"><button type="button" class="btn btn-info">Generate</button></a>
+                    <a href = "#"><button type="button" class="btn btn-success">Send Quote</button></a>
                 </div>
 
                 <div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1">

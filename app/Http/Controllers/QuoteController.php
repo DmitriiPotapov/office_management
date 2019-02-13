@@ -129,7 +129,8 @@ class QuoteController extends Controller
         // $quoteJobDetail = DB::table('data_jobs')->where('job_id', $quote_job_id)->first();
         // $quoteitems = DB::table('data_devices')->where('job_id', $quote_job_id)->first();
         $quote = Quote::where('id', $id)->first();
-        return view('quote.edit_quote', compact('quote'));
+        $job_id = Quote::where('id', $id)->value('job_id');
+        return view('quote.edit_quote', compact('quote', 'job_id'));
     }
 
     /**

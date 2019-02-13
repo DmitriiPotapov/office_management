@@ -922,8 +922,8 @@ class JobController extends Controller
         <div>
           <img align="left" src="assets/images/invoice.png" width="280" height="80" />
           <div align="right">
-            <b><label style="font-size:17px;">Bill To</label></b>
-            <b><label style="font-size:16px;">'.$client->client_name.'</label><br></b>
+            <b><label style="font-size:17px;">Bill To</label></b><br>
+            <label style="font-size:16px;">'.$client->client_name.'</label><br>
             <label style="font-size:16px;">'.$client->company.'</label><br>
             <label style="font-size:16px;">'.$client->phone_value.'</label><br>
             <label style="font-size:16px;">'.$client->street.'</label><br>

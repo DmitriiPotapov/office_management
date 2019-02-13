@@ -172,6 +172,7 @@ Route::group(
         Route::post('/createAction', 'InvoiceController@store')->name('createInvoice');
         Route::post('/invoiceDetails/createjob', 'InvoiceController@storeJob')->name('createInvoiceJob');
         Route::post('/getdetailjob', 'InvoiceController@getDetailJob');
+        Route::post('/getStockDetail', 'InvoiceController@getStockDetail');
         Route::get('/resetAction', 'InvoiceController@reset');
         Route::get('/deleteAction', 'InvoiceController@destroy');
         Route::get('/edit/{id}', 'InvoiceController@edit')->name('editInvoice');

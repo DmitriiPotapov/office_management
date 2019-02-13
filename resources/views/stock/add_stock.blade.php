@@ -83,14 +83,24 @@
                 <div class="row">
                     <div class="col-md-8" style = "margin: 0px; padding: 0px;">
                       <div class="input-group">
-                          <div class="input-group-prepend">
-                              <span class="input-group-text" id="basic-addon1">
-                                  Acquired from
-                              </span>
-                          </div>
-                          <input type="text" id="acquired_from" name="acquired_from" class="form-control" placeholder="" required>
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">
+                                Acquired from
+                            </span>
+                        </div>
+                        <input type="text" id="acquired_from" name="acquired_from" class="form-control" placeholder="" required>
                       </div>
-                  </div>
+                    </div>
+                    <div class="col-md-3" style = "margin-left: 10px; padding: 0px;">
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">
+                                Capacity
+                            </span>
+                        </div>
+                        <input type="text" id="capacity" name="capacity" class="form-control" placeholder="" required>
+                      </div>
+                    </div>
                 </div><br>
                 <span>Basic info</span>
                 <div class = "row">
@@ -136,7 +146,7 @@
                 <input type="hidden" name="serial_count" id="serial_count" value="1">
                 <div id="adult">
                   <div class="row">
-                      <div class="input-group" style="margin: 5px; padding: 5px;">
+                      <div class="input-group" style="margin-left: 5px;margin-bottom:10px; padding: 0px;">
                         <div class="input-group-prepend">
                           <span class="input-group-text" id="basic-addon1">Serial Number1</span>
                         </div>
@@ -148,7 +158,7 @@
                 <span>Pricing</span>
                 <div class = "row">
                     <div class = "col-md-6" style = "display: flex; margin: 0px; padding: 0px;">
-                      <div class = "col-md-6" style = "margin: 0px; padding: 0px;">
+                      <div class = "col-md-6" style = "margin-left: 5px; padding: 0px;">
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">Input price</span>
@@ -220,7 +230,7 @@
     var objTo = document.getElementById("adult");
     var divtest = document.createElement("div");
     divtest.setAttribute("class", "row removeclass" + room);
-    divtest.innerHTML = '<div class="input-group" style="margin:5px;padding:5px;"><div class="input-group-prepend"><span class="input-group-text" id="basic-addon1">Serial Number'+room+'</span></div><input type="text" class="form-control" id="serial" name="serial'+room+'"></div>';
+    divtest.innerHTML = '<div class="input-group" style="margin-left:5px;margin-bottom:10px;padding:0px;"><div class="input-group-prepend"><span class="input-group-text" id="basic-addon1">Serial Number'+room+'</span></div><input type="text" class="form-control" id="serial" name="serial'+room+'"></div>';
 
     console.log(divtest);
 

@@ -8,7 +8,11 @@
 @section('content')
 <!-- Container fluid  -->
 <div class="container-fluid">
-<h1>Bulk Update stock</h1>
+<div class="row page-titles">
+    <div class="col-md-6 col-8 align-self-center">
+        <h3 class="text-themecolor m-b-0 m-t-0">Bulk Update to stock</h3>
+    </div>
+</div>
 <div class="row">
         <div class="col-sm-12 col-xs-12">
           <form action="{{ route('updateStock') }}" method="post">
@@ -76,8 +80,30 @@
                       </div>
                     </div>
                 </div>
-                
                 <br>
+                <span>Acquired from</span>
+                <div class="row">
+                    <div class="col-md-8" style = "margin: 0px; padding: 0px;">
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">
+                                Acquired from
+                            </span>
+                        </div>
+                        <input type="text" id="acquired_from" name="acquired_from" class="form-control" placeholder="" value="{{ $stockitem->diler_info }}">
+                      </div>
+                    </div>
+                    <div class="col-md-3" style = "margin-left: 10px; padding: 0px;">
+                      <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">
+                                Capacity
+                            </span>
+                        </div>
+                        <input type="text" id="capacity" name="capacity" class="form-control" placeholder="" value="{{ $stockitem->capacity }}">
+                      </div>
+                    </div>
+                </div><br>
                 <span>Basic info</span>
                 <div class = "row">
                     <div class = "col-md-6" style = "margin: 0px; padding: 0px;">
@@ -123,7 +149,7 @@
                 <span>Pricing</span>
                 <div class = "row">
                     <div class = "col-md-6" style = "display: flex; margin: 0px; padding: 0px;">
-                      <div class = "col-md-6" style = "margin: 0px; padding: 0px;">
+                      <div class = "col-md-6" style = "margin-left: 5px; padding: 0px;">
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">Input price</span>

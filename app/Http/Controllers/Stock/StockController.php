@@ -52,7 +52,8 @@ class StockController extends Controller
             $stockItem->location = $request->input('location');
             $stockItem->serial_number = $request->input('serial'.$i);
             $stockItem->input_price = $request->input('input_price');
-            $stockItem->diler_info = $request->input('diler_info');
+            $stockItem->diler_info = $request->input('acquired_from');
+            $stockItem->capacity = $request->input('capacity');
             $stockItem->interest = $request->input('interest');
             $stockItem->vat_value = $request->input('vat_value');
             $stockItem->final_price = $request->input('final_price');
