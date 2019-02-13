@@ -10,7 +10,11 @@
 <form action="{{ route('createstock') }}" method="post">
   @csrf
 <div class="container-fluid">
-<h1>Bulk add to stock</h1>
+  <div class="row page-titles">
+    <div class="col-md-6 col-8 align-self-center">
+        <h3 class="text-themecolor m-b-0 m-t-0">Bulk add to stock</h3>
+    </div>
+</div>
 <div class="row">
         <div class="col-sm-12 col-xs-12">
             <span>Device type</span>
@@ -22,9 +26,13 @@
                           </div>
                           <select class="custom-select col-12" id="inlineFormCustomSelect" name = "device_type">
                               <option selected="">Choose...</option>
-                              <option value="One">One</option>
-                              <option value="Two">Two</option>
-                              <option value="Three">Three</option>
+                              <option value="Laptop Drive">Laptop Drive</option>
+                              <option value="External Drive">External Drive</option>
+                              <option value="Desktop Drive">Desktop Drive</option>
+                              <option value="SSD">SSD</option>
+                              <option value="Flash Drive">Flash Drive</option>
+                              <option value="Memory card">Memory card</option>
+                              <option value="Server HDD">Server HDD</option>
                           </select>
                       </div>
                     </div>
@@ -71,12 +79,25 @@
                 </div>
                 
                 <br>
+                <span>Acquired from</span>
+                <div class="row">
+                    <div class="col-md-8" style = "margin: 0px; padding: 0px;">
+                      <div class="input-group">
+                          <div class="input-group-prepend">
+                              <span class="input-group-text" id="basic-addon1">
+                                  Acquired from
+                              </span>
+                          </div>
+                          <input type="text" id="acquired_from" name="acquired_from" class="form-control" placeholder="" required>
+                      </div>
+                  </div>
+                </div><br>
                 <span>Basic info</span>
                 <div class = "row">
                     <div class = "col-md-6" style = "margin: 0px; padding: 0px;">
                       <div class="input-group">
                         <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon1">Manufacturer</span>
+                            <span class="input-group-text" id="basic-addon1">Brand</span>
                         </div>
                         <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" name = "manufacturer">  
                       </div>
@@ -103,16 +124,6 @@
                  </div> 
                </div>
                <br /> 
-                <span>Diler info</span>
-                <div class = "row">
-                  <div class="input-group">
-                      <div class="input-group-prepend">
-                          <span class="input-group-text">Diler</span>
-                      </div>
-                      <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" name = "diler_info">
-                  </div>
-                </div>
-                <br />
                 <span>Serials</span>              
                 <div class="row">
                   <div class="col-md-2">
@@ -159,7 +170,7 @@
                       <div class = "col-md-6" style = "margin: 0px; padding: 0px;">
                         <div class="input-group">
                           <div class="input-group-prepend">
-                              <span class="input-group-text" id="basic-addon1">interest</span>
+                              <span class="input-group-text" id="basic-addon1">Interest</span>
                           </div>
                           <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" name = "interest"> 
                         </div>  

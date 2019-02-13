@@ -38,8 +38,8 @@
                     <ul aria-expanded="false" class="collapse">
                         <li><a href="{{ URL::to('invoice/allview') }}">All invoices </a></li>
                         <li><a href="{{ URL::to('invoice/add') }}">New invoice </a></li>
-                        <li><a href="{{ URL::to('invoice/allview') }}">Unpaid invoices </a></li>
-                        <li><a href="{{ URL::to('invoice/allview') }}">Paid invoices </a></li>
+                        <li><a href="{{ URL::to('invoice/unpaidInvoice') }}">Unpaid invoices </a></li>
+                        <li><a href="{{ URL::to('invoice/paidInvoice') }}">Paid invoices </a></li>
                     </ul>
                 </li>  
                 <li>

@@ -10,12 +10,15 @@
 @section('content')
 <!-- Container fluid  -->
 <div class="container-fluid">
-<h1>Add New Expense</h1>
+    <div class="row page-titles">
+            <div class="col-md-6 col-8 align-self-center">
+                <h3 class="text-themecolor m-b-0 m-t-0">Add New Expense</h3>
+            </div>
+        </div>
 <div class="row">
         <div class="col-sm-12 col-xs-12">
           <form action="{{ route('createExpense') }}" method="post">
           @csrf              
-                <span>DESCRIPTION</span>
                  <div class = "row">
                     <div class="input-group" style = "margin: 0px; padding: 0px;">
                       <div class="input-group-prepend">
@@ -27,7 +30,6 @@
                  </div> 
                </div>
                <br />     
-                <span>Date</span>
                 <div class = "row">
                   <div class="input-group">
                       <div class="input-group-prepend">

@@ -9,7 +9,7 @@
 <!-- Bread crumb and right sidebar toggle -->
     <div class="row page-titles">
         <div class="col-md-6 col-8 align-self-center">
-            <h3 class="text-themecolor m-b-0 m-t-0">Inventories</h3>
+            <h3 class="text-themecolor m-b-0 m-t-0">Disk In Use</h3>
         </div>
     </div>
 
@@ -29,7 +29,7 @@
                                 <tr>
                                     <th></th>
                                     <th>ID</th>
-                                    <th>Manufacturer</th>
+                                    <th>Brand</th>
                                     <th>Model</th>
                                     <th>Serial Number</th>
                                     <th>Firmware</th>

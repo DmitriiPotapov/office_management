@@ -13,7 +13,11 @@
 @section('content')
 <!-- Container fluid  -->
 <div class="container-fluid">
-    <h1>New Invoice</h1>
+    <div class="row page-titles">
+            <div class="col-md-6 col-8 align-self-center">
+                <h3 class="text-themecolor m-b-0 m-t-0">New Invoice</h3>
+            </div>
+        </div>
     <div class="row">
         <div class="col-sm-12 col-xs-12">
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal2"
@@ -47,39 +51,44 @@
             <br>
             <span>Invoice language</span>
             <div class="row">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">Language</span>
+                <div class="col-md-12">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Language</span>
+                        </div>
+                        <select class="custom-select invoice_language" id="invoice_language" name="invoice_language">
+                            
+                            <option value="English">English</option>
+                            <option value="Arabic">Arabic</option>
+                            
+                        </select>
                     </div>
-                    <select class="custom-select col-12 invoice_language" id="invoice_language" name="invoice_language">
-                        
-                        <option value="English">English</option>
-                        <option value="Arabic">Arabic</option>
-                        
-                    </select>
                 </div>
             </div>
             <br>
             <span>Currency</span>
             <div class="row">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">Currency</span>
+                <div class="col-md-12">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Currency</span>
+                        </div>
+                        <select class="custom-select currency" id="currency" name="currency">
+                            
+                            <option value="INR">INR</option>
+                            <option value="RO">RO</option>
+                            <option value="Dhs">Dhs</option>
+                            <option value="USD">USD</option>
+                            <option value="EU">EU</option>  
+                        </select>
                     </div>
-                    <select class="custom-select col-12 currency" id="currency" name="currency">
-                      
-                        <option value="INR">INR</option>
-                        <option value="RO">RO</option>
-                        <option value="Dhs">Dhs</option>
-                        <option value="USD">USD</option>
-                        <option value="EU">EU</option>  
-                    </select>
                 </div>
             </div>
             <br />
-            <span>Invoice items</span>
+            
 
             <div class="card-body">
+                <span>Invoice items</span>
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
@@ -92,7 +101,7 @@
                                                 <th>Capacity</th>
                                                 <th>Price</th>
                                                 <th>VAT(%)</th>
-                                                <th>Discount(%)</th>
+                                                <th>Discount</th>
                                                 <th>Total Price</th>
                                             </tr>
                                         </thead>
@@ -115,7 +124,7 @@
                     </div>
                 </div>
                 <br />
-                <span>Back up Item</span>
+                <span>Backup Item</span>
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
@@ -128,7 +137,7 @@
                                                 <th>Capacity</th>
                                                 <th>Price</th>
                                                 <th>VAT(%)</th>
-                                                <th>Discount(%)</th>
+                                                <th>Discount</th>
                                                 <th>Total Price</th>
                                             </tr>
                                         </thead>
@@ -677,9 +686,9 @@
 
         $("#item_total_price").on('click', function() {
             var item_price = $("#item_price").text();
-         
+            var item_vat = $("#item_vat").text();         
             var item_disaccount = $("#item_disaccount").text();
-            var item_total_price = Number(item_price)-Number(item_disaccount);
+            var item_total_price = Number(item_price)+Number(item_price)/100.0*Number(item_vat)-Number(item_disaccount);
             $("#item_total_price").html(item_total_price);
 
 
@@ -687,9 +696,9 @@
 
         $("#backup_total_price").on('click', function() {
             var backup_price = $("#backup_price").text();
-         
+            var backup_vat = $("#backup_vat").text();
             var backup_disaccount = $("#backup_disaccount").text();
-            var backup_total_price = Number(backup_price)-Number(backup_disaccount);
+            var backup_total_price = Number(backup_price)+Number(backup_price)/100.0*Number(backup_vat)-Number(backup_disaccount);
             $("#backup_total_price").html(backup_total_price);
 
 

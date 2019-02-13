@@ -7,16 +7,22 @@
 @section('content')
 <!-- Container fluid  -->
 <div class="container-fluid">
-<h1>Add new client</h1>
+        <div class="row page-titles">
+                <div class="col-md-6 col-8 align-self-center">
+                    <h3 class="text-themecolor m-b-0 m-t-0">Add new client</h3>
+                </div>
+            </div>
 <div class="row">
         <div class="col-sm-12 col-xs-12">
         <form action="{{ URL::to('clients/createAction') }}" method="post" id = "form">
           @csrf
           <input type="hidden" name="submitType" id="submitType"/>
-                <span>Client name</span>
                 <div class = "row">
                     <div class = "col-md-8" style = "margin: 0px; padding: 0px;">
-                      <div class="input-group">                         
+                      <div class="input-group">    
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">Client name</span>
+                            </div>                     
                           <input type="text" class="form-control" aria-describedby="basic-addon1" name = "client_name">  
                       </div>
                     </div>
@@ -103,7 +109,7 @@
                                               
                             <div class="input-group" style="margin: 0px; padding: 0px;">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text" id="basic-addon1">Clent Phone</span>
+                                    <span class="input-group-text" id="basic-addon1">Client Phone</span>
                                 </div>
                                 <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" name = "phone_value">  
                             </div>                                               
