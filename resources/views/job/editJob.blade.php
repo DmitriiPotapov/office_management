@@ -222,7 +222,7 @@
                                                                 <th>Brand</th>
                                                                 <th>Model</th>
                                                                 <th>Serial</th>
-                                                                <th>Location</th>
+                                                                <th>Role</th>
                                                                 <th>Diagnosis</th>
                                                                 <th>Note</th>
                                                             </tr>
@@ -234,7 +234,7 @@
                                                                 <td>{{ $item['manufacturer'] }}</td>
                                                                 <td>{{ $item['model'] }}</td>
                                                                 <td>{{ $item['serial'] }}</td>
-                                                                <td>{{ $item['location'] }}</td>
+                                                                <td>{{ $item['role'] }}</td>
                                                                 <td>{{ $item['diagnosis'] }}</td>
                                                                 <td>{{ $item['note'] }}</td>
                                                             </tr>
@@ -387,7 +387,6 @@
                                         <button class="btn btn-info waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-arrows"></i></span>Move selected devices</button>
                                         <button class="btn btn-danger waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-trash"></i></span>Remove selected devices</button>
                                         <button class="btn btn-success waves-effect waves-light" type="button" data-toggle="modal" data-target="#addNewClModal"><span class="btn-label"><i class="fa fa-plus"></i></span>Add new device</button>
-                                        <button class="btn btn-success waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-plus"></i></span>Add device</button>
                                         <button class="btn btn-danger waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-upload"></i></span>Release selected</button>
                                     </div>
                                 </div>
@@ -536,7 +535,7 @@
                                                         <th>Brand</th>
                                                         <th>Model</th>
                                                         <th>Serial</th>
-                                                        <th>Location</th>
+                                                        <th>Role</th>
                                                         <th style="width:300px;">Diagnosis</th>
                                                         <th>Note</th>
                                                         <th></th>
@@ -550,7 +549,7 @@
                                                         <td>{{ $item['manufacturer'] }}</td>
                                                         <td>{{ $item['model'] }}</td>
                                                         <td>{{ $item['serial'] }}</td>
-                                                        <td>{{ $item['location'] }}</td>
+                                                        <td>{{ $item['role'] }}</td>
                                                         <td>{{ $item['diagnosis'] }}</td>
                                                         <td>{{ $item['note'] }}</td>
                                                         <td class="text-nowrap">

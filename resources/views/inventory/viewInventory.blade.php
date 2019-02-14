@@ -35,7 +35,6 @@
                         <table id="myTable" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
                             <thead>
                                 <tr>
-                                    <th></th>
                                     <th>ID</th>
                                     <th>Brand</th>
                                     <th>Model</th>
@@ -53,8 +52,7 @@
                             <tbody>
                             @foreach($inventories as $item)
                             <tr>
-                                <td></td>
-                                <td>{{ $item['id'] }}</td>
+                                <td>{{ sprintf("%04d", $item['id']) }}</td>
                                 <td>{{ $item['manufacturer'] }}</td>
                                 <td>{{ $item['model'] }}</td>
                                 <td>{{ $item['serial_number'] }}</td>

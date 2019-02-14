@@ -13,6 +13,7 @@
 @section('content')
 <!-- Container fluid  -->
 <div class="container-fluid">
+    <input type="hidden" id="jobSelected" name="jobSelected" value="0">
     <div class="row page-titles">
             <div class="col-md-6 col-8 align-self-center">
                 <h3 class="text-themecolor m-b-0 m-t-0">New Invoice</h3>
@@ -58,6 +59,7 @@
                         </div>
                         <select class="custom-select invoice_language" id="invoice_language" name="invoice_language">
                             
+                            <option value="Choose">Choose...</option>
                             <option value="English">English</option>
                             <option value="Arabic">Arabic</option>
                             
@@ -75,6 +77,7 @@
                         </div>
                         <select class="custom-select currency" id="currency" name="currency">
                             
+                            <option value="Choose">Choose...</option>
                             <option value="INR">INR</option>
                             <option value="RO">RO</option>
                             <option value="Dhs">Dhs</option>
@@ -125,6 +128,7 @@
                 </div>
                 <br />
                 <span>Backup Item</span>
+                <input type="hidden" id="hasBackup" value="0">
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
@@ -133,7 +137,9 @@
                                     <table id="backupTable" class="table editable-table table-bordered table-striped m-b-0">
                                         <thead>
                                             <tr>
+                                                <th>Brand</th>
                                                 <th>Type</th>
+                                                <th>Serial Number</th>
                                                 <th>Capacity</th>
                                                 <th>Price</th>
                                                 <th>VAT(%)</th>
@@ -143,7 +149,9 @@
                                         </thead>
                                         <tbody>
                                             <tr>
+                                                <td id="backup_brand"></td>
                                                 <td id="backup_type"></td>
+                                                <td id="backup_serial"></td>
                                                 <td id="backup_capacity"></td>
                                                 <td id="backup_price"></td>
                                                 <td id="backup_vat"></td>
@@ -158,22 +166,6 @@
                     </div>
                 </div>
 
-
-                {{-- <span>Footer text</span>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="summernote" name="footer_text" id="footer_text">
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> --}}
-
-
-
                 <span>Note</span>
                 <div class="row">
                     <div class="col-md-12">
@@ -184,9 +176,11 @@
                 </div>
 
                 <div class="form-actions">
-                <button type="button" class="btn btn-success" id="jobPost"><i class="fa fa-check"></i> Save</button>
-
+                    <button type="button" class="btn btn-success" id="jobPost"><i class="fa fa-check"></i> Save</button>
                     <a href="{{URL::to('invoice/resetAction')}}"><button type="button" class="btn btn-warning">Reset</button></a>
+                    <a href = "#"><button type="button" class="btn btn-danger">Preview</button></a>
+                    <button type="button" class="btn btn-info" id="generate">Generate</button>
+                    <a href = "#"><button type="button" class="btn btn-success">Send Quote</button></a>
                 </div>
 
                 <div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1">
@@ -398,7 +392,7 @@
 
         var stockItemList = [];
         @foreach ($stockIds as $item)
-            stockItemList.push("{{ $item }}");
+            stockItemList.push("{{ sprintf('%04d', $item) }}");
         @endforeach
 
 
@@ -554,7 +548,7 @@
             var client_name = $("#client_name").val();
             var job_status = $("#job_status").val();
             var service_name = $("#service_name").val();
-            var invoice_note = $("textarea#invoice_note").val();
+            var invoice_note = $("#invoice_note").val();
 
             var item_type = $("#item_type").text();
             var item_capacity = $("#item_capacity").text();
@@ -563,10 +557,12 @@
             var item_disaccount = $("#item_disaccount").text();
             var item_total_price = $("#item_total_price").text();
 
-
+            var hasBackup = $("#hasBackup").val();
             var backup_type = $("#backup_type").text();
             var backup_capacity = $("#backup_capacity").text();
             var backup_price = $("#backup_price").text();
+            var brand = $("#backup_brand").text();
+            var serial = $("#backup_serial").text();
             var backup_vat = $("#backup_vat").text();
             var backup_disaccount = $("#backup_disaccount").text();
             var backup_total_price = $("#backup_total_price").text();
@@ -591,7 +587,10 @@
                     item_vat: item_vat,
                     item_disaccount: item_disaccount,
                     item_total_price: item_total_price,
+                    hasBackup:  hasBackup,
                     backup_type: backup_type,
+                    brand:  brand,
+                    serial: serial,
                     backup_capacity: backup_capacity,
                     backup_price: backup_price,
                     backup_vat: backup_vat,
@@ -694,6 +693,7 @@
                     var invoice_items_type = invoiceItems.type;
                     var invoice_items_capacity = invoiceItems.capacity;
 
+                    $("#jobSelected").val(invoice_job_id);
                     $("#client_name").val(client_name);
                     $("#job_status").val(job_status);
                     $("#service_name").val(services);
@@ -723,6 +723,9 @@
                     var stockItem = data.stockItem;
                     console.log(stockItem);
 
+                    $("#hasBackup").val('1');
+                    $("#backup_brand").html(stockItem.manufacturer);
+                    $("#backup_serial").html(stockItem.serial_number);
                     $("#backup_type").html(stockItem.device_type);
                     $("#backup_capacity").html(stockItem.capacity);
                     $("#backup_price").html(stockItem.input_price);
@@ -769,11 +772,28 @@
 
 
         });
-
-
-
   
-    });        
+        $("#generate").on('click', function (e) {
+            var job_id = $("#jobSelected").val();
+            var item_price = $("#item_price").text();
+            var item_vat = $("#item_vat").text();
+            var item_discount = $("#item_discount").text();
+            var item_total_price = $("#item_total_price").text();
+            if (job_id == '0')
+            {
+                alert("No Job Selected!");
+            }
+            else
+            {
+                console.log(job_id);
+                var link = "http://localhost:8000/job/generateInvoiceTemplate/"+job_id;
+                console.log(link);
+                location.href = link;
+            }
+        });
+    });    
+
+        
 </script>
 
 <script src="{{ asset('js/jQuery.style.switcher.js')}}"></script>

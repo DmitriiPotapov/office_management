@@ -40,7 +40,7 @@ class InvoiceController extends Controller
         if( !Auth::check() )
             return redirect()->route('login');
 
-        $invoices = Invoice::all();
+        $invoices = Invoice::where('status', 'Delivered/Unpaid')->get();
         return view('invoice/unpaid_invoices', compact('invoices'));
     }
 
@@ -49,7 +49,7 @@ class InvoiceController extends Controller
         if( !Auth::check() )
             return redirect()->route('login');
 
-        $invoices = Invoice::all();
+        $invoices = Invoice::where('status', 'Delivered/Paid')->get();
         return view('invoice/paid_invoices', compact('invoices'));
     }
 
@@ -120,6 +120,9 @@ class InvoiceController extends Controller
         $item_vat = $request->item_vat;
         $item_disaccount = $request->item_disaccount;
         $item_total_price = $request->item_total_price;   
+        $hasBackup = $request->hasBackup;
+        $brand = $request->brand;
+        $serial = $request->serial;
       
         $invoice = new Invoice();
         $invoice->invoice_id = $invoice_id;
@@ -140,26 +143,31 @@ class InvoiceController extends Controller
         $invoice->save();
         
 
-        $backup_type = $request->backup_type;
-        $backup_capacity = $request->backup_capacity;
-        $backup_price = $request->backup_price;
-        $backup_vat = $request->backup_vat;
-        $backup_disaccount = $request->backup_disaccount;
-        $backup_total_price = $request->backup_total_price;
-   
+        
+        if ($hasBackup != '0')
+        {
+            $backup_type = $request->backup_type;
+            $backup_capacity = $request->backup_capacity;
+            $backup_price = $request->backup_price;
+            $backup_vat = $request->backup_vat;
+            $backup_disaccount = $request->backup_disaccount;
+            $backup_total_price = $request->backup_total_price;
+    
 
-        $backupItem = new Backup();
-        $backupItem->invoice_id = $invoice_id;
-        $backupItem->job_id = $job_id;
-        $backupItem->type = $backup_type;
-        $backupItem->capacity = $backup_capacity;
-        $backupItem->price = $backup_price;
-        $backupItem->vat = $backup_vat;
-        $backupItem->disaccount = $backup_disaccount;
-        $backupItem->total_price = $backup_total_price;
+            $backupItem = new Backup();
+            $backupItem->invoice_id = $invoice_id;
+            $backupItem->brand = $brand;
+            $backupItem->serial = $serial;
+            $backupItem->job_id = $job_id;
+            $backupItem->type = $backup_type;
+            $backupItem->capacity = $backup_capacity;
+            $backupItem->price = $backup_price;
+            $backupItem->vat = $backup_vat;
+            $backupItem->disaccount = $backup_disaccount;
+            $backupItem->total_price = $backup_total_price;
 
-        $backupItem->save();
-
+            $backupItem->save();
+        }
         return response()->json(array(
             'response' => 'success'           
         ));
@@ -188,8 +196,9 @@ class InvoiceController extends Controller
         $invoice_id = DB::table('invoices')->where('id', $id)->value('invoice_id');
         $job_status = DB::table('invoices')->where('id', $id)->value('status');
         $job_id = DB::table('invoices')->where('id', $id)->value('job_id');
+        $stockIds = DB::table('stock_items')->pluck('id');
         $backupItem = Backup::where('job_id', $job_id)->first();
-        return view('invoice/edit_invoice', compact('invoice', 'backupItem', 'invoice_id', 'job_id', 'job_status'));
+        return view('invoice/edit_invoice', compact('invoice', 'backupItem', 'invoice_id', 'job_id', 'job_status', 'stockIds'));
     }
 
     /**
@@ -205,9 +214,7 @@ class InvoiceController extends Controller
         $invoice = Invoice::where('id', $id)->first();
 
         $invoice_id = $request->invoice_id;
-        $job_id = $request->update_job_id;
-        $client_name = $request->client_name;
-        $job_status = $request->update_job_status;
+        $job_id = $request->invoice_job_id;
         $service_name = $request->service_name;
         $invoice_language = $request->invoice_language;
         $currency = $request->currency;
@@ -220,13 +227,6 @@ class InvoiceController extends Controller
         $item_disaccount = $request->item_disaccount;
         $item_total_price = $request->item_total_price;
 
-
-        
- 
-        $invoice->invoice_id = $invoice_id;
-        $invoice->job_id = $job_id;
-        $invoice->status = $job_status;
-        $invoice->client_name = $client_name;
         $invoice->service = $service_name;
         $invoice->invoice_language = $invoice_language;
         $invoice->currency = $currency;
@@ -241,26 +241,58 @@ class InvoiceController extends Controller
 
         $invoice->update();
 
-        $backup_type = $request->backup_type;
-        $backup_capacity = $request->backup_capacity;
-        $backup_price = $request->backup_price;
-        $backup_vat = $request->backup_vat;
-        $backup_disaccount = $request->backup_disaccount;
-        $backup_total_price = $request->backup_total_price;
+        $hasBackup = $request->hasBackup;
+        if ($hasBackup == '1')
+        {
+            $backup_type = $request->backup_type;
+            $backup_brand = $request->backup_brand;
+            $backup_serial = $request->backup_serial;
+            $backup_capacity = $request->backup_capacity;
+            $backup_price = $request->backup_price;
+            $backup_vat = $request->backup_vat;
+            $backup_disaccount = $request->backup_disaccount;
+            $backup_total_price = $request->backup_total_price;
 
-        $backupItem = Backup::where('invoice_id', $invoice_id)->first();
+            $backupItem = new Backup();
+            
+            $backupItem->job_id = $job_id;
+            $backupItem->invoice_id = $invoice_id;
+            $backupItem->type = $backup_type;
+            $backupItem->brand = $backup_brand;
+            $backupItem->serial = $backup_serial;
+            $backupItem->capacity = $backup_capacity;
+            $backupItem->price = $backup_price;
+            $backupItem->vat = $backup_vat;
+            $backupItem->disaccount = $backup_disaccount;
+            $backupItem->total_price = $backup_total_price;
+
+            $backupItem->save();
+        }
+        else if ($hasBackup == '0')
+        {
+            $backup_type = $request->backup_type;
+            $backup_brand = $request->backup_brand;
+            $backup_serial = $request->backup_serial;
+            $backup_capacity = $request->backup_capacity;
+            $backup_price = $request->backup_price;
+            $backup_vat = $request->backup_vat;
+            $backup_disaccount = $request->backup_disaccount;
+            $backup_total_price = $request->backup_total_price;
+
+            $backupItem = Backup::where('invoice_id', $invoice_id)->first();
+            
+            $backupItem->type = $backup_type;
+            $backupItem->brand = $backup_brand;
+            $backupItem->serial = $backup_serial;
+            $backupItem->capacity = $backup_capacity;
+            $backupItem->price = $backup_price;
+            $backupItem->vat = $backup_vat;
+            $backupItem->disaccount = $backup_disaccount;
+            $backupItem->total_price = $backup_total_price;
+
+            $backupItem->update();
+        }
         
-        $backupItem->job_id = $job_id;
-        $backupItem->invoice_id = $invoice_id;
-        $backupItem->type = $backup_type;
-        $backupItem->capacity = $backup_capacity;
-        $backupItem->price = $backup_price;
-        $backupItem->vat = $backup_vat;
-        $backupItem->disaccount = $backup_disaccount;
-        $backupItem->total_price = $backup_total_price;
-
-
-        $backupItem->update();
 
         return response()->json(array(
             'response' => 'success'           

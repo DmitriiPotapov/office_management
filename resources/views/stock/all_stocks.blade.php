@@ -30,6 +30,7 @@
                     <table id="example23" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
                         <thead>
                             <tr>                                
+                                <th>ID</th>
                                 <th>Brand</th>
                                 <th>Model</th>
                                 <th>Serial number</th>
@@ -43,6 +44,7 @@
                         <tbody> 
                             @foreach ($stockItems as $item)                      
                             <tr>
+                            <td>{{ sprintf("%04d" ,$item->id) }}</td>
                             <td>{{ $item->manufacturer }}</td>
                             <td>{{ $item->stock_model }}</td>
                             <td>{{ $item->serial_number }}</td>
@@ -129,7 +131,7 @@
         buttons: [
             'copy', 'csv', 'excel', 'pdf', 'print'
         ],
-        order: [5, 'desc'],
+        order: [6, 'desc'],
     });
     </script>   
     <!-- ============================================================== -->

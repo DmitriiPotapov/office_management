@@ -132,11 +132,8 @@
                 </div>
 
                 <div class="form-actions">
-                    <button type="button" class="btn btn-success" id="jobPost"><i class="fa fa-check"></i> Save</button>
+                    <button type="button" class="btn btn-success" id="jobPost"><i class="fa fa-check"></i> Update</button>
                     <a href="{{URL::to('quote/resetAction')}}"><button type="button" class="btn btn-warning">Reset</button></a>
-                    <a href = "#"><button type="button" class="btn btn-danger">Preview</button></a>
-                    <a href = "{{ route('generate_quote',['job_id' => $job_id]) }}"><button type="button" class="btn btn-info">Generate</button></a>
-                    <a href = "#"><button type="button" class="btn btn-success">Send Quote</button></a>
                 </div>
 
                 <div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1">
@@ -439,13 +436,15 @@
         });
 
 
-        var quote_language, currency;
+        var quote_language = "{{ $quote->quote_language }}";
+        var currency = "{{ $quote->currency }}";
 
 
         
-        $("select.quote_language").change(function () {
+        $("#quote_language").change(function () {
             var data = $(this).children("option:selected").val();
             quote_language = data;
+            console.log(quote_language);
 
         });
         $("select.currency").change(function () {

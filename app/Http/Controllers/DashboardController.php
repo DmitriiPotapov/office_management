@@ -27,10 +27,16 @@ class DashboardController extends Controller
     {
         if (Auth::check()) {
             $jobs = DataJobs::orderBy('created_at', 'DESC')->limit(12)->get()->toArray();
-            $urgentCount = DataJobs::all()->count();
-            $completedCount = DataJobs::where('status', 'Completed successfully')->count();
-            $paymentPendingCount = DataJobs::where('status', 'Payment pending')->count();
-            $paidCount = DataJobs::where('status', 'Paid')->count();
+            $urgentCount = DataJobs::where('priority', 'Emergency')
+                                    ->count();
+            $completedCount = DataJobs::where('status', 'Completed Successfully')
+                                        ->orwhere('status', 'Delivered/Unaid')
+                                        ->orwhere('status', 'Delivered/Paid')
+                                        ->count();
+            $paymentPendingCount = DataJobs::where('status', 'Based on Delivered/Unpaid')
+                                            ->orwhere('status', 'Delivered/Partially Paid')
+                                            ->count();
+            $paidCount = DataJobs::where('status', 'Delivered/Paid')->count();
             return view('dashboard',compact('jobs', 'urgentCount', 'completedCount', 'paymentPendingCount', 'paidCount'));
         } else {
             return redirect()->route('login');

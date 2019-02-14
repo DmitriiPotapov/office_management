@@ -35,7 +35,13 @@ class JobController extends Controller
         
         $job->user_id = Auth::user()->id;
         $job->user_name = Auth::user()->username;
-        $job->job_id = rand(10000, 99999);
+        // while (1)
+        // {
+        //   $job->job_id = rand(4000, 9999);
+        //   if (DataJobs::where('job_id', $job->job_id)->count() == 0)
+        //     break;
+        // }
+        $job->job_id = 4000 + DataJobs::count();
         $job->job_password = rand(100000000, 999999999);
 
         $client_info = $request->input('client_info');
@@ -65,6 +71,7 @@ class JobController extends Controller
             $devices->model = $request->input('model'.$i);
             $devices->serial = $request->input('serial'.$i);
             $devices->capacity = $request->input('capacity1');
+            $devices->location = $request->input('location');
 
             $devices->save();
         }
@@ -82,6 +89,7 @@ class JobController extends Controller
           $backupdevice->model = $request->input('backupModel');
           $backupdevice->serial = $request->input('backupSerial');
           $backupdevice->capacity = $request->input('backupCapacity');
+          $backupdevice->location = $request->input('backupLocation');
 
           $backupdevice->save();
         }
@@ -153,7 +161,9 @@ class JobController extends Controller
     {
         if( !Auth::check() )
             return redirect()->route('login');
-        $jobs = DataJobs::all()->toArray();
+        $jobs = DataJobs::where('priority', 'Emergency')
+                          ->get()
+                          ->toArray();
         return view('job.viewJobs', compact('jobs'));
     }
 
@@ -161,7 +171,11 @@ class JobController extends Controller
     {
         if( !Auth::check() )
             return redirect()->route('login');
-        $jobs = DataJobs::where('status', 'Completed successfully')->get()->toArray();
+        $jobs = DataJobs::where('status', 'Completed Successfully')
+                        ->orwhere('status', 'Delivered/Unaid')
+                        ->orwhere('status', 'Delivered/Paid')
+                        ->get()
+                        ->toArray();
         return view('job.viewJobs', compact('jobs'));
     }
 
@@ -169,7 +183,10 @@ class JobController extends Controller
     {
         if( !Auth::check() )
             return redirect()->route('login');
-        $jobs = DataJobs::where('status', 'Waiting for Parts')->get()->toArray();
+        $jobs = DataJobs::where('status', 'Based on Delivered/Unpaid')
+                        ->orwhere('status', 'Delivered/Partially Paid')
+                        ->get()
+                        ->toArray();
         return view('job.viewJobs', compact('jobs'));
     }
 
@@ -219,6 +236,7 @@ class JobController extends Controller
         $price = $request->input('price');
 
         $job = DataJobs::where('job_id', $job_id)->first();
+        $invoice = Invoice::where('job_id', $job_id)->first();
 
         $oldStatus = $job->status;
 
@@ -227,6 +245,11 @@ class JobController extends Controller
         $job->assigned_engineer = $request->input('assigned_engineer');
         $job->price = $request->input('price');
         $job->status = $request->input('status');
+        if ($invoice)
+        {
+          $invoice->status = $request->input('status');   
+          $invoice->update();
+        }
         $job->priority = $request->input('priority');
         $job->device_malfunc_info = $request->input('device_malfunc_info');
         $job->important_data = $request->input('important_data');
@@ -456,7 +479,7 @@ class JobController extends Controller
         $pdf = \App::make('dompdf.wrapper');
         $pdf->loadHTML($this->convert_job_data_to_admission_form($job_id));
         $pdf->stream();
-        $file_path = 'checkin_form_'.$job_id.'.pdf';
+        $file_path = 'CheckIn #'.$job_id.'.pdf';
         return $pdf->download($file_path);
 
     }
@@ -466,7 +489,7 @@ class JobController extends Controller
         $pdf = \App::make('dompdf.wrapper');
         $pdf->loadHTML($this->convert_job_data_to_checkout_form($job_id));
         $pdf->stream();
-        $file_path = 'chechout_form_'.$job_id.'.pdf';
+        $file_path = 'CheckOut #'.$job_id.'.pdf';
         return $pdf->download($file_path);
     }
     
@@ -478,13 +501,40 @@ class JobController extends Controller
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($this->convert_job_data_to_invoice($job_id));
             $pdf->stream();
-            $file_path = 'invoice_'.$job_id.'.pdf';
+            $file_path = 'Invoice #'.$job_id.'.pdf';
             return $pdf->download($file_path);
         }
         else
         {
             return redirect()->back()->with('alert', ' No invoce data!');
         }
+    }
+
+    public function generateInvoiceTemplate($job_id)
+    {
+      $job = DataJobs::where('job_id',$job_id)->first();
+      $invoice = Quote::where('job_id', $job_id)->first();
+      $client = Client::find($job->client_id);
+      $devices = DataDevices::where('job_id', $job_id)->where('role', 'Patient')->first();
+      $backup = Backup::where('job_id', $job_id)->first();
+      $vat_price = $invoice->item_price * $invoice->item_vat / 100.0;
+      $total_price = $invoice->item_total_price + ($backup ? $backup->total_price : 0);
+
+      $pdf = PDF::loadView('job.invoicepdf', compact('job_id','job', 'invoice', 'client', 'devices', 'backup', 'vat_price', 'total_price'));
+      $file_path = 'Invoice #'.$job_id.'.pdf';
+      return $pdf->download($file_path);
+    }
+
+    public function generateQuoteTemplate($job_id)
+    {
+      $job = DataJobs::where('job_id',$job_id)->first();
+      $invoice = Quote::where('job_id', $job_id)->first();
+      $client = Client::find($job->client_id);
+      $devices = Quote::where('job_id', $job_id)->get()->toArray();
+
+      $pdf = PDF::loadView('job.quotepdf', compact('job_id','job', 'invoice', 'client', 'devices'));
+      $file_path = 'Quote #'.$job_id.'.pdf';
+      return $pdf->download($file_path);
     }
 
     public function generateQuote($job_id)
@@ -495,7 +545,7 @@ class JobController extends Controller
             $pdf = \App::make('dompdf.wrapper');
             $pdf->loadHTML($this->convert_job_data_to_quote($job_id));
             $pdf->stream();
-            $file_path = 'quote_'.$job_id.'.pdf';
+            $file_path = 'Quote #'.$job_id.'.pdf';
             return $pdf->download($file_path);
         }
         else
@@ -509,7 +559,7 @@ class JobController extends Controller
         $pdf = \App::make('dompdf.wrapper');
         $pdf->loadHTML($this->convert_job_data_to_media($job_id));
         $pdf->stream();
-        $file_path = 'media_evaluation_report_'.$job_id.'.pdf';
+        $file_path = 'Report #'.$job_id.'.pdf';
         return $pdf->download($file_path);
     }
 
@@ -522,7 +572,7 @@ class JobController extends Controller
 <html lang="en">
 <head>
   <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-  <title>HTML4</title>
+  <title>CheckIn #'.$job_id.'</title>
   <style>
   body {
     font-family: Times New Roman;
@@ -655,12 +705,24 @@ class JobController extends Controller
   </div>
   <hr /><br><br><br><br><br><br><br><br><br><br><br>
   <div>
-    <img align="right" src="assets/images/nithin.png" width="77" height="35" />
-    <div align="left">
-      <b><label style="font-size:17px;">TRACK YOUR SERVICE</label><br></b>
-      <label style="font-size:12px;">To get the latest status of your service</label><br>
-      <label style="font-size:12px;">please visit the following link:</label><br>
-      <label style="font-size:12px;color:#3092C3;">www.spacedatarecover.com/Jobtrack</label><br>
+    <div>
+      <table style="border-bottom:0pt solid grey;width:100%">
+        <tbody style="font-size:15px;">
+          <tr>
+            <td class="newtable" style="font-size:17px;"><b>TRACK YOUR SERVICE</b></td>
+            <td class="newtable" style="font-size:17px;" align="right">#'.$job->user_name.'</td>
+          </tr>
+          <tr>
+            <td class="newtable"><label style="font-size:12px;">To get the latest status of your service</label><br></td>
+          </tr>
+          <tr>
+            <td class="newtable"><label style="font-size:12px;">please visit the following link:</label><br></td>
+          </tr>
+          <tr>
+            <td class="newtable"><label style="font-size:12px;color:#3092C3;">www.spacedatarecover.com/Jobtrack</label><br></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
   <br>
@@ -687,7 +749,7 @@ class JobController extends Controller
       <html lang="en">
       <head>
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-        <title>HTML4</title>
+        <title>CheckOut #'.$job_id.'</title>
         <style>
         body {
           font-family: Times New Roman;
@@ -820,13 +882,27 @@ class JobController extends Controller
         </div>
         <hr /><br><br><br><br><br><br><br><br><br><br><br><br>
         <div>
-          <img align="right" src="assets/images/nithin.png" width="77" height="35" />
-          <div align="left">
-            <b><label style="font-size:15px;">COLLECTED BY</label><br></b>
-            <label style="font-size:12px;">Name:</label><br>
-            <label style="font-size:12px;">Contact No:</label><br>
-            <label style="font-size:12px;">Civil ID:</label><br>
-            <label style="font-size:12px;">Signature:</label><br>
+          <div>
+            <table style="border-bottom:0pt solid grey;width:100%">
+              <tbody style="font-size:15px;">
+                <tr>
+                  <td class="newtable"><b><label style="font-size:15px;">COLLECTED BY</label></b></td>
+                  <td class="newtable" style="font-size:17px;" align="right">#'.$job->user_name.'</td>
+                </tr>
+                <tr>
+                  <td class="newtable"><label style="font-size:12px;">Name:</label></td>
+                </tr>
+                <tr>
+                  <td class="newtable"><label style="font-size:12px;">Contact No:</label></td>
+                </tr>
+                <tr>
+                  <td class="newtable"><label style="font-size:12px;">Civil ID:</label></td>
+                </tr>
+                <tr>
+                  <td class="newtable"><label style="font-size:12px;">Signature:</label></td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
         <br>
@@ -845,13 +921,14 @@ class JobController extends Controller
       $invoice = Invoice::where('job_id', $job_id)->first();
       $backup = Backup::where('job_id', $job_id)->first();
       $client = Client::find($job->client_id);
-      $total_price = $invoice->item_total_price + $backup->total_price;
+      $vat_price = $invoice->item_price * $invoice->item_vat / 100.0;
+      $total_price = $invoice->item_total_price + ($backup ? $backup->total_price : 0);
       $output = '
       <!DOCTYPE HTML>
       <html lang="en">
       <head>
         <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-        <title>HTML4</title>
+        <title>Invoice #'.$job_id.'</title>
         <style>
         body {
           font-family: Times New Roman;
@@ -901,8 +978,12 @@ class JobController extends Controller
       
         td, th {
         border: 0px solid #dddddd;
-        text-align: left;
         padding: 8px;
+        }
+
+        td.newtable, th.newtable {
+          border: 0px solid #dddddd;
+          padding: 2px;
         }
       
         </style>
@@ -969,19 +1050,17 @@ class JobController extends Controller
               $i ++;
             }
           }
-          $backupDevices = Backup::where('job_id', $job_id)->get()->toArray();
-          if ($backupDevices) {
-            foreach($backupDevices as $item)
+          if ($backup) {
             {
               {
-                $total_price += $item["total_price"];
+                $total_price += $backup["total_price"];
                 $output .= '
                 <tr>
                 <td>'.number_format($i).'</td>
-                <td width="200"> Backup Devices - '.$job["services"].'-'.$item["type"].'-'.$item["capacity"].'</td>
-                <td>RO '.number_format($item["total_price"],3,".","").'</td>
+                <td width="200"> Backup Devices - '.$job["services"].'-'.$backup["type"].'-'.$backup["capacity"].'</td>
+                <td>RO '.number_format($backup["total_price"],3,".","").'</td>
                 <td>1</td>
-                <td>RO '.number_format($item["total_price"],3,".","").'</td>
+                <td>RO '.number_format($backup["total_price"],3,".","").'</td>
                 </tr>';
                 $i ++;
               }
@@ -997,8 +1076,8 @@ class JobController extends Controller
           <label style="font-size:16px;padding-left:8em;">RO '.number_format($total_price,3,".","").'</label><br>
         </div><br>
         <div align="right">
-          <label style="font-size:16px;">Tax 00%</label>
-          <label style="font-size:16px;padding-left:8em;">RO 000.00</label><br>
+          <label style="font-size:16px;">VAT '.number_format($invoice->item_vat,2,".","").'%</label>
+          <label style="font-size:16px;padding-left:8em;">RO '.number_format($vat_price,3,".","").'</label><br>
         </div><br>
         <div align="right" >
           <label style="background-color:#1483BB;color:white;font-size:20px;margin-top:5px;margin-bottom:5px;">Grand Total</label>
@@ -1006,10 +1085,18 @@ class JobController extends Controller
         </div>
         <br><br>
         <div>
-          <img align="right" src="assets/images/nithin.png" width="77" height="35" />
-          <div align="left">
-            <b><label style="font-size:17px;">Payment Methods</label><br></b>
-            <label style="font-size:12px;">"We accept Cash, Visa, Master Card & Cheque"</label><br>
+          <div>
+            <table style="border-bottom:0pt solid grey;width:100%">
+              <tbody style="font-size:15px;">
+                <tr>
+                  <td class="newtable"><b><label style="font-size:17px;">Payment Methods</label></b></td>
+                  <td class="newtable" style="font-size:17px;" align="right">#'.$job->user_name.'</td>
+                </tr>
+                <tr>
+                  <td class="newtable"><label style="font-size:12px;">"We accept Cash, Visa, Master Card & Cheque"</label></td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
         <br>
@@ -1042,7 +1129,7 @@ class JobController extends Controller
     <html lang="en">
     <head>
       <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-      <title>HTML4</title>
+      <title>Quote '.$job_id.'</title>
       <style>
       body {
         font-family: Times New Roman;
@@ -1092,8 +1179,12 @@ class JobController extends Controller
     
       td, th {
       border: 0px solid #dddddd;
-      text-align: left;
       padding: 8px;
+      }
+      
+      td.newtable, th.newtable {
+        border: 0px solid #dddddd;
+        padding: 2px;
       }
     
       </style>
@@ -1113,7 +1204,7 @@ class JobController extends Controller
       <div>
         <img align="left" src="assets/images/quote.png" width="280" height="80" />
         <div align="right">
-          <b><label style="font-size:17px;">Bill To</label></b><br>
+          <b><label style="font-size:17px;">Quote To</label></b><br>
           <label style="font-size:16px;">'.$client->client_name.'</label><br>
           <label style="font-size:16px;">'.$client->company.'</label><br>
           <label style="font-size:16px;">'.$client->phone_value.'</label><br>
@@ -1165,19 +1256,24 @@ class JobController extends Controller
         <label style="font-size:16px;">Sub Total</label>
         <label style="font-size:16px;padding-left:8em;">RO '.number_format($invoice->item_total_price,3,".","").'</label><br>
       </div><br>
-      <div align="right">
-        <label style="font-size:16px;">Tax 00%</label>
-        <label style="font-size:16px;padding-left:8em;">RO 00.000</label><br>
-      </div><br>
-      <div align="right" style="height:50px;">
-        <label style="background-color:#1483BB;color:white;font-size:20px;margin-top:5px;margin-bottom:5px;height:50px;"> &nbsp;Grand Total&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;RO '.number_format($invoice->item_total_price,3,".","").' &nbsp;</label>
+      <div align="right" >
+        <label style="background-color:#1483BB;color:white;font-size:20px;margin-top:5px;margin-bottom:5px;">Grand Total</label>
+        <label style="background-color:#1483BB;color:white;font-size:20px;padding-left:4em;padding-top:5px;padding-bottom:5px;">RO '.number_format($invoice->item_total_price,3,".","").'</label><br>
       </div>
       <br><br><br>
       <div>
-        <img align="right" src="assets/images/nithin.png" width="77" height="35" />
-        <div align="left">
-          <b><label style="font-size:17px;">Payment Methods</label><br></b>
-          <label style="font-size:12px;">"We accept Cash, Visa, Master Card & Cheque"</label><br>
+        <div>
+          <table style="border-bottom:0pt solid grey;width:100%">
+            <tbody style="font-size:15px;">
+              <tr>
+                <td class="newtable"><b><label style="font-size:17px;">Payment Methods</label></b></td>
+                <td class="newtable" style="font-size:17px;" align="right">#'.$job->user_name.'</td>
+              </tr>
+              <tr>
+                <td class="newtable"><label style="font-size:12px;">"We accept Cash, Visa, Master Card & Cheque"</label></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
       <br>
@@ -1211,7 +1307,7 @@ class JobController extends Controller
   <html lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-    <title>HTML4</title>
+    <title>Report #'.$job_id.'</title>
     <style>
     body {
       font-family: Times New Roman;
@@ -1375,8 +1471,7 @@ class JobController extends Controller
     <br>
     <div align="right">
       <b><label style="font-size:16px;">REPORT BY</label><br></b>
-      <b><label style="font-size:16px;">Nithin Ziva</label><br></b>
-      <label style="font-size:16px;">CTO</label>
+      <b><label style="font-size:16px;">#'.$job->user_name.'</label><br></b>
     </div>
     </body>
   </html>';

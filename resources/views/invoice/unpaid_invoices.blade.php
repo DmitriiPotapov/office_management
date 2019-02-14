@@ -13,7 +13,7 @@
                 <!-- ============================================================== -->
     <div class="row page-titles">
         <div class="col-md-6 col-8 align-self-center">
-            <h3 class="text-themecolor m-b-0 m-t-0">Unpaid Invoices</h3>
+            <h3 class="text-themecolor m-b-0 m-t-0">Paid Invoices</h3>
         </div>
         
     </div>
@@ -40,6 +40,7 @@
                         </thead>
                         
                         <tbody>
+                        @if ($invoices)
                         @foreach ($invoices as $item)
                         <tr>                         
                         <td>{{ $item->job_id }}</td>
@@ -54,7 +55,7 @@
                         </td>
                         </tr>  
                         @endforeach                                                   
-                        
+                        @endif
                                                         
                         </tbody>
                     </table>
@@ -129,7 +130,8 @@
         dom: 'Bfrtip',
         buttons: [
             'copy', 'csv', 'excel', 'pdf', 'print'
-        ]
+        ],
+        order: [4, "desc"]
     });
     </script>   
     <!-- ============================================================== -->

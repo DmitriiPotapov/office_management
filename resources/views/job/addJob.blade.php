@@ -198,6 +198,16 @@
                                         <input type="text" id="capacity" name="capacity1" class="form-control" placeholder="" >
                                         <small class="form-control-feedback"></small> </div>
                                 </div>
+                                <div class="col-md-2">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon1">
+                                                Location
+                                            </span>
+                                        </div>
+                                        <input type="text" id="location" name="location" class="form-control" placeholder="" >
+                                        <small class="form-control-feedback"></small> </div>
+                                </div>
                             </div>
                             <br>
                             <div class="row p-t-20">
@@ -260,7 +270,7 @@
                                     </div>
                                 </div>
                                 <div class="row p-t-20">
-                                    <div class="col-md-5">
+                                    <div class="col-md-4">
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1">
@@ -270,7 +280,7 @@
                                             <input type="text" id="backupSerial" name="backupSerial" class="form-control" placeholder="" >
                                             <small class="form-control-feedback"></small> </div>
                                     </div>
-                                    <div class="col-md-5">
+                                    <div class="col-md-4">
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1">
@@ -278,6 +288,16 @@
                                                 </span>
                                             </div>
                                             <input type="text" id="backupCapacity" name="backupCapacity" class="form-control" placeholder="" >
+                                            <small class="form-control-feedback"></small> </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="basic-addon1">
+                                                    Location
+                                                </span>
+                                            </div>
+                                            <input type="text" id="backupLocation" name="backupLocation" class="form-control" placeholder="" >
                                             <small class="form-control-feedback"></small> </div>
                                     </div>
                                 </div>
@@ -493,6 +513,7 @@
         $("#backupModel").val($("#cr_model").val());
         $("#backupSerial").val($("#cr_serial").val());
         $("#backupCapacity").val($("#cr_capacity").val());
+        $("#backupLocation").val($("#cr_location").val());
     }
     function onDeviceAdd()
     {

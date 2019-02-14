@@ -13,6 +13,7 @@
 @section('content')
 <!-- Container fluid  -->
 <div class="container-fluid">
+    <input type="hidden" id="jobSelected" name="jobSelected" value="0">
     <div class="row page-titles">
         <div class="col-md-6 col-8 align-self-center">
             <h3 class="text-themecolor m-b-0 m-t-0">New Quote</h3>
@@ -137,6 +138,9 @@
                 <button type="button" class="btn btn-success" id="jobPost"><i class="fa fa-check"></i> Save</button>
 
                     <a href="{{URL::to('quote/resetAction')}}"><button type="button" class="btn btn-warning">Reset</button></a>
+                    <a href = "#"><button type="button" class="btn btn-danger">Preview</button></a>
+                    <button type="button" class="btn btn-info" id="generate">Generate</button>
+                    <a href = "#"><button type="button" class="btn btn-success">Send Quote</button></a>
                 </div>
 
                 <div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1">
@@ -595,6 +599,7 @@
                     var quote_items_type = quoteItems.type;
                     var quote_items_capacity = quoteItems.capacity;
 
+                    $("#jobSelected").val(quote_job_id);
                     $("#client_name").val(client_name);
                     $("#job_status").val(job_status);
                     $("#service_name").val(services);
@@ -616,7 +621,24 @@
 
         })
         
-
+        $("#generate").on('click', function (e) {
+            var job_id = $("#jobSelected").val();
+            var item_price = $("#item_price").text();
+            var item_vat = $("#item_vat").text();
+            var item_discount = $("#item_discount").text();
+            var item_total_price = $("#item_total_price").text();
+            if (job_id == '0')
+            {
+                alert("No Job Selected!");
+            }
+            else
+            {
+                console.log(job_id);
+                var link = "http://localhost:8000/job/generateQuoteTemplate/"+job_id;
+                console.log(link);
+                location.href = link;
+            }
+        });
     
   
     });        

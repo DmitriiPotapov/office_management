@@ -15,7 +15,7 @@
                 $urgcount = 0;
             @endphp
             @foreach($jobs as $item)
-            @if($item['status'])
+            @if($item['priority'] == 'Emergency')
                 @php
                     $urgcount ++;
                 @endphp
@@ -53,7 +53,7 @@
             $inProcessCount = 0;
         @endphp
         @foreach($jobs as $item)
-        @if($item['status'] == 'In Process')
+        @if(($item['status'] == 'Under Inspection') || ($item['status'] == 'Under Recovery'))
             @php
                 $inProcessCount ++;
             @endphp
@@ -72,7 +72,7 @@
             $waitingForPartsCount = 0;
         @endphp
         @foreach($jobs as $item)
-        @if($item['status'] == 'Waiting for parts')
+        @if($item['status'] == 'Waiting for Parts')
             @php
                 $waitingForPartsCount ++;
             @endphp
@@ -91,7 +91,7 @@
             $completedCount = 0;
         @endphp
         @foreach($jobs as $item)
-        @if($item['status'] == 'Completed successfully')
+        @if(($item['status'] == 'Completed Successfully') || ($item['status'] == 'Delivered/Paid') || ($item['status'] == 'Delivered/Unpaid'))
             @php
                 $completedCount ++;
             @endphp
@@ -110,7 +110,7 @@
             $paymentCount = 0;
         @endphp
         @foreach($jobs as $item)
-        @if($item['status'] == 'Payment pending')
+        @if(($item['status'] == 'Delivered/Unpaid') || ($item['status'] == 'Delivered/Partially Paid'))
             @php
                 $paymentCount ++;
             @endphp
@@ -122,14 +122,14 @@
         <div class="col-md-1" style="background-color:#ffffff;padding-top: inherit;font-size: 30px;height: 95px; border: dotted;margin-bottom: 5px;"><label style="position:absolute;top:50%;left:50%;transform:translate(-50%, -50%);text-align:center;"><b>{{ $paymentCount }}</b></label></div>
     </div>
     <div class="row">
-        <div class="col-md-1" style="background-color:#ffffd6;padding-top: inherit;font-size: 20px;height: 95px; border: dotted;margin-bottom: 5px;"><label style="position:absolute;top:50%;left:50%;transform:translate(-50%, -50%);text-align:center;"><b>Waiting for file list acceptance</b></label></div>&nbsp;
+        <div class="col-md-1" style="background-color:#ffffd6;padding-top: inherit;font-size: 20px;height: 95px; border: dotted;margin-bottom: 5px;"><label style="position:absolute;top:50%;left:50%;transform:translate(-50%, -50%);text-align:center;"><b>Waiting for Verification</b></label></div>&nbsp;
         <div class="col-md-9" style="background-color:#ffffd6;padding-top: inherit;font-size: 20px;height: 95px; border: dotted;margin-bottom: 5px;">
         <div class="row" id = "waitingforfile_div" style="    display: -webkit-inline-box;overflow-x: hidden;width: 100%;">
         @php
             $waitingForFileCount = 0;
         @endphp
         @foreach($jobs as $item)
-        @if($item['status'] == 'Waiting for file list acceptance')
+        @if($item['status'] == 'Waiting for Verification')
             @php
                 $waitingForFileCount ++;
             @endphp
@@ -141,14 +141,14 @@
         <div class="col-md-1" style="background-color:#ffffd6;padding-top: inherit;font-size: 30px;height: 95px; border: dotted;margin-bottom: 5px;"><label style="position:absolute;top:50%;left:50%;transform:translate(-50%, -50%);text-align:center;"><b>{{ $waitingForFileCount }}</b></label></div>
     </div>
     <div class="row">
-        <div class="col-md-1" style="background-color:#ffffff;padding-top: inherit;font-size: 20px;height: 95px; border: dotted;margin-bottom: 5px;"><label style="position:absolute;top:50%;left:50%;transform:translate(-50%, -50%);text-align:center;"><b>Arrival pending</b></label></div>&nbsp;
+        <div class="col-md-1" style="background-color:#ffffff;padding-top: inherit;font-size: 20px;height: 95px; border: dotted;margin-bottom: 5px;"><label style="position:absolute;top:50%;left:50%;transform:translate(-50%, -50%);text-align:center;"><b>Waiting for approval</b></label></div>&nbsp;
         <div class="col-md-9" style="background-color:#ffffff;padding-top: inherit;font-size: 20px;height: 95px; border: dotted;margin-bottom: 5px;">
         <div class="row" id = "arrival_div" style="    display: -webkit-inline-box;overflow-x: hidden;width: 100%;">
         @php
             $arrivalCount = 0;
         @endphp
         @foreach($jobs as $item)
-        @if($item['status'] == 'Arrival pending')
+        @if($item['status'] == 'Waiting for approval')
             @php
                 $arrivalCount ++;
             @endphp
@@ -160,14 +160,14 @@
         <div class="col-md-1" style="background-color:#ffffff;padding-top: inherit;font-size: 30px;height: 95px; border: dotted;margin-bottom: 5px;"><label style="position:absolute;top:50%;left:50%;transform:translate(-50%, -50%);text-align:center;"><b>{{ $arrivalCount }}</b></label></div>
     </div>
     <div class="row">
-        <div class="col-md-1" style="background-color:#ffddd6;padding-top: inherit;font-size: 20px;height: 95px; border: dotted;margin-bottom: 5px;"><label style="position:absolute;top:50%;left:50%;transform:translate(-50%, -50%);text-align:center;"><b>Assigned to engineer</b></label></div>&nbsp;
+        <div class="col-md-1" style="background-color:#ffddd6;padding-top: inherit;font-size: 20px;height: 95px; border: dotted;margin-bottom: 5px;"><label style="position:absolute;top:50%;left:50%;transform:translate(-50%, -50%);text-align:center;"><b>Waiting for Advance</b></label></div>&nbsp;
         <div class="col-md-9" style="background-color:#ffddd6;padding-top: inherit;font-size: 20px;height: 95px; border: dotted;margin-bottom: 5px;">
         <div class="row" id = "assigned_div" style="    display: -webkit-inline-box;overflow-x: hidden;width: 100%;">
         @php
             $assignedCount = 0;
         @endphp
         @foreach($jobs as $item)
-        @if($item['status'] == 'Assigned to engineer')
+        @if($item['status'] == 'Waiting for Advance')
             @php
                 $assignedCount ++;
             @endphp
@@ -179,14 +179,14 @@
         <div class="col-md-1" style="background-color:#ffddd6;padding-top: inherit;font-size: 30px;height: 95px; border: dotted;margin-bottom: 5px;"><label style="position:absolute;top:50%;left:50%;transform:translate(-50%, -50%);text-align:center;"><b>{{ $assignedCount }}</b></label></div>
     </div>
     <div class="row">
-        <div class="col-md-1" style="background-color:#ffffff;padding-top: inherit;font-size: 15px;height: 95px; border: dotted;margin-bottom: 5px;"><label style="position:absolute;top:50%;left:50%;transform:translate(-50%, -50%);text-align:center;"><b>Waiting for upfront payment</b></label></div>&nbsp;
+        <div class="col-md-1" style="background-color:#ffffff;padding-top: inherit;font-size: 20px;height: 95px; border: dotted;margin-bottom: 5px;"><label style="position:absolute;top:50%;left:50%;transform:translate(-50%, -50%);text-align:center;"><b>Ready for Delivery</b></label></div>&nbsp;
         <div class="col-md-9" style="background-color:#ffffff;padding-top: inherit;font-size: 20px;height: 95px; border: dotted;margin-bottom: 5px;">
         <div class="row" id = "waitingforupfront_div" style="    display: -webkit-inline-box;overflow-x: hidden;width: 100%;">
         @php
             $waitingForUpfrontCount = 0;
         @endphp
         @foreach($jobs as $item)
-        @if($item['status'] == 'Waiting for upfront payment')
+        @if($item['status'] == 'Ready for Delivery')
             @php
                 $waitingForUpfrontCount ++;
             @endphp

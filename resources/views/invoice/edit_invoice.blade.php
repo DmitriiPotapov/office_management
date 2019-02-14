@@ -20,9 +20,9 @@
             </div>
     <div class="row">
         <div class="col-sm-12 col-xs-12">
-            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal2"
-                data-whatever="@mdo"><i class="fa fa-plus"></i> Select Job</button>
-            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal3"
+            <!--<button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal2"
+                data-whatever="@mdo"><i class="fa fa-plus"></i> Select Job</button>-->
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal4"
                 data-whatever="@mdo"><i class="fa fa-plus"></i> Add custom</button>
             <br />
             <br />
@@ -37,7 +37,7 @@
                     <input type="hidden" class="form-control" name="update_invoice_id" id="update_invoice_id" value="{{ $invoice->id }}" />
                     <input type="hidden" class="form-control" name="update_job_id" id="update_job_id" value="{{ $job_id }}" />
                     <input type="hidden" class="form-control" name="update_job_status" id="update_job_status" value="{{ $job_status }}" />
-                    <input type="hidden" class="form-control" name="quote_id" id="quote_id" value="{{ $invoice->invoice_id }}" />
+                    <input type="hidden" class="form-control" name="invoice_id" id="invoice_id" value="{{ $invoice->invoice_id }}" />
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -128,6 +128,7 @@
                 </div>
                 <br />
                 <span>Back up Item</span>
+                <input type="hidden" id="hasBackup" value={{ $backupItem ? '0' : '2' }}>
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
@@ -136,7 +137,9 @@
                                     <table id="backupTable" class="table editable-table table-bordered table-striped m-b-0">
                                         <thead>
                                             <tr>
+                                                <th>Brand</th>
                                                 <th>Type</th>
+                                                <th>Serial Number</th>
                                                 <th>Capacity</th>
                                                 <th>Price</th>
                                                 <th>VAT(%)</th>
@@ -146,12 +149,14 @@
                                         </thead>
                                         <tbody>
                                             <tr>
-                                            <td id="backup_type">{{ $backupItem->type }}</td>
-                                                <td id="backup_capacity">{{ $backupItem->capacity }}</td>
-                                                <td id="backup_price">{{ $backupItem->price }}</td>
-                                                <td id="backup_vat">{{ $backupItem->vat }}</td>
-                                                <td id="backup_disaccount">{{ $backupItem->disaccount }}</td>
-                                                <td id="backup_total_price">{{ $backupItem->total_price }}</td>
+                                                <td id="backup_brand">{{ $backupItem ? $backupItem->brand: '' }}</td>
+                                                <td id="backup_type">{{ $backupItem ? $backupItem->type: '' }}</td>
+                                                <td id="backup_serial">{{ $backupItem ? $backupItem->serial: '' }}</td>
+                                                <td id="backup_capacity">{{ $backupItem ? $backupItem->capacity: '' }}</td>
+                                                <td id="backup_price">{{ $backupItem ? $backupItem->price: '' }}</td>
+                                                <td id="backup_vat">{{ $backupItem ? $backupItem->vat: '' }}</td>
+                                                <td id="backup_disaccount">{{ $backupItem ? $backupItem->disaccount: '' }}</td>
+                                                <td id="backup_total_price">{{ $backupItem ? $backupItem->total_price: '' }}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -160,22 +165,6 @@
                         </div>
                     </div>
                 </div>
-
-
-                {{-- <span>Footer text</span>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="summernote" name="footer_text" id="footer_text">
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> --}}
-
-
 
                 <span>Note</span>
                 <div class="row">
@@ -189,60 +178,8 @@
                 <div class="form-actions">
                     <button type="button" class="btn btn-success" id="jobPost"><i class="fa fa-check"></i>Update</button>
                     <a href="{{URL::to('invoice/resetAction')}}"><button type="button" class="btn btn-warning">Reset</button></a>
-                    <a href = "#"><button type="button" class="btn btn-danger">Preview</button></a>
-                    <a href = "{{ route('generate_invoice',['job_id' => $job_id]) }}"><button type="button" class="btn btn-info">Generate</button></a>
-                    <a href = "#"><button type="button" class="btn btn-success">Send Quote</button></a>
                 </div>
 
-                <div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h4 class="modal-title" id="exampleModalLabel1">Add job</h4>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                                        aria-hidden="true">&times;</span></button>
-                            </div>
-                            <div class="modal-body">
-
-                                <input type="hidden" name="invoice_id" value="{{ $invoice_id }}" id="invoice_id" />
-                                <div class="form-group">
-                                    <label for="message-text" class="control-label">Job ID:</label>
-                                    <input type="text" class="form-control" id="itemJobID" name="job_id">
-                                </div>
-                                <div class="form-group">
-                                    <label for="recipient-name" class="control-label">Type:</label>
-                                    <input type="text" class="form-control" id="itemType" name="type">
-                                </div>
-                                <div class="form-group">
-                                    <label for="message-text" class="control-label">Text:</label>
-                                    <input type="text" class="form-control" id="itemText" name="text">
-                                </div>
-                                <div class="form-group">
-                                    <label for="message-text" class="control-label">Price:</label>
-                                    <input type="text" class="form-control" id="itemPrice" name="price">
-                                </div>
-                                <div class="form-group">
-                                    <label for="message-text" class="control-label">VAT(%):</label>
-                                    <input type="text" class="form-control" id="itemVat" name="VAT">
-                                </div>
-                                <div class="form-group">
-                                    <label for="message-text" class="control-label">Discount(%):</label>
-                                    <input type="text" class="form-control" id="itemDisaccount" name="disaccount">
-                                </div>
-                                <div class="form-group">
-                                    <label for="message-text" class="control-label">Total price:</label>
-                                    <input type="text" class="form-control" id="itemTotalPrice" name="total_price">
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary" id="jobDetail">Save</button>
-                                </div>
-
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
                 <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
@@ -265,6 +202,33 @@
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                                 <button type="button" class="btn btn-primary" id = "select_job_id" data-dismiss="modal">select</button>
+                            </div>
+                        </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="exampleModal4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel4">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+ 
+                        <form>
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="exampleModalLabel4">Input StockID</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                        aria-hidden="true">&times;</span></button>
+                            </div>
+                            <div class="modal-body">                                                                                  
+                                  <div class="card">
+                                      <div class="card-body">   
+                                          <div id="prefetch">
+                                            <input class="typeahead form-control" type="text" placeholder="StockID" id="invoice_stock_id" name="invoice_stok_id" >
+                                          </div>
+                                      </div>
+                                  </div>                                                               
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary" id = "select_stock_id" data-dismiss="modal">select</button>
                             </div>
                         </form>
                         </div>
@@ -328,6 +292,15 @@
         };
 
         var states = [];
+
+        var stockItemList = [];
+        @foreach ($stockIds as $item)
+            stockItemList.push("{{ sprintf('%04d', $item) }}");
+        @endforeach
+
+        
+        var invoice_language = "{{ $invoice->invoice_language }}";
+        var currency = "{{ $invoice->currency }}";
         
 
         $('#the-basics .typeahead').typeahead({
@@ -350,14 +323,20 @@
         local: states
         });
 
+        var stockItemList = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.whitespace,
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        local: stockItemList
+        });
+
         $('#bloodhound .typeahead').typeahead({
         hint: true,
         highlight: true,
         minLength: 1
         },
         {
-        name: 'states',
-        source: states
+        name: 'stockItemList',
+        source: stockItemList
         });
 
 
@@ -371,11 +350,14 @@
         prefetch: '../plugins/bower_components/typeahead.js-master/countries.json'
         });
 
+        
+
         // passing in `null` for the `options` arguments will result in the default
         // options being used
         $('#prefetch .typeahead').typeahead(null, {
-        name: 'countries',
-        source: countries
+        name: 'StockIds',
+        limit: 10,
+        source: stockItemList
         });
 
         // -------- Custom --------
@@ -450,18 +432,13 @@
         limit: 10,
         source: states
         });
-
-
-        var invoice_language, currency;
-
-
         
-        $("select.invoice_language").change(function () {
+        $("#invoice_language").change(function () {
             var data = $(this).children("option:selected").val();
             invoice_language = data;
 
         });
-        $("select.currency").change(function () {
+        $("#currency").change(function () {
             var data = $(this).children("option:selected").val();
             currency = data;
         });
@@ -474,15 +451,13 @@
                 }
             });
             e.preventDefault(e);
-            var quote_id = $("#quote_id").val();
-            var update_job_status = $("#update_job_status").val();
-            var update_job_id = $("#update_job_id").val();
+            console.log(invoice_language);
             var update_invoice_id = $("#update_invoice_id").val();
             var invoice_id = $("#invoice_id").val();
             var client_name = $("#client_name").val();
             var job_status = $("#job_status").val();
             var service_name = $("#service_name").val();
-            var invoice_note = $("textarea#invoice_note").val();
+            var invoice_note = $("#invoice_note").val();
 
             var item_type = $("#item_type").text();
             var item_capacity = $("#item_capacity").text();
@@ -491,25 +466,23 @@
             var item_disaccount = $("#item_disaccount").text();
             var item_total_price = $("#item_total_price").text();
 
-
+            var hasBackup = $("#hasBackup").val();
             var backup_type = $("#backup_type").text();
             var backup_capacity = $("#backup_capacity").text();
             var backup_price = $("#backup_price").text();
+            var backup_brand = $("#backup_brand").text();
+            var backup_serial = $("#backup_serial").text();
             var backup_vat = $("#backup_vat").text();
             var backup_disaccount = $("#backup_disaccount").text();
             var backup_total_price = $("#backup_total_price").text();
 
-            var invoice_job_id = $("#invoice_job_id").val();
-      
-            console.log('sdfasdf', update_job_status);
-
+            var invoice_job_id = $("#update_job_id").val();
+     
             $.ajax({
                 url: '/invoice/updateAction',
                 type: 'POST',
                 dataType: 'json',
                 data: {
-                    update_job_status: update_job_status,
-                    update_job_id: update_job_id,
                     update_invoice_id: update_invoice_id,
                     invoice_id: invoice_id,
                     client_name: client_name,
@@ -524,7 +497,10 @@
                     item_vat: item_vat,
                     item_disaccount: item_disaccount,
                     item_total_price: item_total_price,
+                    hasBackup:  hasBackup,
                     backup_type: backup_type,
+                    backup_brand:  backup_brand,
+                    backup_serial: backup_serial,
                     backup_capacity: backup_capacity,
                     backup_price: backup_price,
                     backup_vat: backup_vat,
@@ -534,7 +510,7 @@
                 },
                 success: function(data) {
                     console.log(data);
-                    window.location = "/quote/allview";
+                    window.location = "/invoice/allview";
                 }
             });
         });
@@ -636,6 +612,38 @@
                 }
             }); 
         });
+
+        $("#select_stock_id").on('click', function(e) {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            e.preventDefault(e);
+            var invoice_stock_id = $("#invoice_stock_id").val();
+            $.ajax({
+                type: 'POST',
+                url: '/invoice/getStockDetail',
+                data: {
+                    invoice_stock_id: invoice_stock_id
+                },
+                success: function(data) {
+
+                    var stockItem = data.stockItem;
+                    console.log(stockItem);
+
+                    $("#hasBackup").val('1');
+                    $("#backup_brand").html(stockItem.manufacturer);
+                    $("#backup_serial").html(stockItem.serial_number);
+                    $("#backup_type").html(stockItem.device_type);
+                    $("#backup_capacity").html(stockItem.capacity);
+                    $("#backup_price").html(stockItem.input_price);
+                    $("#backup_vat").html(stockItem.vat_value);
+                    $("#backup_disaccount").html(0);
+                    $("#backup_total_price").html(stockItem.final_price);
+                }
+            })
+        });
         
 
         $("#baup_modal_save").on('click', function(){
@@ -656,9 +664,9 @@
 
         $("#item_total_price").on('click', function() {
             var item_price = $("#item_price").text();
-         
+            var item_vat = $("#item_vat").text();         
             var item_disaccount = $("#item_disaccount").text();
-            var item_total_price = Number(item_price)-Number(item_disaccount);
+            var item_total_price = Number(item_price)+Number(item_price)/100.0*Number(item_vat)-Number(item_disaccount);
             $("#item_total_price").html(item_total_price);
 
 
@@ -666,9 +674,9 @@
 
         $("#backup_total_price").on('click', function() {
             var backup_price = $("#backup_price").text();
-         
+            var backup_vat = $("#backup_vat").text();
             var backup_disaccount = $("#backup_disaccount").text();
-            var backup_total_price = Number(backup_price)-Number(backup_disaccount);
+            var backup_total_price = Number(backup_price)+Number(backup_price)/100.0*Number(backup_vat)-Number(backup_disaccount);
             $("#backup_total_price").html(backup_total_price);
 
 
