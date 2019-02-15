@@ -13,6 +13,7 @@
 @section('content')
 <!-- Container fluid  -->
 <div class="container-fluid">
+    <input type="hidden" id="jobSelected" name="jobSelected" value="{{ $job_id }}">
         <div class="row page-titles">
                 <div class="col-md-6 col-8 align-self-center">
                     <h3 class="text-themecolor m-b-0 m-t-0">Update Invoice</h3>
@@ -27,8 +28,7 @@
             <br />
             <br />
             <div class="row">
-                <div class="col-md-6">
-                    <span>Client</span>
+                <div class="col-md-2">
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1">Client</span>
@@ -40,8 +40,7 @@
                     <input type="hidden" class="form-control" name="invoice_id" id="invoice_id" value="{{ $invoice->invoice_id }}" />
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <span>Service</span>
+                <div class="col-md-2">
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1">Service</span>
@@ -50,47 +49,51 @@
                     name="service_name" id="service_name" value="{{ $invoice->service }}"/>
                     </div>
                 </div>
-            </div>
-            <br>
-            <span>Invoice language</span>
-            <div class="row">
-                    <div class="col-md-12">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">Language</span>
+                <div class="col-md-2">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Language</span>
+                        </div>
+                        <select class="custom-select col-12 invoice_language" id="invoice_language" name="invoice_language">
+                            
+                            <option <?php echo $invoice->invoice_language == 'English' ? 'selected' : '';?> value="English">English</option>
+                            <option <?php echo $invoice->invoice_language == 'Arabic' ? 'selected' : '';?> value="Arabic">Arabic</option>
+                            
+                        </select>
                     </div>
-                    <select class="custom-select col-12 invoice_language" id="invoice_language" name="invoice_language">
-                        
-                        <option <?php echo $invoice->invoice_language == 'English' ? 'selected' : '';?> value="English">English</option>
-                        <option <?php echo $invoice->invoice_language == 'Arabic' ? 'selected' : '';?> value="Arabic">Arabic</option>
-                        
-                    </select>
                 </div>
+                
+                <div class="col-md-2">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Currency</span>
+                        </div>
+                        <select class="custom-select col-12 currency" id="currency" name="currency">
+                            
+                                <option <?php echo $invoice->currency == 'INR' ? 'selected' : '';?> value="INR">INR</option>
+                                <option <?php echo $invoice->currency == 'RO' ? 'selected' : '';?> value="RO">RO</option>
+                                <option <?php echo $invoice->currency == 'Dhs' ? 'selected' : '';?> value="Dhs">Dhs</option>
+                                <option <?php echo $invoice->currency == 'USD' ? 'selected' : '';?> value="USD">USD</option>
+                                <option <?php echo $invoice->currency == 'EU' ? 'selected' : '';?> value="EU">EU</option> 
+                        </select>
                     </div>
-            </div>
-            <br>
-            <span>Currency</span>
-            <div class="row">
-                    <div class="col-md-12">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">Currency</span>
-                    </div>
-                    <select class="custom-select col-12 currency" id="currency" name="currency">
-                      
-                            <option <?php echo $invoice->currency == 'INR' ? 'selected' : '';?> value="INR">INR</option>
-                            <option <?php echo $invoice->currency == 'RO' ? 'selected' : '';?> value="RO">RO</option>
-                            <option <?php echo $invoice->currency == 'Dhs' ? 'selected' : '';?> value="Dhs">Dhs</option>
-                            <option <?php echo $invoice->currency == 'USD' ? 'selected' : '';?> value="USD">USD</option>
-                            <option <?php echo $invoice->currency == 'EU' ? 'selected' : '';?> value="EU">EU</option> 
-                    </select>
                 </div>
+                <div class="col-md-2">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">VAT(%)</span>
+                        </div>
+                        <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1"
+                    name="vat" id="vat" value="{{ $invoice->item_vat }}"/>
                     </div>
+                </div>
             </div>
+            
+            
             <br />
             
 
-            <div class="card-body">
+            <div >
                 <span>Invoice items</span>
                 <div class="row">
                     <div class="col-12">
@@ -103,7 +106,6 @@
                                                 <th>Type</th>
                                                 <th>Capacity</th>
                                                 <th>Price</th>
-                                                <th>VAT(%)</th>
                                                 <th>Discount(%)</th>
                                                 <th>Total Price</th>
                                             </tr>
@@ -114,7 +116,6 @@
                                             <td id="item_type">{{ $invoice->item_type }}</td>
                                             <td id="item_capacity">{{ $invoice->item_capacity }}</td>
                                             <td id="item_price">{{ $invoice->item_price }}</td>
-                                            <td id="item_vat">{{ $invoice->item_vat }}</td>
                                             <td id="item_disaccount">{{ $invoice->item_disaccount }}</td>
                                             <td id="item_total_price">{{ $invoice->item_total_price }}</td>
                                             </tr>
@@ -127,7 +128,9 @@
                     </div>
                 </div>
                 <br />
-                <span>Back up Item</span>
+                <div>
+                    <span>Back up Item</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </div>
                 <input type="hidden" id="hasBackup" value={{ $backupItem ? '0' : '2' }}>
                 <div class="row">
                     <div class="col-12">
@@ -142,7 +145,6 @@
                                                 <th>Serial Number</th>
                                                 <th>Capacity</th>
                                                 <th>Price</th>
-                                                <th>VAT(%)</th>
                                                 <th>Discount(%)</th>
                                                 <th>Total Price</th>
                                             </tr>
@@ -154,7 +156,6 @@
                                                 <td id="backup_serial">{{ $backupItem ? $backupItem->serial: '' }}</td>
                                                 <td id="backup_capacity">{{ $backupItem ? $backupItem->capacity: '' }}</td>
                                                 <td id="backup_price">{{ $backupItem ? $backupItem->price: '' }}</td>
-                                                <td id="backup_vat">{{ $backupItem ? $backupItem->vat: '' }}</td>
                                                 <td id="backup_disaccount">{{ $backupItem ? $backupItem->disaccount: '' }}</td>
                                                 <td id="backup_total_price">{{ $backupItem ? $backupItem->total_price: '' }}</td>
                                             </tr>
@@ -166,9 +167,10 @@
                     </div>
                 </div>
 
+
                 <span>Note</span>
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-8">
                         <div class="form-group">
                         <textarea class="form-control invoice_note" rows="8" name="invoice_note" id="invoice_note">{{ $invoice->invoice_note }}</textarea>
                             <small class="form-control-feedback"><a href="javascript:void(0)"> </a></small></div>
@@ -178,6 +180,10 @@
                 <div class="form-actions">
                     <button type="button" class="btn btn-success" id="jobPost"><i class="fa fa-check"></i>Update</button>
                     <a href="{{URL::to('invoice/resetAction')}}"><button type="button" class="btn btn-warning">Reset</button></a>
+                    <a href = "#"><button type="button" class="btn btn-danger">Preview</button></a>
+                    <button type="button" class="btn btn-info" id="generate">Generate</button>
+                    <a href = "#"><button type="button" class="btn btn-success">Send Quote</button></a>
+                    <a href="{{URL::to('invoice/deleteBackup', ['job_id' => $job_id])}}"><button type="button" class="btn btn-danger">Delete Backup</button></a>
                 </div>
 
                 <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2">
@@ -462,7 +468,7 @@
             var item_type = $("#item_type").text();
             var item_capacity = $("#item_capacity").text();
             var item_price = $("#item_price").text();
-            var item_vat = $("#item_vat").text();
+            var vat = $("#vat").val();
             var item_disaccount = $("#item_disaccount").text();
             var item_total_price = $("#item_total_price").text();
 
@@ -472,7 +478,6 @@
             var backup_price = $("#backup_price").text();
             var backup_brand = $("#backup_brand").text();
             var backup_serial = $("#backup_serial").text();
-            var backup_vat = $("#backup_vat").text();
             var backup_disaccount = $("#backup_disaccount").text();
             var backup_total_price = $("#backup_total_price").text();
 
@@ -494,7 +499,7 @@
                     item_type: item_type,
                     item_capacity: item_capacity,
                     item_price: item_price,
-                    item_vat: item_vat,
+                    vat: vat,
                     item_disaccount: item_disaccount,
                     item_total_price: item_total_price,
                     hasBackup:  hasBackup,
@@ -503,7 +508,6 @@
                     backup_serial: backup_serial,
                     backup_capacity: backup_capacity,
                     backup_price: backup_price,
-                    backup_vat: backup_vat,
                     backup_disaccount: backup_disaccount,
                     backup_total_price: backup_total_price,
                     invoice_job_id: invoice_job_id                                     
@@ -638,7 +642,6 @@
                     $("#backup_type").html(stockItem.device_type);
                     $("#backup_capacity").html(stockItem.capacity);
                     $("#backup_price").html(stockItem.input_price);
-                    $("#backup_vat").html(stockItem.vat_value);
                     $("#backup_disaccount").html(0);
                     $("#backup_total_price").html(stockItem.final_price);
                 }
@@ -650,23 +653,21 @@
             var backup_type = $("#modal_type").val();
             var backup_capacity = $("#modal_capacity").val();
             var backup_price = $("#modal_price").val();
-            var backup_vat = $("#modal_vat").val();
             var backup_disaccount = $("#modal_disaccount").val();
             var backup_total_price = $("#modal_total_price").val();
 
             $("#backup_type").html(backup_type);
             $("#backup_capacity").html(backup_capacity);
             $("#backup_price").html(backup_price);
-            $("#backup_vat").html(backup_vat);
             $("#backup_disaccount").html(backup_disaccount);
             $("#backup_total_price").html(backup_total_price);
         });
 
         $("#item_total_price").on('click', function() {
             var item_price = $("#item_price").text();
-            var item_vat = $("#item_vat").text();         
+            var vat = $("#vat").val();         
             var item_disaccount = $("#item_disaccount").text();
-            var item_total_price = Number(item_price)+Number(item_price)/100.0*Number(item_vat)-Number(item_disaccount);
+            var item_total_price = Number(item_price)-Number(item_disaccount);
             $("#item_total_price").html(item_total_price);
 
 
@@ -674,15 +675,42 @@
 
         $("#backup_total_price").on('click', function() {
             var backup_price = $("#backup_price").text();
-            var backup_vat = $("#backup_vat").text();
+            var vat = $("#vat").val();
             var backup_disaccount = $("#backup_disaccount").text();
-            var backup_total_price = Number(backup_price)+Number(backup_price)/100.0*Number(backup_vat)-Number(backup_disaccount);
+            var backup_total_price = Number(backup_price)-Number(backup_disaccount);
             $("#backup_total_price").html(backup_total_price);
 
 
         });
 
-
+        $("#generate").on('click', function (e) {
+            var job_id = $("#jobSelected").val();
+            var item_price = $("#item_price").text() ? $("#item_price").text() : '0';
+            var vat = $("#vat").val() ? $("#vat").val() : '0';
+            var item_discount = $("#item_disaccount").text() ? $("#item_disaccount").text() : '0';
+            var item_total_price = $("#item_total_price").text() ? $("#item_total_price").text() : '0';
+            var backup_brand = $("#backup_brand").text() ? $("#backup_brand").text() : '0';
+            var backup_type = $("#backup_type").text() ? $("#backup_type").text() : '0';
+            var backup_serial = $("#backup_serial").text() ? $("#backup_serial").text() : '0' ;
+            var backup_capacity = $("#backup_capacity").text() ? $("#backup_capacity").text() : '0' ;
+            var backup_price = $("#backup_price").text() ? $("#backup_price").text() : '0' ;
+            var backup_vat = $("#vat").val() ? $("#vat").val() : '0';
+            var backup_discount = $("#backup_disaccount").text() ? $("#backup_disaccount").text() : '0';
+            var backup_total_price = $("#backup_total_price").text() ? $("#backup_total_price").text() : '0';
+            if (job_id == '0')
+            {
+                alert("No Job Selected!");
+            }
+            else
+            {
+                console.log(job_id);
+                var link = "http://localhost:8000/job/generateInvoiceTemplate/"+job_id+"/"+item_price+"/"+vat+"/"+item_discount+"/"+item_total_price
+                                +"/"+backup_brand+"/"+backup_serial+"/"+backup_capacity+"/"+backup_price+"/"+backup_vat+"/"+backup_discount+"/"+backup_total_price;
+                console.log(link);
+                console.log(backup_type);
+               location.href = link;
+            }
+        });
 
   
     });        

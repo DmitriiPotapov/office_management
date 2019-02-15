@@ -26,8 +26,7 @@
             <br />
             <br />
             <div class="row">
-                <div class="col-md-6">
-                    <span>Client</span>
+                <div class="col-md-3">
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1">Client</span>
@@ -36,8 +35,7 @@
                         <input type="hidden" class="form-control" name="job_status" id="job_status" value="" />
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <span>Service</span>
+                <div class="col-md-3">
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1">Service</span>
@@ -46,45 +44,35 @@
                     name="service_name" id="service_name" value=""/>
                     </div>
                 </div>
+                <div class="col-md-3">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Language</span>
+                        </div>
+                        <select class="custom-select invoice_language" id="invoice_language" name="invoice_language">
+                        
+                            <option value="English">English</option>
+                            <option value="Arabic">Arabic</option>                     
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Currency</span>
+                        </div>
+                        <select class="custom-select currency" id="currency" name="currency">                    
+                            <option value="INR">INR </option>
+                            <option value="RO">RO </option>
+                            <option value="Dhs">Dhs </option>
+                            <option value="USD">USD </option>
+                            <option value="EU">EU   </option>          
+                        </select>
+                    </div>
+                </div>
             </div>
             <br>
-            <span>Quote language</span>
-            <div class="row">
-                <div class="col-md-12">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">Language</span>
-                    </div>
-                    <select class="custom-select invoice_language" id="invoice_language" name="invoice_language">
-                      
-                        <option value="English">English</option>
-                        <option value="Arabic">Arabic</option>                     
-                    </select>
-                </div>
-                </div>
-            </div>
-            <br>
-            <span>Currency</span>
-            <div class="row">
-                <div class="col-md-12">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">Currency</span>
-                    </div>
-                    <select class="custom-select currency" id="currency" name="currency">                    
-                        <option value="INR">INR </option>
-                        <option value="RO">RO </option>
-                        <option value="Dhs">Dhs </option>
-                        <option value="USD">USD </option>
-                        <option value="EU">EU   </option>          
-                    </select>
-                </div>
-                </div>
-            </div>
-            <br />
-            
-
-            <div class="card-body">
+            <div >
                 <span>Quote items</span>
                 <div class="row">
                     <div class="col-12">
@@ -95,9 +83,10 @@
                                         <thead>
                                             <tr>
                                                 <th>Type</th>
+                                                <th>Brand</th>
+                                                <th>Serial</th>
                                                 <th>Capacity</th>
                                                 <th>Price</th>
-                                                
                                                 <th>Discount(%)</th>
                                                 <th>Total Price</th>
                                             </tr>
@@ -106,9 +95,10 @@
                                            
                                             <tr>
                                             <td id="item_type"></td>
+                                            <td id="item_brand"></td>
+                                            <td id="item_serial"></td>
                                             <td id="item_capacity"></td>
                                             <td id="item_price"></td>
-                                            
                                             <td id="item_disaccount"></td>
                                             <td id="item_total_price" value = "item_total_price"></td>
                                             </tr>
@@ -121,13 +111,10 @@
                     </div>
                 </div>
                 <br />
-                
-
-
 
                 <span>Note</span>
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-8">
                         <div class="form-group">
                             <textarea class="form-control quote_note" rows="8" name="quote_note" id="quote_note"></textarea>
                             <small class="form-control-feedback"><a href="javascript:void(0)"> </a></small></div>
@@ -476,6 +463,10 @@
             var item_type = $("#item_type").text();
             var item_capacity = $("#item_capacity").text();
             var item_price = $("#item_price").text();
+            var item_brand = $("#item_brand").text();
+            var item_serial = $("#item_serial").text();
+            console.log(item_brand);
+            console.log(item_serial);
          
             var item_disaccount = $("#item_disaccount").text();
             var item_total_price = $("#item_total_price").text();
@@ -499,7 +490,8 @@
                     item_type: item_type,
                     item_capacity: item_capacity,
                     item_price: item_price,
-        
+                    item_brand: item_brand,
+                    item_serial: item_serial,
                     item_disaccount: item_disaccount,
                     item_total_price: item_total_price,
                     quote_job_id: quote_job_id                                     
@@ -598,6 +590,8 @@
                     var services = quoteJobDetails.services;
                     var quote_items_type = quoteItems.type;
                     var quote_items_capacity = quoteItems.capacity;
+                    var quote_item_brand = quoteItems.brand;
+                    var quote_item_serial = quoteItems.serial;
 
                     $("#jobSelected").val(quote_job_id);
                     $("#client_name").val(client_name);
@@ -605,6 +599,8 @@
                     $("#service_name").val(services);
                     $('#item_type').html(quote_items_type);
                     $('#item_capacity').html(quote_items_capacity);
+                    $('#item_brand').html(quote_item_brand);
+                    $('#item_serial').html(quote_item_serial);
 
                 }
             }); 
@@ -624,9 +620,10 @@
         $("#generate").on('click', function (e) {
             var job_id = $("#jobSelected").val();
             var item_price = $("#item_price").text();
-            var item_vat = $("#item_vat").text();
-            var item_discount = $("#item_discount").text();
+            var item_discount = $("#item_disaccount").text();
             var item_total_price = $("#item_total_price").text();
+            var item_brand = $("#item_brand").text();
+            var item_serial = $("#item_serial").text();
             if (job_id == '0')
             {
                 alert("No Job Selected!");
@@ -634,7 +631,7 @@
             else
             {
                 console.log(job_id);
-                var link = "http://localhost:8000/job/generateQuoteTemplate/"+job_id;
+                var link = "http://localhost:8000/job/generateQuoteTemplate/"+job_id+"/"+item_price+"/"+item_discount+"/"+item_total_price+"/"+item_brand+"/"+item_serial;
                 console.log(link);
                 location.href = link;
             }

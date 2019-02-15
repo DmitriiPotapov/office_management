@@ -34,7 +34,7 @@
                                 <th>Brand</th>
                                 <th>Model</th>
                                 <th>Serial number</th>
-                                <th>Location</th>
+                                <th>Capacity</th>
                                 <th>Price with VAT</th>
                                 <th>Input date</th>
                                 <th> Action</th>                                   
@@ -48,7 +48,7 @@
                             <td>{{ $item->manufacturer }}</td>
                             <td>{{ $item->stock_model }}</td>
                             <td>{{ $item->serial_number }}</td>
-                            <td>{{ $item->location }}</td>
+                            <td>{{ $item->capacity }}</td>
                             <td>{{ $item->input_price }}</td>
                             <td>{{ $item->created_at }}</td>    
                                 <td class="td_stock">

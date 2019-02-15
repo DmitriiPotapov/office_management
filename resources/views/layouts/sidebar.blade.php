@@ -61,7 +61,7 @@
                     <ul aria-expanded="false" class="collapse">
                         <li><a href="{{ route('show_all_inventory') }}">All Inventories </a></li>
                         <li><a href="{{ route('show_add_inventory') }}">New item </a></li>
-                        <li><a href="{{ route('show_release_from_job') }}">Release from jobs </a></li>
+                        <!--<li><a href="{{ route('show_release_from_job') }}">Release from jobs </a></li>-->
                         <li><a href="{{ route('show_inventory_use') }}">Disks in use </a></li>
                     </ul>
                 </li>
@@ -105,11 +105,9 @@
                                 <li><a href="{{URL::to('/settings/lists/basejobstatues')}}">Job statuses </a></li>
                                 <li><a href="{{URL::to('/settings/lists/devicetypes')}}">Device types </a></li>
                                 <li><a href="{{URL::to('/settings/lists/jobpriorities')}}">Job priorities </a></li>
-                                <li><a href="{{URL::to('/settings/lists/devicediagnosis')}}">Device diagnosis </a></li>
                                 <li><a href="{{URL::to('/settings/lists/services')}}">Services </a></li>
                             </ul>
                         </li>
-                        <li><a href="#">Diller settings </a></li>
                     </ul>
                 </li>
                 <li>

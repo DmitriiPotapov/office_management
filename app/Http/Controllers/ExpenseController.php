@@ -36,13 +36,13 @@ class ExpenseController extends Controller
      */
     public function store(Request $request)
     {
-        $description = $request->description;
-        $date = $request->expense_date;
-        $amount = $request->expense_amount;
-        $payee = $request->expense_payee;
-        $paymentmethod = $request->payment_method;
-        $reference = $request->reference;
-        $note = $request->expense_note;
+        $description = $request->input('description');
+        $date = $request->input('expense_date');
+        $amount = $request->input('expense_amount');
+        $payee = $request->input('expense_payee');
+        $paymentmethod = $request->input('payment_method');
+        $reference = $request->input('reference');
+        $note = $request->input('expense_note');
 
        $expense = new Expense();
        $expense->description = $description;
@@ -92,16 +92,16 @@ class ExpenseController extends Controller
      */
     public function update(Request $request)
     {
-        $id = $request->expense_id;
+        $id = $request->input('expense_id');
         $expense = Expense::where('id', $id)->first();
 
-        $description = $request->description;
-        $date = $request->expense_date;
-        $amount = $request->expense_amount;
-        $payee = $request->expense_payee;
-        $paymentmethod = $request->payment_method;
-        $reference = $request->reference;
-        $note = $request->expense_note;
+        $description = $request->input('description');
+        $date = $request->input('expense_date');
+        $amount = $request->input('expense_amount');
+        $payee = $request->input('expense_payee');
+        $paymentmethod = $request->input('payment_method');
+        $reference = $request->input('reference');
+        $note = $request->input('expense_note');
 
         $expense->description =$description;
         $expense->date = $date;

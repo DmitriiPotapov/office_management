@@ -66,16 +66,18 @@ Route::group(
         Route::post('/updateDevice', 'JobController@updateDevice')->name('update_device');
         Route::post('/updateMedia', 'JobController@updateMedia')->name('update_media_info');
         Route::post('/addDevice', 'JobController@addDevice')->name('add_device');
+        Route::post('/addCloneDevice', 'JobController@addCloneDevice')->name('add_clone_device');
         Route::post('/updateService', 'JobController@updateServcie')->name('update_service');
         Route::post('/assignJob', 'JobController@assignJob')->name('assign_job');
         Route::get('/deleteComment/{id}','JobController@deleteComment')->name('delete_comment');
         Route::get('/deleteDevice/{id}','JobController@deleteDevice')->name('delete_device');
+        Route::get('/deleteCloneDevice/{id}','JobController@deleteCloneDevice')->name('delete_clone_device');
         Route::get('/addmissionForm/{id}', 'JobController@addmissionForm')->name('admission_form');
         Route::get('/checkoutForm/{id}', 'JobController@checkoutForm')->name('checkout_form');
         Route::get('/generateInvoice/{id}', 'JobController@generateInvoice')->name('generate_invoice');
-        Route::get('/generateInvoiceTemplate/{id}', 'JobController@generateInvoiceTemplate')->name('generate_invoice_template');
+        Route::get('/generateInvoiceTemplate/{id}/{item_price}/{item_vat}/{discount}/{item_total_price}/{backup_brand}/{backup_serial}/{backup_capacity}/{backup_price}/{backup_vat}/{backup_discount}/{backup_total_price}', 'JobController@generateInvoiceTemplate')->name('generate_invoice_template');
         Route::get('/generateQuote/{id}', 'JobController@generateQuote')->name('generate_quote');
-        Route::get('/generateQuoteTemplate/{id}', 'JobController@generateInvoiceTemplate')->name('generate_quote_template');
+        Route::get('/generateQuoteTemplate/{id}/{price}/{discount}/{total}/{brand}/{serial}', 'JobController@generateQuoteTemplate')->name('generate_quote_template');
         Route::get('/generateMediaReport/{id}', 'JobController@generateMediaReport')->name('generate_media_report');
         Route::get('/viewUrgent', 'JobController@viewUrgent')->name('view_urgent');
         Route::get('/viewCompleted', 'JobController@viewCompleted')->name('view_completed');
@@ -178,6 +180,7 @@ Route::group(
         Route::get('/resetAction', 'InvoiceController@reset');
         Route::get('/deleteAction', 'InvoiceController@destroy');
         Route::get('/edit/{id}', 'InvoiceController@edit')->name('editInvoice');
+        Route::get('/deleteBackup/{id}', 'InvoiceController@deleteBackup');
         Route::post('/updateAction', 'InvoiceController@update')->name('updateInvoice');
     }
 );

@@ -17,46 +17,32 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
-                    <div class="row button-group">
-                        <div class="col-lg-12 col-xlg-8 m-b-30">
-                            <button class="btn btn-outline-info waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-arrows"></i></span>Move selected</button>
-                            <button class="btn btn-outline-danger waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-upload"></i></span>Remove from selected jobs</button>
-                        </div>
-                    </div>
                     <div class="table-responsive m-t-40">
                         <table id="myTable" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
                             <thead>
                                 <tr>
-                                    <th></th>
                                     <th>ID</th>
+                                    <th>Job ID</th>
+                                    <th>Status</th>
                                     <th>Brand</th>
-                                    <th>Model</th>
                                     <th>Serial Number</th>
-                                    <th>Firmware</th>
                                     <th>Capacity</th>
-                                    <th>PCB</th>
                                     <th>Location</th>
-                                    <th>Form factor</th>
                                     <th>Note</th>
-                                    <th>Heads</th>
                                     <th></th>
                                 </tr>
                             </thead>
                             <tbody>
                             @foreach($inventories as $item)
                             <tr>
-                                <td></td>
-                                <td>{{ $item['id'] }}</td>
+                                <td>{{ sprintf("%04d",$item['id']) }}</td>
+                                <td>{{ $item['job_id'] }}</td>
+                                <td>{{ $item['status'] }}</td>
                                 <td>{{ $item['manufacturer'] }}</td>
-                                <td>{{ $item['model'] }}</td>
                                 <td>{{ $item['serial_number'] }}</td>
-                                <td>{{ $item['firmware'] }}</td>
-                                <td>{{ $item['capacity'].'GB' }}</td>
-                                <td>{{ $item['PCB_id'] }}</td>
+                                <td>{{ $item['capacity'] }}</td>
                                 <td>{{ $item['location'] }}</td>
-                                <td>{{ $item['Form_factor'] }}</td>
                                 <td>{{ $item['note'] }}</td>
-                                <td>{{ $item['heads_info'] }}</td>
                                 <td>
                                     <a class="btn btn-circle btn-sm btn-danger"><i class="fa fa-trash"></i></a>
                                 </td>

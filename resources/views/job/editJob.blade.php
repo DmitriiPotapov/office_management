@@ -28,7 +28,6 @@
                             <button class="btn btn-primary waves-effect waves-light" type="button" data-toggle="modal" data-target="#assignto"><span class="btn-label" ><i class="fa fa-user"></i></span>Assign job to engineer</button>
                             <a class="btn btn-success waves-effect waves-light" href="{{ route('admission_form',['job_id' => $job['job_id']]) }}"><span class="btn-label"><i class="fa fa-book"></i></span>Check-in form</a>
                             <button class="btn btn-warning waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-key"></i></span>Unlock client access</button>
-                            <button class="btn btn-danger waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-users"></i></span>Change client</button>
                             <a class="btn btn-danger waves-effect waves-light" href="{{ route('checkout_form',['job_id' => $job['job_id']]) }}" ><span class="btn-label"><i class="fa fa-check" ></i></span>Check-out form</a>
                             <a class="btn btn-success waves-effect waves-light" href="{{ route('generate_media_report',['job_id' => $job['job_id']]) }}"><span class="btn-label"><i class="fa fa-envelope-o"></i></span>Media Evaluation Report</a>
                             <a class="btn btn-info waves-effect waves-light" href="{{ route('generate_quote',['job_id' => $job['job_id']]) }}"><span class="btn-label"><i class="fa fa-envelope-o"></i></span>Generate Quote</a>
@@ -83,7 +82,7 @@
                             <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#jobhistory" role="tab"><span class="hidden-sm-up"><i class="ti-email"></i></span> <span class="hidden-xs-down">JobHistory</span></a> </li>
                             <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#log" role="tab"><span class="hidden-sm-up"><i class="ti-email"></i></span> <span class="hidden-xs-down">Log</span></a> </li>
                         </ul>
-                        <hr>
+                        <br>
                         <div class="tab-content">
                             <div class="tab-pane active" id="general" role="tabpanel">
                                 <div class="row">
@@ -94,30 +93,48 @@
                                             <div class="form-body">
                                                 <div class="card">
                                                     <div class="card-body">
-                                                        <div class="form-group row">
-                                                            <label class="col-lg-4 control-label"><b>Services:</b></label>
+                                                        <div class="form-group row" style="margin-top:5px;margin-bottom:10px;">
+                                                            <label class="col-lg-5 control-label"><b>Services:</b></label>
                                                             <input type="hidden" name="services" value="{{ $job['services'] }}">
                                                             <label class="col-lg-4 control-label" >{{ $job['services'] }}</label>
                                                         </div>
-                                                        <div class="form-group row">
-                                                            <label class="col-lg-4 control-label"><b>File list password:</b></label>
+                                                        <div class="form-group row" style="margin-top:5px;margin-bottom:10px;">
+                                                            <label class="col-lg-5 control-label"><b>Case password:</b></label>
                                                             <input type="hidden" id="job_password" name="job_password" value="{{ $job['job_password'] }}">
                                                             <label class="col-lg-4 control-label" id="job_passwordl">{{ $job['job_password'] }}</label><a href="javascript:void(0)" onclick = "gen_password()""><i class="fa fa-refresh"></i></a>
                                                         </div>
-                                                        <div class="form-group row">
-                                                            <label class="col-lg-5 control-label"><b>Assigned to engineer:</b></label>
+                                                        <div class="form-group row" style="margin-top:5px;margin-bottom:10px;">
+                                                            <label class="col-lg-5 control-label"><b>Assigned engineer:</b></label>
                                                             <input type="hidden" name="assigned_engineer" value="{{ $job['assigned_engineer'] }}">
                                                             <label class="col-lg-4 control-label" >{{ $job['assigned_engineer'] }}</label>
                                                         </div>
-                                                        <div class="input-group">
-                                                            <div class="input-group-prepend">
-                                                                <span class="input-group-text" id="basic-addon1">
-                                                                    Price
-                                                                </span>
+                                                        <div class="row">
+                                                            <div class="col-md-4">
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text" id="basic-addon1">
+                                                                            Price
+                                                                        </span>
+                                                                    </div>
+                                                                    <input type="text" class="form-control" id="price" name="price" value="{{ $job['price'] }}">
+                                                                </div>
                                                             </div>
-                                                            <input type="text" class="form-control" id="price" name="price" value="{{ $job['price'] }}">
+                                                            <div class="col-md-8">
+                                                                <div class="input-group">
+                                                                    <div class="input-group-prepend">
+                                                                        <span class="input-group-text" id="basic-addon1">
+                                                                            Priority
+                                                                        </span>
+                                                                    </div>
+                                                                    <select class="form-control custom-select" id="priority" name="priority">
+                                                                        @foreach($priorities as $item)
+                                                                        <option value="{{ $item['job_priority_name'] }}" {{ ($item['job_priority_name'] == $job['priority']) ? 'selected' : '' }}> {{ $item['job_priority_name']}}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                        <hr>
+                                                        <br>
                                                         <div class="input-group">
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text" id="basic-addon1">
@@ -130,21 +147,9 @@
                                                                 @endforeach
                                                             </select>
                                                         </div>
-                                                        <hr>
-                                                        <div class="input-group">
-                                                            <div class="input-group-prepend">
-                                                                <span class="input-group-text" id="basic-addon1">
-                                                                    Priority
-                                                                </span>
-                                                            </div>
-                                                            <select class="form-control custom-select" id="priority" name="priority">
-                                                                @foreach($priorities as $item)
-                                                                <option value="{{ $item['job_priority_name'] }}" {{ ($item['job_priority_name'] == $job['priority']) ? 'selected' : '' }}> {{ $item['job_priority_name']}}</option>
-                                                                @endforeach
-                                                            </select>
-                                                        </div>
-                                                        <hr>
-                                                        <div class="form-group row has-success">
+                                                        <br>
+                                                        
+                                                        <div class="form-group row has-success" style="padding-left:13px;">
                                                             <h4 class="card-title">Job info</h4>
                                                             <select class="form-control custom-select" id="device_malfunc_info" name="device_malfunc_info">
                                                                 <option value="Fell down" {{ ($job['device_malfunc_info'] == 'Fell down') ? 'selected' : ''}}>Fell down</option>
@@ -169,11 +174,11 @@
                                                                 <option value="Others" {{ ($job['device_malfunc_info'] == 'Others') ? 'selected' : ''}}>Others</option>
                                                             </select>
                                                         </div>
-                                                        <div class="form-group row has-info">
+                                                        <div class="form-group row has-info" style="padding-left:13px;">
                                                             <h4 class="card-title">Important data</h4>
                                                             <textarea class="form-control" rows="3" name="important_data">{{ $job['important_data'] }}</textarea>
                                                         </div>
-                                                        <div class="form-group row has-danger">
+                                                        <div class="form-group row has-danger" style="padding-left:13px;">
                                                             <h4 class="card-title">Client note</h4>
                                                             <textarea class="form-control" rows="3" name="notes">{{ $job['notes'] }}</textarea>
                                                         </div>
@@ -188,32 +193,32 @@
                                     </div>
                                     <div class="col-lg-7">
                                         <div class="card">
-                                            <h4 class="card-title">Client info</h4>
-                                            <div class="card-body">
-                                                <div class="form-group row">
+                                            <h4 class="card-title" style="padding-left:20px;padding-top:5px;"><b>Client info</b></h4>
+                                            <div class="card-body" style="padding-top:10px;">
+                                                <div class="form-group row" style="margin-top:5px;margin-bottom:10px;">
                                                     <label class="col-lg-2 control-label"><b>Name:</b></label>
                                                     <label class="col-lg-3 control-label">{{ $client['client_name'] }}</label>
                                                     <label class="col-lg-2 control-label"><b>Address:</b></label>
                                                     <label class="col-lg-3 control-label">{{ $client['street'] }}</label>
                                                 </div>
-                                                <div class="form-group row">
+                                                <div class="form-group row" style="margin-top:5px;margin-bottom:10px;">
                                                     <label class="col-lg-2 control-label"><b>Postal Code:</b></label>
                                                     <label class="col-lg-3 control-label">{{ $client['postal_code'].' '.$client['city_name'] }}</label>
                                                     <label class="col-lg-2 control-label"><b>Country:</b></label>
                                                     <label class="col-lg-3 control-label">{{ $client['country'] }}</label>
                                                 </div>
-                                                <div class="form-group row">
+                                                <div class="form-group row" style="margin-top:5px;margin-bottom:10px;">
                                                     <label class="col-lg-2 control-label"><b>Note:</b></label>
                                                     <label class="col-lg-3 control-label">{{ $client['note'] }}</label>
                                                     <label class="col-lg-2 control-label"><b>Email:</b></label>
                                                     <label class="col-lg-3 control-label">{{ $client['email_value'] }}</label>
                                                 </div>
-                                                <div class="form-group row">
+                                                <div class="form-group row" style="margin-top:5px;margin-bottom:10px;">
                                                     <label class="col-lg-2 control-label"><b>Phone:</b></label>
                                                     <label class="col-lg-3 control-label">{{ $client['phone_value'] }}</label>
                                                 </div>
                                                 <br>
-                                                <h4 class="card-title">Device</h4>
+                                                <h4 class="card-title">Devices</h4>
                                                 <div class="table-responsive">
                                                     <table class="table color-bordered-table info-bordered-table">
                                                         <thead>
@@ -239,10 +244,23 @@
                                                                 <td>{{ $item['note'] }}</td>
                                                             </tr>
                                                             @endforeach
+                                                            @if ($cloneDevices)
+                                                            @foreach($cloneDevices as $item)
+                                                            <tr>
+                                                                <td>{{ $item['device_type'] }}</td>
+                                                                <td>{{ $item['manufacturer'] }}</td>
+                                                                <td>{{ $item['model'] }}</td>
+                                                                <td>{{ $item['serial_number'] }}</td>
+                                                                <td>{{ $item['role'] }}</td>
+                                                                <td></td>
+                                                                <td>{{ $item['note'] }}</td>
+                                                            </tr>
+                                                            @endforeach
+                                                            @endif
                                                         </tbody>
                                                     </table>
                                                 </div>
-                                                <hr>
+                                                <br>
                                                 <!--<h4 class="card-title">Job Clones</h4>
                                                 <div class="table-responsive">
                                                     <table class="table color-bordered-table info-bordered-table">
@@ -340,9 +358,9 @@
                                                     <h4>Comment</h4>
                                                     <form action="{{ route('send_comment') }}" method="POST">
                                                     @csrf
-                                                    <textarea type="text" class="form-control" rows="10" id="comment" name="comment" placeholder="">{{ $job['last_comment'] }}</textarea>
+                                                    <textarea type="text" class="form-control" rows="5" id="comment" name="comment" placeholder="">{{ $job['last_comment'] }}</textarea>
                                                     <input type="hidden" name="comjob_id" value="{{ $job['job_id'] }}">
-                                                    <button type="submit" class="btn btn-success" > <i class="fa fa-comment"></i> Send comment</button>
+                                                    <button type="submit" class="btn btn-success" style="margin-top:15px;"> <i class="fa fa-comment"></i> Send comment</button>
                                                     </form>
                                                 </div>
                                             </div>
@@ -384,10 +402,8 @@
                             <div class="tab-pane p-20" id="jobdevices" role="tabpanel">
                                 <div class="row button-group">
                                     <div class="col-lg-12 m-b-30">
-                                        <button class="btn btn-info waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-arrows"></i></span>Move selected devices</button>
-                                        <button class="btn btn-danger waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-trash"></i></span>Remove selected devices</button>
                                         <button class="btn btn-success waves-effect waves-light" type="button" data-toggle="modal" data-target="#addNewClModal"><span class="btn-label"><i class="fa fa-plus"></i></span>Add new device</button>
-                                        <button class="btn btn-danger waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-upload"></i></span>Release selected</button>
+                                        <button class="btn btn-info waves-effect waves-light" type="button" data-toggle="modal" data-target="#addCloneModal"><span class="btn-label"><i class="fa fa-plus"></i></span>Add Clone device</button>
                                     </div>
                                 </div>
                                 <form action=" {{ route('add_device') }}" method="POST">
@@ -444,6 +460,7 @@
                                                             <option value="Patient" >Patient</option>
                                                             <option value="Data" >Data</option>
                                                             <option value="Donor" >Donor</option>
+                                                            <option value="Clone" >Clone</option>
                                                         </select>
                                                     </div>
                                                     <hr>
@@ -523,9 +540,35 @@
                                     </div>
                                 </div>
                                 </form>
+                                <form action="{{ route('add_clone_device') }}" method="POST">
+                                @csrf
+                                    <div class="modal fade" id="addCloneModal" tabindex="-1" role="dialog" >
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title" id="exampleModalLabel1">Add Clone device</h4>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                </div>
+                                                
+                                                <div class="modal-body">
+                                                    <input type="hidden" id = "inventory_job_id" name="inventory_job_id" value="{{ $job->job_id }}">
+                                                    <div class="form-body>">
+                                                        <div id="scrollable-dropdown-menu">
+                                                            <input class="typeahead form-control" type="text" placeholder="InventoryID" id="sel_inventory_id" name="sel_inventory_id" >
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                                    <button type="submit" class="btn btn-primary" id="selInventory">Add</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
                                 <div class="row">
                                     <div class="col-lg-12">
-                                    <h4 class="card-title">Device</h4>
+                                    <h4 class="card-title">Devices</h4>
                                         <div class="table-responsive">
                                             <table class="table color-bordered-table info-bordered-table">
                                                 <thead>
@@ -558,10 +601,28 @@
                                                         </td>
                                                     </tr>
                                                     @endforeach
+                                                    @if ($cloneDevices)
+                                                    @foreach($cloneDevices as $item)
+                                                    <tr>
+                                                        <td><input type="checkbox"></td>
+                                                        <td>{{ $item['device_type'] }}</td>
+                                                        <td>{{ $item['manufacturer'] }}</td>
+                                                        <td>{{ $item['model'] }}</td>
+                                                        <td>{{ $item['serial_number'] }}</td>
+                                                        <td>{{ $item['role'] }}</td>
+                                                        <td></td>
+                                                        <td>{{ $item['note'] }}</td>
+                                                        <td class="text-nowrap">
+                                                            <!--<a href="#" data-toggle="tooltip" data-original-title="Edit"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>-->
+                                                            <a href="{{ route('delete_clone_device', ['id' => $item['id']]) }}" data-toggle="tooltip" data-original-title="Delete"> <i class="fa fa-close text-danger"></i> </a>
+                                                        </td>
+                                                    </tr>
+                                                    @endforeach
+                                                    @endif
                                                 </tbody>
                                             </table>
                                         </div>
-                                        <hr>
+                                        <br>
                                         <!--<h4 class="card-title">Job Clones</h4>
                                         <div class="table-responsive">
                                             <table class="table color-bordered-table info-bordered-table">
@@ -686,7 +747,7 @@
                                     <input type="hidden" name="update_service_job_id" value="{{ $job['job_id'] }}">
                                     @foreach ($services as $item)
                                         <div class="row">
-                                            <div class="col-md-6">
+                                            <div class="col-md-4">
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text" id="basic-addon1">
@@ -698,11 +759,11 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <hr>
+                                        <br>
                                     @endforeach
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <hr>
+                                            <br>
                                             <div class="input-group">
                                                 <button type="submit" class="btn btn-info waves-effect waves-light" ><span class="btn-label"><i class="fa fa-save"></i></span>Save</button>
                                             </div>
@@ -746,7 +807,7 @@
                                     <input type="hidden" name="media_id" value="{{ $devices[0]['id'] }}">
                                     <h3>Drive Details</h3>
                                     <div class="row p-t-20">
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="basic-addon1">
@@ -757,7 +818,7 @@
                                                 <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="basic-addon1">
@@ -768,7 +829,7 @@
                                                 <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="basic-addon1">
@@ -785,9 +846,20 @@
                                                 </select>
                                             </div>
                                         </div>
+                                        <div class="col-md-3">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="basic-addon1">
+                                                        Encryption
+                                                    </span>
+                                                </div>
+                                                <input type="text" id="encryption" name="encryption" class="form-control" placeholder="" value="{{ $devices[0]['encryption'] }}">
+                                                <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="row p-t-20">
-                                        <div class="col-md-5">
+                                        <div class="col-md-3">
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="basic-addon1">
@@ -798,7 +870,7 @@
                                                 <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
                                             </div>
                                         </div>
-                                        <div class="col-md-5">
+                                        <div class="col-md-3">
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="basic-addon1">
@@ -809,9 +881,7 @@
                                                 <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row p-t-20">
-                                        <div class="col-md-5">
+                                        <div class="col-md-3">
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="basic-addon1">
@@ -822,7 +892,7 @@
                                                 <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
                                             </div>
                                         </div>
-                                        <div class="col-md-5">
+                                        <div class="col-md-3">
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="basic-addon1">
@@ -835,7 +905,9 @@
                                         </div>
                                     </div>
                                     <div class="row p-t-20">
-                                        <div class="col-md-4">
+                                        
+                                        
+                                        <div class="col-md-3">
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="basic-addon1">
@@ -846,7 +918,7 @@
                                                 <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="basic-addon1">
@@ -868,21 +940,16 @@
                                                 </select> 
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text" id="basic-addon1">
-                                                        Encryption
-                                                    </span>
-                                                </div>
-                                                <input type="text" id="encryption" name="encryption" class="form-control" placeholder="" value="{{ $devices[0]['encryption'] }}">
-                                                <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
-                                            </div>
-                                        </div>
-                                    </div><hr>
+                                    </div>
+                                    <div class="row p-t-20">
+                                        
+                                        
+                                        
+                                        
+                                    </div><br>
                                     <h3>Drive Status</h3>
                                     <div class="row p-t-20">
-                                        <div class="col-md-5">
+                                        <div class="col-md-3">
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="basic-addon1">
@@ -893,11 +960,12 @@
                                                     <option value="OK" {{ ($devices[0]['PCB'] == 'OK') ? 'selected' : ''}}>OK</option>
                                                     <option value="NOT OK" {{ ($devices[0]['PCB'] == 'NOT OK') ? 'selected' : ''}}>NOT OK</option>
                                                     <option value="DAMAGED" {{ ($devices[0]['PCB'] == 'DAMAGED') ? 'selected' : ''}}>DAMAGED</option>
+                                                    <option value="NA" {{ ($devices[0]['PCB'] == 'NA') ? 'selected' : ''}}>NA</option>
                                                 </select>
                                                 <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
                                             </div>
                                         </div>
-                                        <div class="col-md-5">
+                                        <div class="col-md-3">
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="basic-addon1">
@@ -908,13 +976,12 @@
                                                     <option value="OK" {{ ($devices[0]['motor'] == 'OK') ? 'selected' : ''}}>OK</option>
                                                     <option value="NOT OK" {{ ($devices[0]['motor'] == 'NOT OK') ? 'selected' : ''}}>NOT OK</option>
                                                     <option value="DAMAGED" {{ ($devices[0]['motor'] == 'DAMAGED') ? 'selected' : ''}}>DAMAGED</option>
+                                                    <option value="NA" {{ ($devices[0]['motor'] == 'NA') ? 'selected' : ''}}>NA</option>
                                                 </select>
                                                 <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row p-t-20">
-                                        <div class="col-md-5">
+                                        <div class="col-md-3">
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="basic-addon1">
@@ -925,11 +992,12 @@
                                                     <option value="OK" {{ ($devices[0]['firmware'] == 'OK') ? 'selected' : ''}}>OK</option>
                                                     <option value="NOT OK" {{ ($devices[0]['firmware'] == 'NOT OK') ? 'selected' : ''}}>NOT OK</option>
                                                     <option value="DAMAGED" {{ ($devices[0]['firmware'] == 'DAMAGED') ? 'selected' : ''}}>DAMAGED</option>
+                                                    <option value="NA" {{ ($devices[0]['firmware'] == 'NA') ? 'selected' : ''}}>NA</option>
                                                 </select>
                                                 <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
                                             </div>
                                         </div>
-                                        <div class="col-md-5">
+                                        <div class="col-md-3">
                                             <div class="input-group">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="basic-addon1">
@@ -940,17 +1008,21 @@
                                                     <option value="OK" {{ ($devices[0]['r_w_heads'] == 'OK') ? 'selected' : ''}}>OK</option>
                                                     <option value="NOT OK" {{ ($devices[0]['r_w_heads'] == 'NOT OK') ? 'selected' : ''}}>NOT OK</option>
                                                     <option value="DAMAGED" {{ ($devices[0]['r_w_heads'] == 'DAMAGED') ? 'selected' : ''}}>DAMAGED</option>
+                                                    <option value="NA" {{ ($devices[0]['r_w_heads'] == 'NA') ? 'selected' : ''}}>NA</option>
                                                 </select>
                                                 <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="row p-t-20">
+                                        
                                     </div>
                                     <br>
                                     <button type="submit" class="btn btn-success" > <i class="fa fa-update"></i> Update Device </button>
                                 </form>
                             </div>
                             <div class="tab-pane p-20" id="diagnosis" role="tabpanel">
-                                <div class="col-lg-12">
+                                <div class="col-lg-8">
                                     <form action="{{ route('update_device') }}" method="POST">
                                     @csrf
                                     <input type="hidden" name="device_id" value="{{ $devices[0]['id'] }}">
@@ -965,7 +1037,7 @@
                                     <div >
                                         <h4>Recovery Time</h4>
                                         <textarea type="text" class="form-control" rows="5" id="dev_recover" name="dev_recover" placeholder="">{{ $devices[0]['recover'] }}</textarea>
-                                    </div>
+                                    </div><br>
                                     <button type="submit" class="btn btn-success" > <i class="fa fa-update"></i> Update Device </button>
                                     </form>
                                 </div>
@@ -998,11 +1070,11 @@
                                                 </tbody>
                                             </table>
                                         </div>
-                                        <hr>
+                                        <br>
                                         <form action="" method="POST">
-                                            <h4 class="card-title">Uploaded new</h4>
-                                            <div class="card">
-                                                <div class="card-body">
+                                            <h4 class="card-title" style="margin-bottom:15px;">Upload new</h4>
+                                            <div class="card" style="margin-left:0px;">
+                                                <div >
                                                     <input type="file" id="input-file-now" class="dropify" />
                                                 </div>
                                             </div>
@@ -1020,7 +1092,7 @@
                             <div class="tab-pane p-20" id="quotes" role="tabpanel">
                                 <div class="row">
                                     <div class="col-lg-12">
-                                        <hr>
+                                        <br>
                                         <h5 class="card-title">Quotes</h5>
                                         <div class="row p-t-20">
                                             <div class="table-responsive">
@@ -1050,7 +1122,7 @@
                                                 </table>
                                             </div>
                                         </div>
-                                        <hr>
+                                        <br>
                                     </div>
                                 </div>
                             </div>
@@ -1147,7 +1219,7 @@
                                         <div class="row p-t-20">
                                             <button class="btn btn-info waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-save"></i></span>Save</button>
                                         </div> -->
-                                        <hr>
+                                        <br>
                                         <h5 class="card-title">Invoices</h5>
                                         <div class="row p-t-20">
                                             <div class="table-responsive">
@@ -1175,7 +1247,7 @@
                                                 </table>
                                             </div>
                                         </div>
-                                        <hr>
+                                        <br>
                                         <!-- <h5 class="card-title">Bills</h5>
                                         <div class="row p-t-20">
                                             <div class="table-responsive">
@@ -1306,8 +1378,148 @@
 <script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js"></script>
 <!-- end - This is for export functionality only -->
 
+
+<script src="{{ asset('js/typeahead.bundle.min.js')}}"></script>
+
 <script>
 $(document).ready(function() {
+
+    var substringMatcher = function(strs) {
+        return function findMatches(q, cb) {
+            var matches, substringRegex;
+
+            // an array that will be populated with substring matches
+            matches = [];
+
+            // regex used to determine if a string contains the substring `q`
+            substrRegex = new RegExp(q, 'i');
+
+            // iterate through the pool of strings and for any string that
+            // contains the substring `q`, add it to the `matches` array
+            $.each(strs, function(i, str) {
+            if (substrRegex.test(str)) {
+                matches.push(str);
+            }
+            });
+
+            cb(matches);
+        };
+    };
+
+    var states = [];
+    @foreach ($inventoryIds as $item)
+        states.push("{{ sprintf("%04d", $item) }}");
+    @endforeach
+
+        // constructs the suggestion engine
+        var states = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.whitespace,
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        // `states` is an array of state names defined in "The Basics"
+        local: states
+        });
+
+        $('#bloodhound .typeahead').typeahead({
+        hint: true,
+        highlight: true,
+        minLength: 1
+        },
+        {
+        name: 'states',
+        source: states
+        });
+
+
+        // -------- Prefatch --------
+
+        var countries = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.whitespace,
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        // url points to a json file that contains an array of country names, see
+        // https://github.com/twitter/typeahead.js/blob/gh-pages/data/countries.json
+        prefetch: '../plugins/bower_components/typeahead.js-master/countries.json'
+        });
+
+        // passing in `null` for the `options` arguments will result in the default
+        // options being used
+        $('#prefetch .typeahead').typeahead(null, {
+        name: 'StockIds',
+        limit: 10,
+        source: states
+        });
+
+        // -------- Custom --------
+
+        var nflTeams = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('team'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        identify: function(obj) { return obj.team; },
+        prefetch: '../plugins/bower_components/typeahead.js-master/nfl.json'
+        });
+
+        function nflTeamsWithDefaults(q, sync) {
+        if (q === '') {
+            sync(nflTeams.get('Detroit Lions', 'Green Bay Packers', 'Chicago Bears'));
+        }
+
+        else {
+            nflTeams.search(q, sync);
+        }
+        }
+
+        $('#default-suggestions .typeahead').typeahead({
+        minLength: 0,
+        highlight: true
+        },
+        {
+        name: 'nfl-teams',
+        display: 'team',
+        source: nflTeamsWithDefaults
+        });
+
+        // -------- Multiple --------
+
+        var nbaTeams = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('team'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        prefetch: '../plugins/bower_components/typeahead.js-master/nba.json'
+        });
+
+        var nhlTeams = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('team'),
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        prefetch: '../plugins/bower_components/typeahead.js-master/nhl.json'
+        });
+
+        $('#multiple-datasets .typeahead').typeahead({
+        highlight: true
+        },
+        {
+        name: 'nba-teams',
+        display: 'team',
+        source: nbaTeams,
+        templates: {
+            header: '<h3 class="league-name">NBA Teams</h3>'
+        }
+        },
+        {
+        name: 'nhl-teams',
+        display: 'team',
+        source: nhlTeams,
+        templates: {
+            header: '<h3 class="league-name">NHL Teams</h3>'
+        }
+        });
+            
+        // -------- Scrollable --------
+
+
+
+        $('#scrollable-dropdown-menu .typeahead').typeahead(null, {
+        name: 'states',
+        limit: 10,
+        source: states
+    });
 
     $('#example23').DataTable();
     $('.dropify').dropify();
@@ -1346,7 +1558,15 @@ $(document).ready(function() {
         } else {
             drDestroy.init();
         }
-    })
+    });
+
+    // $("#selInventory").on('click', function(e) {
+    //     e.preventDefault();
+    //     var sel_inventory_id = $("#sel_inventory_id").val();
+    //     console.log(sel_inventory_id);
+
+    // });
+
 });
 $('#myTable').DataTable({
     dom: 'Bfrtip',

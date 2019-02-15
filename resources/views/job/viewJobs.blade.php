@@ -17,14 +17,19 @@ tr:hover{
     }
 </style>
 <div class="container-fluid">
+        <div class="row page-titles">
+                <div class="col-md-6 col-8 align-self-center">
+                    <h4 class="text-themecolor m-b-0 m-t-0">{{ $heads }}</h4>
+                </div>
+            </div>
 <!-- Bread crumb and right sidebar toggle -->
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title">Quick search</h4>
-                    <div class="row p-t-20">
-                        <div class="col-md-4">
+                    <div class="row">
+                        <div class="col-md-3">
                             <div class="input-group">
                                 <input type="text" class="form-control" id="jobNumber" placeholder="Job Number">
                                 <div class="input-group-append">
@@ -63,7 +68,21 @@ tr:hover{
                             </thead>
                             <tbody>
                             @foreach($jobs as $item)
+                            @if ($item->status == 'Delivered/Paid')
+                            <tr style="background-color:rgb(195,229,202);" class='clickable-row' data-href="{{ route('show_edit_job', ['id' => $item['job_id']]) }}">
+                            @elseif (($item->status == 'Delivered/Unpaid' || ($item->status == 'Delivered/Partially Paid')))
+                            <tr style="background-color:rgb(255,238,186);" class='clickable-row' data-href="{{ route('show_edit_job', ['id' => $item['job_id']]) }}">
+                            @elseif ($item->status == 'Completed Successfully')
+                            <tr style="background-color:rgb(149,251,218);" class='clickable-row' data-href="{{ route('show_edit_job', ['id' => $item['job_id']]) }}">
+                            @elseif (($item->status == 'Approved') || ($item->status == 'Under Recovery'))
+                            <tr style="background-color:rgb(190,229,236);" class='clickable-row' data-href="{{ route('show_edit_job', ['id' => $item['job_id']]) }}">
+                            @elseif (($item->status == 'Rejected') || ($item->status == 'Returned') || $item->status == 'Cancelled')
+                            <tr style="background-color:rgb(245,198,204);" class='clickable-row' data-href="{{ route('show_edit_job', ['id' => $item['job_id']]) }}">
+                            @elseif (($item->status == 'Received') || ($item->status == 'Under Inspection') )
+                            <tr style="background-color:rgb(255,255,255);" class='clickable-row' data-href="{{ route('show_edit_job', ['id' => $item['job_id']]) }}">
+                            @else
                             <tr class='clickable-row' data-href="{{ route('show_edit_job', ['id' => $item['job_id']]) }}">
+                            @endif
                                 <td>{{ $item['job_id'] }}</td>
                                 <td>{{ $item['priority'] }}</td>
                                 <td>{{ $item['client_name'] }}</td>
@@ -78,6 +97,7 @@ tr:hover{
                                     <a href="{{ route('delete_job', ['id' => $item['job_id']]) }}" data-toggle="tooltip" data-original-title="Delete"> <i class="fa fa-close text-danger"></i> </a>
                                 </td>
                             </tr>
+                            
                             @endforeach
                             </tbody>
                         </table>

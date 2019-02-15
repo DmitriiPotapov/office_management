@@ -79,19 +79,23 @@
             <b><label style="font-size:17px;">Quote To</label></b><br>
             <label style="font-size:16px;">{{$client->client_name}}</label><br>
             <label style="font-size:16px;">{{$client->company}}</label><br>
-            <label style="font-size:16px;">{{$client->phone_value}}</label><br>
-            <label style="font-size:16px;">{{$client->street}}</label><br>
-            <label style="font-size:16px;">{{$client->country}}</label>
+            <label style="font-size:16px;">{{$client->phone_value}}</label>
         </div>
     </div>
-    <div>
-        <label style="font-size:15px;">#Quote</label>
-        <label style="font-size:15px;padding-left:5em;">#Date</label>
-    </div>
-    <div>
-        <b><label style="font-size:15px;">{{$job->job_id}}</label>
-        <label style="font-size:15px;padding-left:5em;">{{date_format($job->created_at,"d/m/Y")}}</label>
-    </div>
+    <table style="border-bottom:0pt solid grey;width:100%">
+        <tbody style="font-size:15px;">
+            <tr>
+            <td class="newtable"><label style="font-size:15px;">#Quote</label></td>
+            <td class="newtable" style="font-size:15px;" >#Date</td>
+            <td class="newtable" style="font-size:16px;" align="right">{{$client->street}}</td>
+            </tr>
+            <tr>
+            <td class="newtable"><b><label style="font-size:15px;">{{$job->job_id}}</label></b></td>
+            <td class="newtable" style="font-size:15px;" ><b>{{date_format($job->created_at,"d/m/Y")}}</b></td>
+            <td class="newtable" style="font-size:16px;" align="right">{{$client->country}}</td>
+            </tr>
+        </tbody>
+    </table>
     <br><br>
     <table >
         <thead style="border-bottom:3pt solid black;color:#3092C3;">
@@ -110,10 +114,10 @@
         @foreach($devices as $item)
         <tr>
             <td>{{number_format($i)}}</td>
-            <td width="200">{{$item['service'].'-'.$item['item_type'].'-'.$item['item_capacity']}}</td>
-            <td>RO {{number_format($item['item_total_price'],3,'.','')}}</td>
+            <td width="200">{{ $brand.'-'.$serial.'-'.$item['item_type'].'-'.$item['item_capacity']}}</td>
+            <td>RO {{number_format($price,3,'.','')}}</td>
             <td>1</td>
-            <td>RO {{number_format($item['item_total_price'],3,'.','')}}</td>
+            <td>RO {{number_format($price,3,'.','')}}</td>
         </tr>
         @endforeach
         @php
@@ -124,22 +128,23 @@
     <hr /><br>
     <div align="right">
         <label style="font-size:16px;">Sub Total</label>
-        <label style="font-size:16px;padding-left:8em;">RO {{number_format($invoice->item_total_price,3,".","")}}</label><br>
+        <label style="font-size:16px;padding-left:8em;">RO {{number_format($total_price,3,".","")}}</label><br>
     </div><br>
     <div align="right" >
         <label style="background-color:#1483BB;color:white;font-size:20px;margin-top:5px;margin-bottom:5px;">Grand Total</label>
-        <label style="background-color:#1483BB;color:white;font-size:20px;padding-left:4em;padding-top:5px;padding-bottom:5px;">RO {{number_format($invoice->item_total_price,3,".","")}}</label><br>
+        <label style="background-color:#1483BB;color:white;font-size:20px;padding-left:4em;padding-top:5px;padding-bottom:5px;">RO {{ number_format($total_price,3,".","")}}</label><br>
     </div>
-    <br><br><br>
+    <br><br><br><br><br>
     <div>
         <table style="border-bottom:0pt solid grey;width:100%">
             <tbody style="font-size:15px;">
                 <tr>
-                <td class="newtable"><b><label style="font-size:17px;">Payment Methods</label></b></td>
-                <td class="newtable" style="font-size:17px;" align="right">#{{$job->user_name}}</td>
+                <td class="newtable"><b><label style="font-size:17px;font-family: Times New Roman;">Payment Methods</label></b></td>
+                <td class="newtable" style="font-size:17px;" align="right">Prepared By</td>
                 </tr>
                 <tr>
-                <td class="newtable"><label style="font-size:12px;">"We accept Cash, Visa, Master Card & Cheque"</label></td>
+                <td class="newtable"><label style="font-size:12px;">*We accept Cash, Visa, Master Card & Cheque</label></td>
+                <td class="newtable" style="font-size:17px;" align="right">#{{$job->user_name}}</td>
                 </tr>
             </tbody>
         </table>
@@ -152,9 +157,9 @@
     </div>
     <br>
     <div align="left">
-        <b><label style="font-size:15px;">TERMS & CONDITION</label><br></b>
-        <label style="font-size:12px;">50% adavance to start the recovery process.</label><br>
-        <label style="font-size:12px;">50% upon readliness of possible data.</label><br>
+        <b><label style="font-size:15px;font-family: Times New Roman;">TERMS & CONDITION</label><br></b>
+        <label style="font-size:12px;">50% advance to start the service</label><br>
+        <label style="font-size:12px;">50% upon completion</label><br>
     </div>
     <div align="right">
         <b><label style="font-size:22px;color:#3092C3;">Thank you</label><br></b>

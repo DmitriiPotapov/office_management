@@ -75,24 +75,28 @@
         </div>
         <br><br><br><br>
         <div>
-          <img align="left" src="assets/images/invoice.png" width="280" height="80" />
+          <img align="left" src="assets/images/invoice.png" width="240" height="70" />
           <div align="right">
             <b><label style="font-size:17px;">Bill To</label></b><br>
             <label style="font-size:16px;">{{$client->client_name}}</label><br>
             <label style="font-size:16px;">{{$client->company}}</label><br>
-            <label style="font-size:16px;">{{$client->phone_value}}</label><br>
-            <label style="font-size:16px;">{{$client->street}}</label><br>
-            <label style="font-size:16px;">{{$client->country}}</label>
+            <label style="font-size:16px;">{{$client->phone_value}}</label>
           </div>
         </div>
-        <div>
-          <label style="font-size:15px;">#Invoice</label>
-          <label style="font-size:15px;padding-left:5em;">#Date</label>
-        </div>
-        <div>
-          <b><label style="font-size:15px;">{{$job->job_id}}</label>
-          <label style="font-size:15px;padding-left:5.5em;">{{date_format($job->created_at,"d/m/Y")}}</label>
-        </div>
+        <table style="border-bottom:0pt solid grey;width:100%">
+          <tbody style="font-size:15px;">
+            <tr>
+              <td class="newtable"><label style="font-size:15px;">#Invoice</label></td>
+              <td class="newtable" style="font-size:15px;" >#Date</td>
+              <td class="newtable" style="font-size:16px;" align="right">{{$client->street}}</td>
+            </tr>
+            <tr>
+              <td class="newtable"><b><label style="font-size:15px;">{{$job->job_id}}</label></b></td>
+              <td class="newtable" style="font-size:15px;" ><b>{{date_format($job->created_at,"d/m/Y")}}</b></td>
+              <td class="newtable" style="font-size:16px;" align="right">{{$client->country}}</td>
+            </tr>
+          </tbody>
+        </table>
         <br><br>
         <table >
             <thead style="border-bottom:3pt solid black;color:#3092C3;">
@@ -110,29 +114,29 @@
           $total_price = 0;
           @endphp
               @php
-              $total_price += $invoice->item_total_price;
+              $total_price += $item_total_price;
               @endphp
               <tr>
               <td>{{number_format($i)}}</td>
               <td width="200">{{$job['services'].'-'.$devices['category'].'-'.$devices['brand'].'-'.$devices['serial']}}</td>
-              <td>RO {{number_format($invoice->item_total_price,3,'.','')}}</td>
+              <td>RO {{number_format($item_total_price,3,'.','')}}</td>
               <td>1</td>
-              <td>RO {{number_format($invoice->item_total_price,3,'.','')}}</td>
+              <td>RO {{number_format($item_total_price,3,'.','')}}</td>
               </tr>
               @php
               $i ++;
               @endphp
               
-          @if ($backup) 
+          @if ($backup_serial != '0') 
             @php
-                $total_price += $backup['total_price'];
+                $total_price += $backup_total_price;
             @endphp
                 <tr>
                 <td>{{number_format($i)}}</td>
-                <td width="200"> Backup Devices - {{$job['services'].'-'.$backup['type'].'-'.$backup['capacity']}}</td>
-                <td>RO {{number_format($backup['total_price'],3,'.','')}}</td>
+                <td width="200"> Backup Device - {{ $backup_brand.'-'.$backup_serial.'-'.$backup_capacity}}</td>
+                <td>RO {{number_format($backup_total_price,3,'.','')}}</td>
                 <td>1</td>
-                <td>RO {{number_format($backup['total_price'],3,'.','')}}</td>
+                <td>RO {{number_format($backup_total_price,3,'.','')}}</td>
                 </tr>
             @php
                 $i ++;
@@ -141,30 +145,35 @@
            </tbody>
           </table>
         </div>
+        @php
+          $vat_price = $total_price * $item_vat / 100.0;
+          $real_price = $total_price + $vat_price;
+        @endphp
         <hr /><br>
         <div align="right">
           <label style="font-size:16px;">Sub Total</label>
           <label style="font-size:16px;padding-left:8em;">RO {{number_format($total_price,3,'.','')}}</label><br>
         </div><br>
         <div align="right">
-          <label style="font-size:16px;">VAT {{number_format($invoice->item_vat,2,'.','')}}%</label>
+          <label style="font-size:16px;">VAT {{number_format($item_vat,2,'.','')}}%</label>
           <label style="font-size:16px;padding-left:8em;">RO {{number_format($vat_price,3,'.','')}}</label><br>
         </div><br>
         <div align="right" >
           <label style="background-color:#1483BB;color:white;font-size:20px;margin-top:5px;margin-bottom:5px;">Grand Total</label>
-          <label style="background-color:#1483BB;color:white;font-size:20px;padding-left:4em;padding-top:5px;padding-bottom:5px;">RO {{number_format($total_price,3,'.','')}}</label><br>
+          <label style="background-color:#1483BB;color:white;font-size:20px;padding-left:4em;padding-top:5px;padding-bottom:5px;">RO {{number_format($real_price,3,'.','')}}</label><br>
         </div>
-        <br><br>
+        <br><br><br><br>
         <div>
           <div>
             <table style="border-bottom:0pt solid grey;width:100%">
               <tbody style="font-size:15px;">
                 <tr>
-                  <td class="newtable"><b><label style="font-size:17px;">Payment Methods</label></b></td>
-                  <td class="newtable" style="font-size:17px;" align="right">#{{$job->user_name}}</td>
+                  <td class="newtable"><b><label style="font-size:17px;font-family: Times New Roman;">Payment Methods</label></b></td>
+                  <td class="newtable" style="font-size:17px;" align="right">Prepared By</td>
                 </tr>
                 <tr>
-                  <td class="newtable"><label style="font-size:12px;">"We accept Cash, Visa, Master Card & Cheque"</label></td>
+                  <td class="newtable"><label style="font-size:12px;">*We accept Cash, Visa, Master Card & Cheque</label></td>
+                  <td class="newtable" style="font-size:17px;" align="right">#{{$job->user_name}}</td>
                 </tr>
               </tbody>
             </table>
@@ -178,7 +187,7 @@
         </div>
         <br><br>
         <div align="left">
-          <b><label style="font-size:15px;">TERMS & CONDITION</label><br></b>
+          <b><label style="font-size:15px;font-family: Times New Roman;">TERMS & CONDITION</label><br></b>
           <label style="font-size:12px;">No refund for any resason after delivery</label><br>
         </div>
         <div align="right">

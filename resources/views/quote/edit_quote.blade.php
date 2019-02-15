@@ -12,6 +12,7 @@
 
 @section('content')
 <!-- Container fluid  -->
+<input type="hidden" id="jobSelected" name="jobSelected" value="{{ $job_id }}">
 <div class="container-fluid">
         <div class="row page-titles">
                 <div class="col-md-6 col-8 align-self-center">
@@ -20,13 +21,11 @@
             </div>
     <div class="row">
         <div class="col-sm-12 col-xs-12">
-            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal2"
-                data-whatever="@mdo"><i class="fa fa-plus"></i> Select Job</button>
-            <br />
-            <br />
+            <!--<button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal2"
+                data-whatever="@mdo"><i class="fa fa-plus"></i> Select Job</button>-->
+            
             <div class="row">
-                <div class="col-md-6">
-                    <span>Client</span>
+                <div class="col-md-3">
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1">Client</span>
@@ -36,8 +35,7 @@
                     <input type="hidden" name = "update_quote_id" id="update_quote_id" value="{{ $quote->id }}" />
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <span>Service</span>
+                <div class="col-md-3">
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1">Service</span>
@@ -46,45 +44,40 @@
                     name="service_name" id="service_name" value="{{ $quote->service }}"/>
                     </div>
                 </div>
-            </div>
-            <br>
-            <span>Quote language</span>
-            <div class="row">
-                <div class="col-md-12">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">Language</span>
-                    </div>
-                    <select class="custom-select invoice_language" id="quote_language" name="quote_language">
-                      
-                        <option <?php echo $quote->quote_language == 'English' ? 'selected' : '';?> value="English">English</option>
-                        <option <?php echo $quote->quote_language == 'Arabic' ? 'selected' : '';?> value="Arabic">Arabic</option>                     
-                    </select>
-                </div>
-            </div>
-            </div>
-            <br>
-            <span>Currency</span>
-            <div class="row">
+                <div class="col-md-3">
                     <div class="col-md-12">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">Currency</span>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Language</span>
+                        </div>
+                        <select class="custom-select invoice_language" id="quote_language" name="quote_language">
+                            
+                            <option <?php echo $quote->quote_language == 'English' ? 'selected' : '';?> value="English">English</option>
+                            <option <?php echo $quote->quote_language == 'Arabic' ? 'selected' : '';?> value="Arabic">Arabic</option>                     
+                        </select>
                     </div>
-                    <select class="custom-select currency" id="currency" name="currency">                    
-                            <option <?php echo $quote->currency == 'INR' ? 'selected' : '';?> value="INR">INR </option>
-                            <option <?php echo $quote->currency == 'RO' ? 'selected' : '';?> value="RO">RO </option>
-                            <option <?php echo $quote->currency == 'Dhs' ? 'selected' : '';?> value="Dhs">Dhs </option>
-                            <option <?php echo $quote->currency == 'USD' ? 'selected' : '';?> value="USD">USD </option>
-                            <option <?php echo $quote->currency == 'EU' ? 'selected' : '';?> value="EU">EU   </option>          
-                    </select>
                 </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="col-md-12">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Currency</span>
+                        </div>
+                        <select class="custom-select currency" id="currency" name="currency">                    
+                                <option <?php echo $quote->currency == 'INR' ? 'selected' : '';?> value="INR">INR </option>
+                                <option <?php echo $quote->currency == 'RO' ? 'selected' : '';?> value="RO">RO </option>
+                                <option <?php echo $quote->currency == 'Dhs' ? 'selected' : '';?> value="Dhs">Dhs </option>
+                                <option <?php echo $quote->currency == 'USD' ? 'selected' : '';?> value="USD">USD </option>
+                                <option <?php echo $quote->currency == 'EU' ? 'selected' : '';?> value="EU">EU   </option>          
+                        </select>
                     </div>
+                        </div>
+                </div>
             </div>
-            <br />
-            
+            <br>
 
-            <div class="card-body">
+            <div >
                     <span>Quote items</span>
                 <div class="row">
                     <div class="col-12">
@@ -95,9 +88,10 @@
                                         <thead>
                                             <tr>
                                                 <th>Type</th>
+                                                <th>Brand</th>
                                                 <th>Capacity</th>
+                                                <th>Serial</th>
                                                 <th>Price</th>
-                                                
                                                 <th>Discount</th>
                                                 <th>Total Price</th>
                                             </tr>
@@ -106,7 +100,9 @@
                                            
                                             <tr>
                                             <td id="item_type">{{ $quote->item_type }}</td>
+                                            <td id="item_brand">{{ $quote->item_brand }}</td>
                                             <td id="item_capacity">{{ $quote->item_capacity }}</td>
+                                            <td id="item_serial">{{ $quote->item_serial }}</td>
                                             <td id="item_price">{{ $quote->item_price }}</td>
                                             
                                             <td id="item_disaccount">{{ $quote->item_disaccount }}</td>
@@ -124,7 +120,7 @@
                 
                 <span>Note</span>
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-8">
                         <div class="form-group">
                             <textarea class="form-control quote_note" rows="8" name="quote_note" id="quote_note">{{ $quote->quote_note }}</textarea>
                             <small class="form-control-feedback"><a href="javascript:void(0)"> </a></small></div>
@@ -134,6 +130,9 @@
                 <div class="form-actions">
                     <button type="button" class="btn btn-success" id="jobPost"><i class="fa fa-check"></i> Update</button>
                     <a href="{{URL::to('quote/resetAction')}}"><button type="button" class="btn btn-warning">Reset</button></a>
+                    <a href = "#"><button type="button" class="btn btn-danger">Preview</button></a>
+                    <button type="button" class="btn btn-info" id="generate">Generate</button>
+                    <a href = "#"><button type="button" class="btn btn-success">Send Quote</button></a>
                 </div>
 
                 <div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1">
@@ -617,7 +616,26 @@
 
         })
         
-
+        $("#generate").on('click', function (e) {
+            var job_id = $("#jobSelected").val();
+            var item_price = $("#item_price").text();
+            var item_discount = $("#item_disaccount").text() ? $("#item_disaccount").text() : 0 ;
+            var item_total_price = $("#item_total_price").text();
+            var item_brand = $("#item_brand").text();
+            item_brand.replace(' ','-');
+            var item_serial = $("#item_serial").text();
+            if (job_id == '0')
+            {
+                alert("No Job Selected!");
+            }
+            else
+            {
+                console.log(job_id);
+                var link = "http://localhost:8000/job/generateQuoteTemplate/"+job_id+"/"+item_price+"/"+item_discount+"/"+item_total_price+"/"+item_brand.toString()+"/"+item_serial;
+                console.log(link);
+                location.href = link;
+            }
+        });
     
   
     });        

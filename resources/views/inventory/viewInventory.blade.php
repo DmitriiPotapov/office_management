@@ -9,7 +9,7 @@
 <!-- Bread crumb and right sidebar toggle -->
     <div class="row page-titles">
         <div class="col-md-6 col-8 align-self-center">
-            <h3 class="text-themecolor m-b-0 m-t-0">Inventories</h3>
+            <h3 class="text-themecolor m-b-0 m-t-0">All Inventories</h3>
         </div>
     </div>
 
@@ -19,7 +19,7 @@
                 <div class="card-body">
                     <h4 class="card-title">Quick Search</h4>
                     <div class="row p-t-20">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <div class="input-group">
                                 <input type="text" class="form-control" id="inventoryNumber" placeholder="Inventory Number">
                                 <div class="input-group-append">
@@ -30,7 +30,7 @@
                             </div>
                         </div>
                     </div>
-                    <hr>
+                    <br>
                     <div class="table-responsive m-t-40">
                         <table id="myTable" class="display nowrap table table-hover table-striped table-bordered" cellspacing="0" width="100%">
                             <thead>
@@ -39,13 +39,11 @@
                                     <th>Brand</th>
                                     <th>Model</th>
                                     <th>Serial Number</th>
-                                    <th>Firmware</th>
+                                    <th>Category</th>
                                     <th>Capacity</th>
                                     <th>PCB</th>
                                     <th>Location</th>
-                                    <th>Form factor</th>
                                     <th>Note</th>
-                                    <th>Heads</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -56,13 +54,11 @@
                                 <td>{{ $item['manufacturer'] }}</td>
                                 <td>{{ $item['model'] }}</td>
                                 <td>{{ $item['serial_number'] }}</td>
-                                <td>{{ $item['firmware'] }}</td>
+                                <td>{{ $item['category'] }}</td>
                                 <td>{{ $item['capacity'] }}</td>
                                 <td>{{ $item['PCB_id'] }}</td>
                                 <td>{{ $item['location'] }}</td>
-                                <td>{{ $item['Form_factor'] }}</td>
                                 <td>{{ $item['note'] }}</td>
-                                <td>{{ $item['heads_info'] }}</td>
                                 <td style = "display: flex;" class="td_inventory"> 
                                     <a href="{{ route('editInventory', ['id' => $item['id']]) }}" data-toggle="tooltip" data-original-title="Edit"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>  
                                     <a href = "{{ URL::to('inventory/deleteAction?id=') }}{{ $item->id }}" class="btn btn-circle btn-sm btn-danger"><i class="fa fa-trash"></i></a>

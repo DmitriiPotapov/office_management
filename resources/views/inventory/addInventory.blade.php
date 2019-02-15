@@ -21,7 +21,6 @@
                     <form method="POST" action="{{ route('add_new_inventory') }}">
                     @csrf
                         <div class="form-body">
-                            <h4 class="card-title">Acquired from</h4>
                             <div class="row p-t-20">
                                 <div class="col-md-8">
                                     <div class="input-group">
@@ -30,72 +29,13 @@
                                                 Acquired from
                                             </span>
                                         </div>
-                                        <input type="text" id="acquired_from" name="acquired_from" class="form-control" placeholder="" required>
+                                    <input type="text" id="acquired_from" name="acquired_from" class="form-control" placeholder="" >
                                     </div>
                                 </div>
                             </div>
-                            <hr>
-                            <h4 class="card-title">Device type</h4>
+                            <br>
                             <div class="row p-t-20">
-                                <div class="col-md-3">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="basic-addon1">
-                                                Item role
-                                            </span>
-                                        </div>
-                                        <select class="form-control custom-select" id="item_role" name="item_role">
-                                            <option value="Clone">Clone</option>
-                                            <option value="Patient">Patient</option>
-                                            <option value="Backup">Backup</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="basic-addon1">
-                                                Category
-                                            </span>
-                                        </div>
-                                        <select class="form-control custom-select" id="category" name="category">
-                                            <option value="Laptop Drive">Laptop Drive</option>
-                                            <option value="Desktop Drive">Desktop Drive</option>
-                                            <option value="External Drive">External Drive</option>
-                                            <option value="Server Drive">Server Drive</option>
-                                            <option value="Mobile Phone">Mobile Phone</option>
-                                            <option value="Flash Drive">Flash Drive</option>
-                                            <option value="Smart Devices">Smart Devices</option>
-                                            <option value="Others">Others</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="basic-addon1">
-                                                Storage Type
-                                            </span>
-                                        </div>
-                                        <select class="form-control custom-select" id="storagetype" name="storagetype">
-                                            <option value="2.5’ HDD">2.5’ HDD</option>
-                                            <option value="3.5’ HDD">3.5’ HDD</option>
-                                            <option value="Server HDD">Server HDD</option>
-                                            <option value="SSD">SSD</option>
-                                            <option value="Micro SD">Micro SD</option>
-                                            <option value="SD">SD</option>
-                                            <option value="SDXC">SDXC</option>
-                                            <option value="SDHC">SDHC</option>
-                                            <option value="PENDRIVE">PENDRIVE</option>
-                                            <option value="Others">Others</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-                            <h4 class="card-title">Basic info</h4>
-                            <div class="row p-t-20">
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1">
@@ -125,7 +65,7 @@
                                                 Model
                                             </span>
                                         </div>
-                                        <input type="text" id="model" name="model" class="form-control" placeholder=" " required>
+                                        <input type="text" id="model" name="model" class="form-control" placeholder=" "  >
                                         <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
                                     </div>
                                 </div>
@@ -136,45 +76,11 @@
                                                 Serial
                                             </span>
                                         </div>
-                                        <input type="text" id="serial" name="serial" class="form-control" placeholder=" " required>
+                                    <input type="text" id="serial" name="serial" class="form-control" placeholder=" " >
                                         <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
                                     </div>
                                 </div>
                                 <div class="col-md-2">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="basic-addon1">
-                                                Interface
-                                            </span>
-                                        </div>
-                                        <select class="form-control custom-select" id="interface" name="interface">
-                                            <option value="USB">USB </option>
-                                            <option value="SATA">SATA</option>
-                                            <option value="mSATA">mSATA</option>
-                                            <option value="PCi">PCi</option>
-                                            <option value="SAS">SAS</option>
-                                            <option value="Others">Others</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row p-t-20">
-                                <div class="col-md-8">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="basic-addon1">
-                                                Part Number
-                                            </span>
-                                        </div>
-                                        <input type="text" id="part_number" name="part_number" class="form-control" placeholder=" " required>
-                                        <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-                            <h4 class="card-title">Capacity </h4>
-                            <div class="row p-t-20">
-                                <div class="col-md-4">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1">
@@ -210,10 +116,94 @@
                                         </select>
                                     </div>
                                 </div>
-                            </div>
-                            <hr>
-                            <h4 class="card-title">Extra info </h4>
+                            </div><br>
                             <div class="row p-t-20">
+                                <div class="col-md-2">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon1">
+                                                Item role
+                                            </span>
+                                        </div>
+                                        <select class="form-control custom-select" id="item_role" name="item_role">
+                                            <option value="Clone">Clone</option>
+                                            <option value="Patient">Patient</option>
+                                            <option value="Backup">Backup</option>
+                                            <option value="Donor">Donor</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon1">
+                                                Category
+                                            </span>
+                                        </div>
+                                        <select class="form-control custom-select" id="category" name="category">
+                                            <option value="Laptop Drive">Laptop Drive</option>
+                                            <option value="Desktop Drive">Desktop Drive</option>
+                                            <option value="External Drive">External Drive</option>
+                                            <option value="Server Drive">Server Drive</option>
+                                            <option value="Mobile Phone">Mobile Phone</option>
+                                            <option value="Flash Drive">Flash Drive</option>
+                                            <option value="Smart Devices">Smart Devices</option>
+                                            <option value="Others">Others</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon1">
+                                                Storage Type
+                                            </span>
+                                        </div>
+                                        <select class="form-control custom-select" id="storagetype" name="storagetype">
+                                            <option value="2.5’ HDD">2.5’ HDD</option>
+                                            <option value="3.5’ HDD">3.5’ HDD</option>
+                                            <option value="Server HDD">Server HDD</option>
+                                            <option value="SSD">SSD</option>
+                                            <option value="Micro SD">Micro SD</option>
+                                            <option value="SD">SD</option>
+                                            <option value="SDXC">SDXC</option>
+                                            <option value="SDHC">SDHC</option>
+                                            <option value="PENDRIVE">PENDRIVE</option>
+                                            <option value="Others">Others</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon1">
+                                                Interface
+                                            </span>
+                                        </div>
+                                        <select class="form-control custom-select" id="interface" name="interface">
+                                            <option value="USB">USB</option>
+                                            <option value="SATA">SATA</option>
+                                            <option value="mSATA">mSATA</option>
+                                            <option value="PCi">PCi</option>
+                                            <option value="SAS">SAS</option>
+                                            <option value="Others">Others</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row p-t-20">
+                                <div class="col-md-2">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon1">
+                                                Part Number
+                                            </span>
+                                        </div>
+                                    <input type="text" id="part_number" name="part_number" class="form-control" placeholder=" " >
+                                        <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
+                                    </div>
+                                </div>
                                 <div class="col-md-2">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
@@ -221,7 +211,7 @@
                                                 Family
                                             </span>
                                         </div>
-                                        <input type="text" id="family" name="family" class="form-control" placeholder="" required>
+                                    <input type="text" id="family" name="family" class="form-control" placeholder="" >
                                         <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
                                     </div>
                                 </div>
@@ -232,7 +222,7 @@
                                                 Firmware
                                             </span>
                                         </div>
-                                        <input type="text" id="firmware" name="firmware" class="form-control" placeholder="" required>
+                                    <input type="text" id="firmware" name="firmware" class="form-control" placeholder="" >
                                         <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
                                     </div>
                                 </div>
@@ -255,9 +245,8 @@
                                         <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
                                     </div>
                                 </div>
-                            </div> 
-                            <hr>
-                            <h4 class="card-title">PCB info </h4>
+                            </div>
+                            <br>
                             <div class="row p-t-20">
                                 <div class="col-md-2">
                                     <div class="input-group">
@@ -268,10 +257,9 @@
                                         </div>
                                         <select class="form-control custom-select" id="pcb_state" name="pcb_state">
                                             <option value="OK">OK</option>
-                                            <option value="Bad">Bad</option>
+                                            <option value="NOT OK">NOT OK</option>
+                                            <option value="DAMAGED">DAMAGED</option>
                                             <option value="Missing">Missing</option>
-                                            <option value="Untested">Untested</option>
-                                            <option value="Unstable">Unstable</option>
                                         </select>
                                         <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
                                     </div>
@@ -280,10 +268,10 @@
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1">
-                                                PCB ID
+                                                PCB No
                                             </span>
                                         </div>
-                                        <input type="text" id="pcb_id" name="pcb_id" class="form-control" placeholder="" required>
+                                    <input type="text" id="pcb_id" name="pcb_id" class="form-control" placeholder="" >
                                         <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
                                     </div>
                                 </div>
@@ -291,61 +279,51 @@
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1">
-                                                Connection
+                                                DCM/MLC
                                             </span>
                                         </div>
-                                        <select class="form-control custom-select" id="connection" name="connection">
-                                            <option value="SATA">SATA</option>
-                                            <option value="PATA">PATA</option>
-                                            <option value="USB2.0">USB2.0</option>
-                                            <option value="SAS">SAS</option>
-                                            <option value="M.2">M.2</option>
-                                            <option value="mSATA">mSATA</option>
-                                            <option value="USB3.0">USB3.0</option>
-                                        </select>
+                                        <input type="text" id="connection" name="connection" class="form-control" placeholder="" >
                                         <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
                                     </div>
                                 </div>
-                            </div> 
-                            <hr>
-                            <h4 class="card-title">Location</h4>
-                            <div class="row p-t-20">
-                                <div class="col-md-8">
+                                <div class="col-md-2">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1">
                                                 Location
                                             </span>
                                         </div>
-                                        <input type="text" id="location" name="location" class="form-control" placeholder="" required>
+                                        <input type="text" id="location" name="location" class="form-control" placeholder="" >
                                         <small class="form-control-feedback"><a href="javascript:void(0)"> </a></small> </div>
                                 </div>
                             </div> <br>
-                            <h4 class="card-title">Heads/Platter info</h4>
                             <div class="row p-t-20">
                                 <div class="col-md-2">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1">
-                                                    Heads Number
+                                                Heads Number
                                             </span>
                                         </div>
-                                        <input type="text" id="heads_number" name="heads_number" class="form-control" placeholder="" required>
-                                        <small class="form-control-feedback"><a href="javascript:void(0)"> </a></small> 
+                                        <input type="text" id="heads_number" name="heads_number" class="form-control" placeholder="" >
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1">
-                                                    Platter Number
+                                                Platter Number
                                             </span>
                                         </div>
-                                        <input type="text" id="heads_number" name="heads_info" class="heads_info-control" placeholder="" required>
-                                        <small class="form-control-feedback"><a href="javascript:void(0)"> </a></small> 
+                                        
+                                        <select class="form-control custom-select" id="heads_info" name="heads_info">
+                                            @for ($i = 1; $i <= 12; $i++)
+                                                <option value="{{ $i }}">{{ $i }}</option>
+                                            @endfor
+                                        </select>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1">
@@ -375,23 +353,23 @@
                                                 PH
                                             </span>
                                         </div>
-                                        <input type="text" id="PH" name="PH" class="form-control" placeholder="" required>
+                                    <input type="text" id="PH" name="PH" class="form-control" placeholder="">
                                         <small class="form-control-feedback"><a href="javascript:void(0)"> </a></small> 
                                     </div>
                                 </div>
                             </div>
-                            <hr>
+                            <br><br>
                             <h4 class="card-title">Note</h4>
                             <div class="row p-t-20">
-                                <div class="col-md-12">
+                                <div class="col-md-8">
                                     <div class="form-group">
-                                        <textarea class="form-control" name="note" rows="8"></textarea>
+                                    <textarea class="form-control" name="note" rows="5"></textarea>
                                         <small class="form-control-feedback"><a href="javascript:void(0)"> </a></small> </div>
                                 </div>
                             </div> 
                         </div>
                         <div class="form-actions">
-                            <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Save</button>
+                            <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i>Save</button>
                             <button type="button" class="btn btn-inverse">Cancel</button>
                         </div>
                     </form>

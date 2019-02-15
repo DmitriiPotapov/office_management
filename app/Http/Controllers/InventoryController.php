@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Auth;
+use App\Models\DataDevices;
+use App\Models\DataJobs;
 
 use App\Models\DataInventory;
 
@@ -57,7 +59,7 @@ class InventoryController extends Controller
         if( !Auth::check() )
             return redirect()->route('login');
             
-        $inventories = DataInventory::all();
+        $inventories = DataInventory::where('in_use' , 1)->get()->toArray();
 
         return view('inventory.diskUseInventory',compact('inventories'));
     }
@@ -101,6 +103,7 @@ class InventoryController extends Controller
         $inventory->madeIn = $request->input('madeIn');
         $inventory->PH = $request->input('PH');
         $inventory->note = $request->input('note');
+        $inventory->status = "Not In Use";
 
         $inventory->save();
         

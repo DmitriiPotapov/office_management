@@ -47,7 +47,7 @@ class QuoteController extends Controller
         $quote_job_id = $request->quote_job_id;
 
         $quoteJobDetail = DB::table('data_jobs')->where('job_id', $quote_job_id)->first();
-        $quoteitems = DB::table('data_devices')->where('job_id', $quote_job_id)->first();
+        $quoteitems = DB::table('data_devices')->where('job_id', $quote_job_id)->where('role', 'Patient')->first();
 
         
 
@@ -81,6 +81,8 @@ class QuoteController extends Controller
         $item_price = $request->item_price;
 
         $item_disaccount = $request->item_disaccount;
+        $item_brand = $request->item_brand;
+        $item_serial = $request->item_serial;
         $item_total_price = $request->item_total_price;
                     
         $quote = new Quote();
@@ -93,6 +95,8 @@ class QuoteController extends Controller
         $quote->currency = $currency;
         $quote->quote_note = $quote_note;
         $quote->item_type = $item_type;
+        $quote->item_brand = $item_brand;
+        $quote->item_serial = $item_serial;
         $quote->item_capacity = $item_capacity;
         $quote->item_price = $item_price;
 

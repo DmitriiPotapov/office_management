@@ -33,7 +33,7 @@ class DashboardController extends Controller
                                         ->orwhere('status', 'Delivered/Unaid')
                                         ->orwhere('status', 'Delivered/Paid')
                                         ->count();
-            $paymentPendingCount = DataJobs::where('status', 'Based on Delivered/Unpaid')
+            $paymentPendingCount = DataJobs::where('status', 'Delivered/Unpaid')
                                             ->orwhere('status', 'Delivered/Partially Paid')
                                             ->count();
             $paidCount = DataJobs::where('status', 'Delivered/Paid')->count();

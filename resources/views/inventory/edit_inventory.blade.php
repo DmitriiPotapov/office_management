@@ -9,6 +9,11 @@
 @section('content')
 
 <div class="container-fluid">
+    <div class="row page-titles">
+        <div class="col-md-6 col-8 align-self-center">
+            <h3 class="text-themecolor m-b-0 m-t-0">Update Item</h3>
+        </div>
+    </div>
     <div class="row">
         <div class="col-lg-12">
             <div class="card card-outline-info">
@@ -17,7 +22,6 @@
                     @csrf
                         <input type="hidden" name="inventory_id" id="inventory_id" value="{{ $dataInventory->id }}" />
                         <div class="form-body">
-                            <h4 class="card-title">Acquired from</h4>
                             <div class="row p-t-20">
                                 <div class="col-md-8">
                                     <div class="input-group">
@@ -30,69 +34,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <hr>
-                            <h4 class="card-title">Device type</h4>
+                            <br>
                             <div class="row p-t-20">
-                                <div class="col-md-3">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="basic-addon1">
-                                                Item role
-                                            </span>
-                                        </div>
-                                        <select class="form-control custom-select" id="item_role" name="item_role">
-                                            <option <?php echo $dataInventory->role == 'Clone' ? 'selected' : '';?> value="Clone">Clone</option>
-                                            <option <?php echo $dataInventory->role == 'Patient' ? 'selected' : '';?> value="Patient">Patient</option>
-                                            <option <?php echo $dataInventory->role == 'Backup' ? 'selected' : '';?> value="Backup">Backup</option>
-                                            <option <?php echo $dataInventory->role == 'Paid' ? 'selected' : '';?> value="Paid">Paid</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="basic-addon1">
-                                                Category
-                                            </span>
-                                        </div>
-                                        <select class="form-control custom-select" id="category" name="category">
-                                            <option <?php echo $dataInventory->category == 'Laptop Drive' ? 'selected' : '';?> value="Laptop Drive">Laptop Drive</option>
-                                            <option <?php echo $dataInventory->category == 'Desktop Drive' ? 'selected' : '';?> value="Desktop Drive">Desktop Drive</option>
-                                            <option <?php echo $dataInventory->category == 'External Drive' ? 'selected' : '';?> value="External Drive">External Drive</option>
-                                            <option <?php echo $dataInventory->category == 'Server Drive' ? 'selected' : '';?> value="Server Drive">Server Drive</option>
-                                            <option <?php echo $dataInventory->category == 'Mobile Phone' ? 'selected' : '';?> value="Mobile Phone">Mobile Phone</option>
-                                            <option <?php echo $dataInventory->category == 'Flash Drive' ? 'selected' : '';?> value="Flash Drive">Flash Drive</option>
-                                            <option <?php echo $dataInventory->category == 'Smart Devices' ? 'selected' : '';?> value="Smart Devices">Smart Devices</option>
-                                            <option <?php echo $dataInventory->category == 'Others' ? 'selected' : '';?> value="Others">Others</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="basic-addon1">
-                                                Storage Type
-                                            </span>
-                                        </div>
-                                        <select class="form-control custom-select" id="storagetype" name="storagetype">
-                                            <option <?php echo $dataInventory->device_type == '2.5’ HDD' ? 'selected' : '';?> value="2.5’ HDD">2.5’ HDD</option>
-                                            <option <?php echo $dataInventory->device_type == '3.5’ HDD' ? 'selected' : '';?> value="3.5’ HDD">3.5’ HDD</option>
-                                            <option <?php echo $dataInventory->device_type == 'Server HDD' ? 'selected' : '';?> value="Server HDD">Server HDD</option>
-                                            <option <?php echo $dataInventory->device_type == 'SSD' ? 'selected' : '';?> value="SSD">SSD</option>
-                                            <option <?php echo $dataInventory->device_type == 'Micro SD' ? 'selected' : '';?> value="Micro SD">Micro SD</option>
-                                            <option <?php echo $dataInventory->device_type == 'SD' ? 'selected' : '';?> value="SD">SD</option>
-                                            <option <?php echo $dataInventory->device_type == 'SDXC' ? 'selected' : '';?> value="SDXC">SDXC</option>
-                                            <option <?php echo $dataInventory->device_type == 'SDHC' ? 'selected' : '';?> value="SDHC">SDHC</option>
-                                            <option <?php echo $dataInventory->device_type == 'PENDRIVE' ? 'selected' : '';?> value="PENDRIVE">PENDRIVE</option>
-                                            <option <?php echo $dataInventory->device_type == 'Others' ? 'selected' : '';?> value="Others">Others</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-                            <h4 class="card-title">Basic info</h4>
-                            <div class="row p-t-20">
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1">
@@ -141,41 +85,7 @@
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1">
-                                                Interface
-                                            </span>
-                                        </div>
-                                        <select class="form-control custom-select" id="interface" name="interface">
-                                            <option <?php echo $dataInventory->interface == 'USB' ? 'selected' : '';?> value="USB">USB</option>
-                                            <option <?php echo $dataInventory->interface == 'SATA' ? 'selected' : '';?> value="SATA">SATA</option>
-                                            <option <?php echo $dataInventory->interface == 'mSATA' ? 'selected' : '';?> value="mSATA">mSATA</option>
-                                            <option <?php echo $dataInventory->interface == 'PCi' ? 'selected' : '';?> value="PCi">PCi</option>
-                                            <option <?php echo $dataInventory->interface == 'SAS' ? 'selected' : '';?> value="SAS">SAS</option>
-                                            <option <?php echo $dataInventory->interface == 'Others' ? 'selected' : '';?> value="Others">Others</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row p-t-20">
-                                <div class="col-md-8">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="basic-addon1">
-                                                Part Number
-                                            </span>
-                                        </div>
-                                    <input type="text" id="part_number" name="part_number" class="form-control" placeholder=" " value="{{ $dataInventory->part_number }}" required>
-                                        <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-                            <h4 class="card-title">Capacity </h4>
-                            <div class="row p-t-20">
-                                <div class="col-md-4">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="basic-addon1">
-                                                GB
+                                                Capacity
                                             </span>
                                         </div>
                                         <select class="form-control custom-select" id="capacity" name="capacity">
@@ -207,10 +117,94 @@
                                         </select>
                                     </div>
                                 </div>
-                            </div>
-                            <hr>
-                            <h4 class="card-title">Extra info </h4>
+                            </div><br>
                             <div class="row p-t-20">
+                                <div class="col-md-2">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon1">
+                                                Item role
+                                            </span>
+                                        </div>
+                                        <select class="form-control custom-select" id="item_role" name="item_role">
+                                            <option <?php echo $dataInventory->role == 'Clone' ? 'selected' : '';?> value="Clone">Clone</option>
+                                            <option <?php echo $dataInventory->role == 'Patient' ? 'selected' : '';?> value="Patient">Patient</option>
+                                            <option <?php echo $dataInventory->role == 'Backup' ? 'selected' : '';?> value="Backup">Backup</option>
+                                            <option <?php echo $dataInventory->role == 'Donor' ? 'selected' : '';?> value="Donor">Donor</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon1">
+                                                Category
+                                            </span>
+                                        </div>
+                                        <select class="form-control custom-select" id="category" name="category">
+                                            <option <?php echo $dataInventory->category == 'Laptop Drive' ? 'selected' : '';?> value="Laptop Drive">Laptop Drive</option>
+                                            <option <?php echo $dataInventory->category == 'Desktop Drive' ? 'selected' : '';?> value="Desktop Drive">Desktop Drive</option>
+                                            <option <?php echo $dataInventory->category == 'External Drive' ? 'selected' : '';?> value="External Drive">External Drive</option>
+                                            <option <?php echo $dataInventory->category == 'Server Drive' ? 'selected' : '';?> value="Server Drive">Server Drive</option>
+                                            <option <?php echo $dataInventory->category == 'Mobile Phone' ? 'selected' : '';?> value="Mobile Phone">Mobile Phone</option>
+                                            <option <?php echo $dataInventory->category == 'Flash Drive' ? 'selected' : '';?> value="Flash Drive">Flash Drive</option>
+                                            <option <?php echo $dataInventory->category == 'Smart Devices' ? 'selected' : '';?> value="Smart Devices">Smart Devices</option>
+                                            <option <?php echo $dataInventory->category == 'Others' ? 'selected' : '';?> value="Others">Others</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon1">
+                                                Storage Type
+                                            </span>
+                                        </div>
+                                        <select class="form-control custom-select" id="storagetype" name="storagetype">
+                                            <option <?php echo $dataInventory->device_type == '2.5’ HDD' ? 'selected' : '';?> value="2.5’ HDD">2.5’ HDD</option>
+                                            <option <?php echo $dataInventory->device_type == '3.5’ HDD' ? 'selected' : '';?> value="3.5’ HDD">3.5’ HDD</option>
+                                            <option <?php echo $dataInventory->device_type == 'Server HDD' ? 'selected' : '';?> value="Server HDD">Server HDD</option>
+                                            <option <?php echo $dataInventory->device_type == 'SSD' ? 'selected' : '';?> value="SSD">SSD</option>
+                                            <option <?php echo $dataInventory->device_type == 'Micro SD' ? 'selected' : '';?> value="Micro SD">Micro SD</option>
+                                            <option <?php echo $dataInventory->device_type == 'SD' ? 'selected' : '';?> value="SD">SD</option>
+                                            <option <?php echo $dataInventory->device_type == 'SDXC' ? 'selected' : '';?> value="SDXC">SDXC</option>
+                                            <option <?php echo $dataInventory->device_type == 'SDHC' ? 'selected' : '';?> value="SDHC">SDHC</option>
+                                            <option <?php echo $dataInventory->device_type == 'PENDRIVE' ? 'selected' : '';?> value="PENDRIVE">PENDRIVE</option>
+                                            <option <?php echo $dataInventory->device_type == 'Others' ? 'selected' : '';?> value="Others">Others</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon1">
+                                                Interface
+                                            </span>
+                                        </div>
+                                        <select class="form-control custom-select" id="interface" name="interface">
+                                            <option <?php echo $dataInventory->interface == 'USB' ? 'selected' : '';?> value="USB">USB</option>
+                                            <option <?php echo $dataInventory->interface == 'SATA' ? 'selected' : '';?> value="SATA">SATA</option>
+                                            <option <?php echo $dataInventory->interface == 'mSATA' ? 'selected' : '';?> value="mSATA">mSATA</option>
+                                            <option <?php echo $dataInventory->interface == 'PCi' ? 'selected' : '';?> value="PCi">PCi</option>
+                                            <option <?php echo $dataInventory->interface == 'SAS' ? 'selected' : '';?> value="SAS">SAS</option>
+                                            <option <?php echo $dataInventory->interface == 'Others' ? 'selected' : '';?> value="Others">Others</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row p-t-20">
+                                <div class="col-md-2">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon1">
+                                                Part Number
+                                            </span>
+                                        </div>
+                                    <input type="text" id="part_number" name="part_number" class="form-control" placeholder=" " value="{{ $dataInventory->part_number }}" required>
+                                        <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
+                                    </div>
+                                </div>
                                 <div class="col-md-2">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
@@ -252,11 +246,10 @@
                                         <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
                                     </div>
                                 </div>
-                            </div> 
-                            <hr>
-                            <h4 class="card-title">PCB info </h4>
+                            </div>
+                            <br>
                             <div class="row p-t-20">
-                                <div class="col-md-1.5">
+                                <div class="col-md-2">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1">
@@ -265,19 +258,18 @@
                                         </div>
                                         <select class="form-control custom-select" id="pcb_state" name="pcb_state">
                                             <option <?php echo $dataInventory->PCB_state == 'OK' ? 'selected' : '';?> value="OK">OK</option>
-                                            <option <?php echo $dataInventory->PCB_state == 'Bad' ? 'selected' : '';?> value="Bad">Bad</option>
+                                            <option <?php echo $dataInventory->PCB_state == 'NOT OK' ? 'selected' : '';?> value="NOT OK">NOT OK</option>
+                                            <option <?php echo $dataInventory->PCB_state == 'DAMAGED' ? 'selected' : '';?> value="DAMAGED">DAMAGED</option>
                                             <option <?php echo $dataInventory->PCB_state == 'Missing' ? 'selected' : '';?> value="Missing">Missing</option>
-                                            <option <?php echo $dataInventory->PCB_state == 'Untested' ? 'selected' : '';?> value="Untested">Untested</option>
-                                            <option <?php echo $dataInventory->PCB_state == 'Unstable' ? 'selected' : '';?> value="Unstable">Unstable</option>
                                         </select>
                                         <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
                                     </div>
                                 </div>
-                                <div class="col-md-1.5">
+                                <div class="col-md-2">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1">
-                                                PCB id
+                                                PCB No
                                             </span>
                                         </div>
                                     <input type="text" id="pcb_id" name="pcb_id" class="form-control" placeholder="" value="{{ $dataInventory->PCB_id }}" required>
@@ -288,32 +280,25 @@
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1">
-                                                Connection
+                                                DCM/MLC
                                             </span>
                                         </div>
-                                        <select class="form-control custom-select" id="connection" name="connection">
-                                            <option <?php echo $dataInventory->PCB_connection == 'SATA' ? 'selected' : '';?> value="SATA">SATA</option>
-                                            <option <?php echo $dataInventory->PCB_connection == 'PATA' ? 'selected' : '';?> value="PATA">PATA</option>
-                                            <option <?php echo $dataInventory->PCB_connection == 'USB2.0' ? 'selected' : '';?> value="USB2.0">USB2.0</option>
-                                            <option <?php echo $dataInventory->PCB_connection == 'SAS' ? 'selected' : '';?> value="SAS">SAS</option>
-                                            <option <?php echo $dataInventory->PCB_connection == 'M.2' ? 'selected' : '';?> value="M.2">M.2</option>
-                                            <option <?php echo $dataInventory->PCB_connection == 'mSATA' ? 'selected' : '';?> value="mSATA">mSATA</option>
-                                            <option <?php echo $dataInventory->PCB_connection == 'USB3.0' ? 'selected' : '';?> value="USB3.0">USB3.0</option>
-                                        </select>
+                                        <input type="text" id="connection" name="connection" class="form-control" placeholder="" value="{{ $dataInventory->connection }}" >
                                         <small class="form-control-feedback"><a href="javascript:void(0)"></a></small> 
                                     </div>
                                 </div>
-                            </div> 
-                            <hr>
-                            <h4 class="card-title">Location</h4>
-                            <div class="row p-t-20">
-                                <div class="col-md-8">
-                                    <div class="form-group">
-                                    <input type="text" id="location" name="location" class="form-control" placeholder="" value="{{ $dataInventory->location }}" required>
+                                <div class="col-md-2">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                                <span class="input-group-text" id="basic-addon1">
+                                                    Location
+                                                </span>
+                                            </div>
+                                        <input type="text" id="location" name="location" class="form-control" placeholder="" value="{{ $dataInventory->location }}" required>
                                         <small class="form-control-feedback"><a href="javascript:void(0)"> </a></small> </div>
                                 </div>
-                            </div> 
-                            <h4 class="card-title">Heads/Platter info</h4>
+                            </div>
+                            <br>
                             <div class="row p-t-20">
                                 <div class="col-md-2">
                                     <div class="input-group">
@@ -322,14 +307,10 @@
                                                 Heads Number
                                             </span>
                                         </div>
-                                        <select class="form-control custom-select" id="heads_number" name="heads_number">
-                                            @for ($i = 1; $i <= 6; $i++)
-                                                <option value="{{ $i }}">{{ $i }}</option>
-                                            @endfor
-                                        </select>
+                                        <input type="text" id="heads_number" name="heads_number" class="form-control" placeholder="" value="{{ $dataInventory->heads_number }}" required>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1">
@@ -344,7 +325,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1">
@@ -379,12 +360,12 @@
                                     </div>
                                 </div>
                             </div>
-                            <hr>
+                            <br><br>
                             <h4 class="card-title">Note</h4>
                             <div class="row p-t-20">
-                                <div class="col-md-12">
+                                <div class="col-md-8">
                                     <div class="form-group">
-                                    <textarea class="form-control" name="note" rows="8">{{ $dataInventory->note }}</textarea>
+                                    <textarea class="form-control" name="note" rows="5">{{ $dataInventory->note }}</textarea>
                                         <small class="form-control-feedback"><a href="javascript:void(0)"> </a></small> </div>
                                 </div>
                             </div> 

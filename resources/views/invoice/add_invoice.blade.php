@@ -28,8 +28,7 @@
             <br />
             <br />
             <div class="row">
-                <div class="col-md-6">
-                    <span>Client</span>
+                <div class="col-md-2">
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1">Client</span>
@@ -38,8 +37,7 @@
                         <input type="hidden" class="form-control" name="job_status" id="job_status" value="" />
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <span>Service</span>
+                <div class="col-md-2">
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1">Service</span>
@@ -48,49 +46,50 @@
                     name="service_name" id="service_name" value=""/>
                     </div>
                 </div>
-            </div>
-            <br>
-            <span>Invoice language</span>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Language</span>
+                    <div class="col-md-2">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Language</span>
+                            </div>
+                            <select class="custom-select invoice_language" id="invoice_language" name="invoice_language">
+                                
+                                <option value="Choose">Choose...</option>
+                                <option value="English">English</option>
+                                <option value="Arabic">Arabic</option>
+                                
+                            </select>
                         </div>
-                        <select class="custom-select invoice_language" id="invoice_language" name="invoice_language">
-                            
-                            <option value="Choose">Choose...</option>
-                            <option value="English">English</option>
-                            <option value="Arabic">Arabic</option>
-                            
-                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Currency</span>
+                            </div>
+                            <select class="custom-select currency" id="currency" name="currency">
+                                
+                                <option value="Choose">Choose...</option>
+                                <option value="INR">INR</option>
+                                <option value="RO">RO</option>
+                                <option value="Dhs">Dhs</option>
+                                <option value="USD">USD</option>
+                                <option value="EU">EU</option>  
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">VAT(%)</span>
+                            </div>
+                            <input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1"
+                        name="vat" id="vat" value=""/>
+                        </div>
                     </div>
                 </div>
             </div>
+    </div>
             <br>
-            <span>Currency</span>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Currency</span>
-                        </div>
-                        <select class="custom-select currency" id="currency" name="currency">
-                            
-                            <option value="Choose">Choose...</option>
-                            <option value="INR">INR</option>
-                            <option value="RO">RO</option>
-                            <option value="Dhs">Dhs</option>
-                            <option value="USD">USD</option>
-                            <option value="EU">EU</option>  
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <br />
-            
-
-            <div class="card-body">
+                    
                 <span>Invoice items</span>
                 <div class="row">
                     <div class="col-12">
@@ -103,7 +102,6 @@
                                                 <th>Type</th>
                                                 <th>Capacity</th>
                                                 <th>Price</th>
-                                                <th>VAT(%)</th>
                                                 <th>Discount</th>
                                                 <th>Total Price</th>
                                             </tr>
@@ -114,7 +112,6 @@
                                             <td id="item_type"></td>
                                             <td id="item_capacity"></td>
                                             <td id="item_price"></td>
-                                            <td id="item_vat"></td>
                                             <td id="item_disaccount"></td>
                                             <td id="item_total_price"></td>
                                             </tr>
@@ -142,7 +139,6 @@
                                                 <th>Serial Number</th>
                                                 <th>Capacity</th>
                                                 <th>Price</th>
-                                                <th>VAT(%)</th>
                                                 <th>Discount</th>
                                                 <th>Total Price</th>
                                             </tr>
@@ -154,7 +150,6 @@
                                                 <td id="backup_serial"></td>
                                                 <td id="backup_capacity"></td>
                                                 <td id="backup_price"></td>
-                                                <td id="backup_vat"></td>
                                                 <td id="backup_disaccount"></td>
                                                 <td id="backup_total_price"></td>
                                             </tr>
@@ -168,7 +163,7 @@
 
                 <span>Note</span>
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-8">
                         <div class="form-group">
                             <textarea class="form-control invoice_note" rows="8" name="invoice_note" id="invoice_note"></textarea>
                             <small class="form-control-feedback"><a href="javascript:void(0)"> </a></small></div>
@@ -181,6 +176,7 @@
                     <a href = "#"><button type="button" class="btn btn-danger">Preview</button></a>
                     <button type="button" class="btn btn-info" id="generate">Generate</button>
                     <a href = "#"><button type="button" class="btn btn-success">Send Quote</button></a>
+                    <button type="button" onclick="removeBackup()" class="btn btn-danger">Delete Backup</button>
                 </div>
 
                 <div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1">
@@ -553,7 +549,6 @@
             var item_type = $("#item_type").text();
             var item_capacity = $("#item_capacity").text();
             var item_price = $("#item_price").text();
-            var item_vat = $("#item_vat").text();
             var item_disaccount = $("#item_disaccount").text();
             var item_total_price = $("#item_total_price").text();
 
@@ -563,9 +558,9 @@
             var backup_price = $("#backup_price").text();
             var brand = $("#backup_brand").text();
             var serial = $("#backup_serial").text();
-            var backup_vat = $("#backup_vat").text();
             var backup_disaccount = $("#backup_disaccount").text();
             var backup_total_price = $("#backup_total_price").text();
+            var vat = $("#vat").val();
 
             var invoice_job_id = $("#invoice_job_id").val();
      
@@ -581,10 +576,10 @@
                     invoice_note: invoice_note,
                     invoice_language: invoice_language,
                     currency: currency,
+                    vat: vat,
                     item_type: item_type,
                     item_capacity: item_capacity,
                     item_price: item_price,
-                    item_vat: item_vat,
                     item_disaccount: item_disaccount,
                     item_total_price: item_total_price,
                     hasBackup:  hasBackup,
@@ -593,7 +588,6 @@
                     serial: serial,
                     backup_capacity: backup_capacity,
                     backup_price: backup_price,
-                    backup_vat: backup_vat,
                     backup_disaccount: backup_disaccount,
                     backup_total_price: backup_total_price,
                     invoice_job_id: invoice_job_id                                     
@@ -729,7 +723,6 @@
                     $("#backup_type").html(stockItem.device_type);
                     $("#backup_capacity").html(stockItem.capacity);
                     $("#backup_price").html(stockItem.input_price);
-                    $("#backup_vat").html(stockItem.vat_value);
                     $("#backup_disaccount").html(0);
                     $("#backup_total_price").html(stockItem.final_price);
                 }
@@ -741,23 +734,21 @@
             var backup_type = $("#modal_type").val();
             var backup_capacity = $("#modal_capacity").val();
             var backup_price = $("#modal_price").val();
-            var backup_vat = $("#modal_vat").val();
             var backup_disaccount = $("#modal_disaccount").val();
             var backup_total_price = $("#modal_total_price").val();
 
             $("#backup_type").html(backup_type);
             $("#backup_capacity").html(backup_capacity);
             $("#backup_price").html(backup_price);
-            $("#backup_vat").html(backup_vat);
             $("#backup_disaccount").html(backup_disaccount);
             $("#backup_total_price").html(backup_total_price);
         });
 
         $("#item_total_price").on('click', function() {
             var item_price = $("#item_price").text();
-            var item_vat = $("#item_vat").text();         
+            var vat = $("#vat").val();         
             var item_disaccount = $("#item_disaccount").text();
-            var item_total_price = Number(item_price)+Number(item_price)/100.0*Number(item_vat)-Number(item_disaccount);
+            var item_total_price = Number(item_price)-Number(item_disaccount);
             $("#item_total_price").html(item_total_price);
 
 
@@ -765,9 +756,9 @@
 
         $("#backup_total_price").on('click', function() {
             var backup_price = $("#backup_price").text();
-            var backup_vat = $("#backup_vat").text();
+            var vat = $("#vat").val();
             var backup_disaccount = $("#backup_disaccount").text();
-            var backup_total_price = Number(backup_price)+Number(backup_price)/100.0*Number(backup_vat)-Number(backup_disaccount);
+            var backup_total_price = Number(backup_price)-Number(backup_disaccount);
             $("#backup_total_price").html(backup_total_price);
 
 
@@ -775,10 +766,18 @@
   
         $("#generate").on('click', function (e) {
             var job_id = $("#jobSelected").val();
-            var item_price = $("#item_price").text();
-            var item_vat = $("#item_vat").text();
-            var item_discount = $("#item_discount").text();
-            var item_total_price = $("#item_total_price").text();
+            var item_price = $("#item_price").text() ? $("#item_price").text() : '0';
+            var vat = $("#vat").val() ? $("#vat").val() : '0';
+            var item_discount = $("#item_disaccount").text() ? $("#item_disaccount").text() : '0';
+            var item_total_price = $("#item_total_price").text() ? $("#item_total_price").text() : '0';
+            var backup_brand = $("#backup_brand").text() ? $("#backup_brand").text() : '0';
+            var backup_type = $("#backup_type").text() ? $("#backup_type").text() : '0';
+            var backup_serial = $("#backup_serial").text() ? $("#backup_serial").text() : '0' ;
+            var backup_capacity = $("#backup_capacity").text() ? $("#backup_capacity").text() : '0' ;
+            var backup_price = $("#backup_price").text() ? $("#backup_price").text() : '0' ;
+            var backup_vat = $("#vat").val() ? $("#vat").val() : '0';
+            var backup_discount = $("#backup_disaccount").text() ? $("#backup_disaccount").text() : '0';
+            var backup_total_price = $("#backup_total_price").text() ? $("#backup_total_price").text() : '0';
             if (job_id == '0')
             {
                 alert("No Job Selected!");
@@ -786,13 +785,26 @@
             else
             {
                 console.log(job_id);
-                var link = "http://localhost:8000/job/generateInvoiceTemplate/"+job_id;
+                var link = "http://localhost:8000/job/generateInvoiceTemplate/"+job_id+"/"+item_price+"/"+vat+"/"+item_discount+"/"+item_total_price
+                                +"/"+backup_brand+"/"+backup_serial+"/"+backup_capacity+"/"+backup_price+"/"+backup_vat+"/"+backup_discount+"/"+backup_total_price;
                 console.log(link);
-                location.href = link;
+                console.log(backup_type);
+               location.href = link;
             }
         });
     });    
 
+    function removeBackup()
+    {
+        $("#hasBackup").val('0');
+        $("#backup_brand").html('');
+        $("#backup_type").html('');
+        $("#backup_serial").html('');
+        $("#backup_capacity").html('');
+        $("#backup_price").html('');
+        $("#backup_disaccount").html('');
+        $("#backup_total_price").html('');
+    }
         
 </script>
 

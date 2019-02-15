@@ -40,7 +40,7 @@ class InvoiceController extends Controller
         if( !Auth::check() )
             return redirect()->route('login');
 
-        $invoices = Invoice::where('status', 'Delivered/Unpaid')->get();
+        $invoices = Invoice::where('status', 'Delivered/Unpaid')->orwhere('status', 'Delivered/Partially Paid')->get();
         return view('invoice/unpaid_invoices', compact('invoices'));
     }
 
@@ -117,12 +117,12 @@ class InvoiceController extends Controller
         $item_type = $request->item_type;
         $item_capacity = $request->item_capacity;
         $item_price = $request->item_price;
-        $item_vat = $request->item_vat;
         $item_disaccount = $request->item_disaccount;
         $item_total_price = $request->item_total_price;   
         $hasBackup = $request->hasBackup;
         $brand = $request->brand;
         $serial = $request->serial;
+        $vat = $request->vat;
       
         $invoice = new Invoice();
         $invoice->invoice_id = $invoice_id;
@@ -136,7 +136,7 @@ class InvoiceController extends Controller
         $invoice->item_type = $item_type;
         $invoice->item_capacity = $item_capacity;
         $invoice->item_price = $item_price;
-        $invoice->item_vat = $item_vat;
+        $invoice->item_vat = $vat;
         $invoice->item_disaccount = $item_disaccount;
         $invoice->item_total_price = $item_total_price;
         $invoice->created_by = Auth::user()->username;
@@ -149,7 +149,6 @@ class InvoiceController extends Controller
             $backup_type = $request->backup_type;
             $backup_capacity = $request->backup_capacity;
             $backup_price = $request->backup_price;
-            $backup_vat = $request->backup_vat;
             $backup_disaccount = $request->backup_disaccount;
             $backup_total_price = $request->backup_total_price;
     
@@ -162,7 +161,7 @@ class InvoiceController extends Controller
             $backupItem->type = $backup_type;
             $backupItem->capacity = $backup_capacity;
             $backupItem->price = $backup_price;
-            $backupItem->vat = $backup_vat;
+            $backupItem->vat = $vat;
             $backupItem->disaccount = $backup_disaccount;
             $backupItem->total_price = $backup_total_price;
 
@@ -201,6 +200,12 @@ class InvoiceController extends Controller
         return view('invoice/edit_invoice', compact('invoice', 'backupItem', 'invoice_id', 'job_id', 'job_status', 'stockIds'));
     }
 
+    public function deleteBackup($id)
+    {
+        $backupItem = Backup::where('job_id', $id)->delete();
+        return redirect()->back();
+    }
+
     /**
      * Update the specified resource in storage.
      *
@@ -223,7 +228,7 @@ class InvoiceController extends Controller
         $item_type = $request->item_type;
         $item_capacity = $request->item_capacity;
         $item_price = $request->item_price;
-        $item_vat = $request->item_vat;
+        $vat = $request->vat;
         $item_disaccount = $request->item_disaccount;
         $item_total_price = $request->item_total_price;
 
@@ -234,7 +239,7 @@ class InvoiceController extends Controller
         $invoice->item_type = $item_type;
         $invoice->item_capacity = $item_capacity;
         $invoice->item_price = $item_price;
-        $invoice->item_vat = $item_vat;
+        $invoice->item_vat = $vat;
         $invoice->item_disaccount = $item_disaccount;
         $invoice->item_total_price = $item_total_price;
         $invoice->created_by = Auth::user()->username;
@@ -249,7 +254,7 @@ class InvoiceController extends Controller
             $backup_serial = $request->backup_serial;
             $backup_capacity = $request->backup_capacity;
             $backup_price = $request->backup_price;
-            $backup_vat = $request->backup_vat;
+            $backup_vat = $request->vat;
             $backup_disaccount = $request->backup_disaccount;
             $backup_total_price = $request->backup_total_price;
 
@@ -275,7 +280,7 @@ class InvoiceController extends Controller
             $backup_serial = $request->backup_serial;
             $backup_capacity = $request->backup_capacity;
             $backup_price = $request->backup_price;
-            $backup_vat = $request->backup_vat;
+            $backup_vat = $request->vat;
             $backup_disaccount = $request->backup_disaccount;
             $backup_total_price = $request->backup_total_price;
 

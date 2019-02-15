@@ -27,7 +27,7 @@
                         <div class="form-body">
                             <h4 class="card-title">Client info</h4>
                             <div class="row p-t-20">
-                                <div class="col-md-12">
+                                <div class="col-md-8">
                                     <div class="form-group">
                                         @if($client_id == 0)
                                         <div id="the-basics">
@@ -39,8 +39,8 @@
                                         @if($client_id != 0)
                                         <div>
                                             <input type="text" id="client_info" name="client_info" class="typeahead form-control" value="{{ $client['client_name'].', '.$client['street'].', '.$client['postal_code'].', '.$client['country'] }}" >
-                                        </div>
-                                        <a style="margin-left: 30px;" href="{{ route('addClinet') }}"> New Client </a> </div>
+                                        </div><br>
+                                        <a class="btn-sm btn-success waves-effect waves-light" href="{{ route('addClinet') }}"><span class="btn-label"><i class="fa fa-plus"></i></span>New Client</a> </div>
                                         <input type="hidden" name="client_id" value="{{ $client_id }}">
                                         @endif
                                 </div>
@@ -66,29 +66,24 @@
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1">
-                                                <input type="checkbox" id="hitan8" name="hitan8">
+                                                Services
                                             </span>
                                         </div>
-                                        <label for="hitan8" id="hita" name="hita" class="form-control">Start 0-24hrs</label>
-                                        <small class="form-control-feedback"></small> </div>
-                                </div>
-                                <div class="col-md-3">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="basic-addon1">
-                                                <input type="checkbox" id="hitan24" name="hitan24">
-                                            </span>
-                                        </div>
-                                        <label for="hitan24" id="hita" name="hita" class="form-control">Start 24-48hrs</label>
-                                        <small class="form-control-feedback"></small> </div>
+                                        <select class="form-control custom-select" id="service_name" name="service_name">
+                                            @foreach($services as $item)
+                                            <option value="{{ $item['service_name']}}"> {{ $item['service_name']}}</option>
+                                            @endforeach
+                                        </select>
+                                        <small class="form-control-feedback"></small> 
+                                    </div>
                                 </div>
                             </div>
-                            <hr>
-                            <h4 class="card-title">Devices</h4>
+                            <br>
+                            <h4 class="card-title">Device Info</h4>
                             <input type="hidden" name="device_count" id="device_count" value="1">
                             <div id="adult">
                                 <div class="row p-t-20">
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1">
@@ -143,7 +138,7 @@
                                         <small class="form-control-feedback"></small> 
                                     </div>
                                 </div>
-                                <div class="col-md-2.5">
+                                <div class="col-md-2">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="basic-addon1">
@@ -166,18 +161,19 @@
                                         </select>
                                         <small class="form-control-feedback"></small> </div>
                                 </div>
-                                <div class="col-md-2">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text" id="basic-addon1">
-                                                Model
-                                            </span>
-                                        </div>
-                                        <input type="text" id="model" name="model1" class="form-control" placeholder="" >
-                                        <small class="form-control-feedback"></small> </div>
-                                </div>
+                                
                             </div>
                             <div class="row p-t-20">
+                                <div class="col-md-2">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text" id="basic-addon1">
+                                                    Model
+                                                </span>
+                                            </div>
+                                            <input type="text" id="model" name="model1" class="form-control" placeholder="" >
+                                            <small class="form-control-feedback"></small> </div>
+                                    </div>
                                 <div class="col-md-2">
                                     <div class="input-group">
                                         <div class="input-group-prepend">
@@ -211,13 +207,14 @@
                             </div>
                             <br>
                             <div class="row p-t-20">
-                                <button class="btn btn-success waves-effect waves-light" type="button" data-toggle="modal" data-target="#addNewBackupModal"><span class="btn-label"><i class="fa fa-plus"></i></span>Add New Backup Device</button>
+                                    <button class="btn btn-success waves-effect waves-light" style="margin-left:17px" type="button" data-toggle="modal" data-target="#addNewBackupModal"><span class="btn-label"><i class="fa fa-plus"></i></span>Add New Backup Device</button>
+                                    <button class="btn btn-danger waves-effect waves-light" onclick="removeBackup()" style="margin-left:17px" type="button" ><span class="btn-label"><i class="fa fa-plus"></i></span>Delete Backup Device</button>
                             </div>
                             <br>
-                            <div class="row p-t-20" style="display:none;" id="backupDevice">
-                                <h4 class="card-title">Backup Devices</h4>
+                            <div style="display:none;" id="backupDevice">
+                                <h4 class="card-title" style="margin-left:2px;">Backup Devices</h4>
                                 <input type="hidden" id="isBackup" name="isBackup" value="0">
-                                <div class="row p-t-20">
+                                <div class="row p-t-20 " >
                                     <div class="col-md-2">
                                         <div class="input-group">
                                             <div class="input-group-prepend">
@@ -248,7 +245,7 @@
                                             <input type="text" id="backupRole" name="backupRole" class="form-control" placeholder="" >
                                             <small class="form-control-feedback"></small> </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1">
@@ -258,19 +255,20 @@
                                             <input type="text" id="backupManufacturer" name="backupManufacturer" class="form-control" placeholder="" >
                                             <small class="form-control-feedback"></small> </div>
                                     </div>
-                                    <div class="col-md-2">
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text" id="basic-addon1">
-                                                    Model
-                                                </span>
-                                            </div>
-                                            <input type="text" id="backupModel" name="backupModel" class="form-control" placeholder="" >
-                                            <small class="form-control-feedback"></small> </div>
-                                    </div>
+                                    
                                 </div>
                                 <div class="row p-t-20">
-                                    <div class="col-md-4">
+                                    <div class="col-md-2">
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="basic-addon1">
+                                                        Model
+                                                    </span>
+                                                </div>
+                                                <input type="text" id="backupModel" name="backupModel" class="form-control" placeholder="" >
+                                                <small class="form-control-feedback"></small> </div>
+                                        </div>
+                                    <div class="col-md-2">
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1">
@@ -280,7 +278,7 @@
                                             <input type="text" id="backupSerial" name="backupSerial" class="form-control" placeholder="" >
                                             <small class="form-control-feedback"></small> </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-2">
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1">
@@ -290,7 +288,7 @@
                                             <input type="text" id="backupCapacity" name="backupCapacity" class="form-control" placeholder="" >
                                             <small class="form-control-feedback"></small> </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-2">
                                         <div class="input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="basic-addon1">
@@ -303,9 +301,9 @@
                                 </div>
                             </div>
                             <br>
-                            <h4 class="card-title">Device malfunction information</h4>
+                            <h4 class="card-title" style="margin-left:5px;">Device malfunction information</h4>
                             <div class="row p-t-20">
-                                <div class="col-md-12">
+                                <div class="col-md-5">
                                     <div class="form-group">
                                         <select class="form-control custom-select" id="device_malfunc_info" name="device_malfunc_info">
                                             <option value="">Choose...</option>
@@ -333,22 +331,27 @@
                                         <small class="form-control-feedback"><a href="javascript:void(0)"> </a></small> </div>
                                 </div>
                             </div> 
-                            <h4 class="card-title">Important Data</h4>
                             <div class="row p-t-20">
-                                <div class="col-md-12">
+                                <div class="col-md-6">
+                                    <h4 class="card-title" style="margin-left:5px;">Important Data</h4>
+                                </div>
+                                <div class="col-md-6">
+                                    <h4 class="card-title" style="margin-left:5px;">Notes</h4>
+                                </div>
+                            </div>
+                            <div class="row p-t-20" >
+                                <div class="col-md-6">
                                     <div class="form-group">
-                                        <textarea class="form-control" name="important_data" rows="8"></textarea>
+                                        <textarea class="form-control" name="important_data" rows="5"></textarea>
                                         <small class="form-control-feedback"><a href="javascript:void(0)"> </a></small> </div>
                                 </div>
+                                <div class="col-md-6">
+                                        <div class="form-group">
+                                            <textarea class="form-control" name="notes" rows="5"></textarea>
+                                            <small class="form-control-feedback"><a href="javascript:void(0)"> </a></small> </div>
+                                    </div>
                             </div> 
-                            <h4 class="card-title">Notes</h4>
-                            <div class="row p-t-20">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <textarea class="form-control" name="notes" rows="8"></textarea>
-                                        <small class="form-control-feedback"><a href="javascript:void(0)"> </a></small> </div>
-                                </div>
-                            </div>                           
+                                                
                         </div>
                         <div class="form-actions">
                             <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Save</button>
@@ -380,7 +383,7 @@
                             @endforeach
                         </select>
                     </div>
-                    <hr>
+                    <br>
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1">
@@ -401,7 +404,7 @@
                         </select>
                         <small class="form-control-feedback"></small> 
                     </div>
-                    <hr>
+                    <br>
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1">
@@ -414,7 +417,7 @@
                             <option value="Donor" >Donor</option>
                         </select>
                     </div>
-                    <hr>
+                    <br>
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1">
@@ -436,7 +439,7 @@
                             <option value="Others">Others</option>
                         </select>
                     </div>
-                    <hr>
+                    <br>
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1">
@@ -445,7 +448,7 @@
                         </div>
                         <input type="text" class="form-control" id="cr_model" name="cr_model">
                     </div>
-                    <hr>
+                    <br>
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1">
@@ -454,7 +457,7 @@
                         </div>
                         <input type="text" class="form-control" id="cr_capacity" name="cr_capacity">
                     </div>
-                    <hr>
+                    <br>
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1">
@@ -463,7 +466,7 @@
                         </div>
                         <input type="text" class="form-control" id="cr_serial" name="cr_serial">
                     </div>
-                    <hr>
+                    <br>
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1">
@@ -472,7 +475,7 @@
                         </div>
                         <input type="text" class="form-control" id="cr_location" name="cr_location">
                     </div>
-                    <hr>
+                    <br>
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text" id="basic-addon1">
@@ -570,5 +573,12 @@ var substringMatcher = function(strs) {
     name: 'states',
     source: substringMatcher(states)
   });
+
+  function removeBackup()
+  {
+    var obj = document.getElementById("backupDevice");
+    obj.setAttribute("style", "display:none;");
+    $("#isBackup").val("0");
+  }
 </script>
 @endpush
