@@ -20,6 +20,8 @@ use PDF;
 use App\Models\Client;
 use App\Models\Service;
 use App\Models\DataInventory;
+use App\Models\CompanyInfo;
+use App\Models\FileLists;
 
 class JobController extends Controller
 {
@@ -229,9 +231,11 @@ class JobController extends Controller
 
         $inventoryIds = DataInventory::pluck('id');
 
-        $cloneDevices = DataInventory::where('job_id', $job_id)->where('in_use', 1)->get()->toArray();
+        $cloneDevices = DataInventory::where('id', $job->clone_device)->get()->toArray();
 
-        return view('job.editJob' , compact('job', 'client' ,'statuses','priorities', 'devices', 'comments', 'types', 'histories', 'engineers', 'logs', 'services', 'invoice', 'quote', 'inventoryIds', 'cloneDevices'));
+        $fileLists = FileLists::where('job_id', $job_id)->get()->toArray();
+
+        return view('job.editJob' , compact('job', 'client' ,'statuses','priorities', 'devices', 'comments', 'types', 'histories', 'engineers', 'logs', 'services', 'invoice', 'quote', 'inventoryIds', 'cloneDevices', 'fileLists'));
     }
 
     public function updateJob(Request $request)
@@ -397,18 +401,22 @@ class JobController extends Controller
     {
 
         $inventory_id = $request->input('sel_inventory_id');
+        $job_id = $request->input('inventory_job_id');
+        $job = DataJobs::where('job_id', $job_id)->first();
+        $job->clone_device = $inventory_id;
 
-        $inventory = DataInventory::where('id', $inventory_id)->first();
-        if ($inventory->in_use == 1)
-        {
-          return redirect()->back()->with('alert', ' That device is used in other job now!');
-        }
-        else
-        {
-          $inventory->job_id = $request->input('inventory_job_id');
-          $inventory->in_use = 1;
-          $inventory->update();
-        }  
+        // $inventory = DataInventory::where('id', $inventory_id)->first();
+        // if ($inventory->in_use == 1)
+        // {
+        //   return redirect()->back()->with('alert', ' That device is used in other job now!');
+        // }
+        // else
+        // {
+        //   $inventory->job_id = $request->input('inventory_job_id');
+        //   $inventory->in_use = 1;
+        //   $inventory->update();
+        // }  
+        $job->update();
         return redirect()->back();
     }
 
@@ -475,10 +483,12 @@ class JobController extends Controller
 
     public function deleteCloneDevice($id)
     {
-        $inventory = DataInventory::find($id);
-        $inventory->in_use = 0;
-        $inventory->job_id = 0;
-        $inventory->update();
+        $job = DataJobs::find($id);
+        $job->clone_device = 0;
+        // $inventory = DataInventory::find($id);
+        // $inventory->in_use = 0;
+        // $inventory->job_id = 0;
+        $job->update();
 
         return redirect()->back();
     }
@@ -531,6 +541,42 @@ class JobController extends Controller
         return redirect()->back();
     }
 
+    public function uploadAttach(Request $request)
+    {
+      $job_id = $request->input('attachJobId');
+      $file = $request->file('attach');
+      if ($file) {
+        $fileList = new FileLists();
+        $fileList->job_id = $job_id;
+        $fileList->file_name = $file->getClientOriginalName();
+
+        $date = date('Y-m-d');
+        $date = md5($date);
+
+        $originalFile = $date.'_'.$file->getClientOriginalName();
+        
+        $fileList->size = $file->getClientSize();
+        $fileList->uploaded_by = Auth::user()->username;
+
+        $destionationPath = 'public/uploads/';
+        $file->move($destionationPath, $originalFile);
+
+        $fileList->full_path = $originalFile;
+
+        $fileList->save();
+  
+        return redirect()->back();
+      }
+
+    }
+
+    public function downloadUploadFile($id)
+    {
+      $file = FileLists::find($id);
+      $file_path = 'public/uploads/'.$file->full_path;
+      return response()->download($file_path, $file->file_name);
+    }
+
     public function addmissionForm($job_id)
     {
         $pdf = \App::make('dompdf.wrapper');
@@ -574,9 +620,22 @@ class JobController extends Controller
       $devices = DataDevices::where('job_id', $job_id)->where('role', 'Patient')->first();
       $vat_price = $item_price * $item_vat / 100.0;
 
-      $pdf = PDF::loadView('job.invoicepdf', compact('job_id','job', 'client', 'devices', 'vat_price', 'item_total_price' , 'item_price', 'item_vat', 'discount', 'total_price', 'backup_brand', 'backup_serial', 'backup_capacity', 'backup_price', 'backup_vat', 'backup_discount', 'backup_total_price'));
+      $pdf = PDF::loadView('job.invoicepdf', compact('job_id','job', 'client', 'devices', 'vat_price', 'item_total_price' , 'item_price', 'item_vat', 'discount', 'backup_brand', 'backup_serial', 'backup_capacity', 'backup_price', 'backup_vat', 'backup_discount', 'backup_total_price'));
       $file_path = 'Invoice #'.$job_id.'.pdf';
       return $pdf->download($file_path);
+        
+    }
+
+    public function generateInvoiceViewTemplate($job_id, $item_price, $item_vat, $discount, $item_total_price, $backup_brand, $backup_serial, $backup_capacity, $backup_price, $backup_vat, $backup_discount, $backup_total_price)
+    {
+      $job = DataJobs::where('job_id',$job_id)->first();
+      $client = Client::find($job->client_id);
+      $devices = DataDevices::where('job_id', $job_id)->where('role', 'Patient')->first();
+      $vat_price = $item_price * $item_vat / 100.0;
+
+      $pdf = PDF::loadView('job.invoicepdf', compact('job_id','job', 'client', 'devices', 'vat_price', 'item_total_price' , 'item_price', 'item_vat', 'discount', 'backup_brand', 'backup_serial', 'backup_capacity', 'backup_price', 'backup_vat', 'backup_discount', 'backup_total_price'));
+      $file_path = 'Invoice #'.$job_id.'.pdf';
+      return $pdf->stream();
     }
 
     public function generateQuoteTemplate($job_id, $price, $discount, $total_price, $brand, $serial)
@@ -588,6 +647,17 @@ class JobController extends Controller
       $pdf = PDF::loadView('job.quotepdf', compact('job_id','job', 'client', 'devices', 'price', 'discount', 'total_price', 'brand', 'serial'));
       $file_path = 'Quote #'.$job_id.'.pdf';
       return $pdf->download($file_path);
+    }
+
+    public function generateQuoteViewTemplate($job_id, $price, $discount, $total_price, $brand, $serial)
+    {
+      $job = DataJobs::where('job_id',$job_id)->first();
+      $client = Client::find($job->client_id);
+      $devices = Quote::where('job_id', $job_id)->get()->toArray();
+
+      $pdf = PDF::loadView('job.quotepdf', compact('job_id','job', 'client', 'devices', 'price', 'discount', 'total_price', 'brand', 'serial'));
+      $file_path = 'Quote #'.$job_id.'.pdf';
+      return $pdf->stream();
     }
 
     public function generateQuote($job_id)
@@ -620,6 +690,8 @@ class JobController extends Controller
     {
         $job = DataJobs::where('job_id',$job_id)->first();
         $client = Client::find($job->client_id);
+        $company_id = 1;
+        $company = CompanyInfo::find($company_id);
         $output = '
 <!DOCTYPE HTML>
 <html lang="en">
@@ -689,11 +761,11 @@ class JobController extends Controller
   <div>
     <img align="left" src="assets/images/logo-icon4.png" width="280" height="80" />
     <div align="right">
-      <b><label style="font-size:12px;">#108, First Floor, Azaiba Mall</label><br>
-      <label style="font-size:12px;">Azaba, Muscat, Oman</label><br></b>
-      <label style="font-size:12px;">+968 963 12346 /47 </label><img style="margin-top:2px;" src="assets/images/icon-tel.png" width="14" height="12" /><br>
-      <label style="font-size:12px;">info@spacedatarecovery.com</label><img style="margin-top:2px;" src="assets/images/icon-mail.png" width="14" height="12" /><br>
-      <label style="font-size:12px;">www.spacedatarecovery.com</label><img style="margin-top:2px;" src="assets/images/icon-space.png" width="14" height="12" /><br>
+      <b><label style="font-size:12px;">'.$company->address.'</label><br>
+      <label style="font-size:12px;">'.$company->city.', '.$company->country.'</label><br></b>
+      <label style="font-size:12px;">'.$company->phone.'</label><img style="margin-top:2px;" src="assets/images/icon-tel.png" width="14" height="12" /><br>
+      <label style="font-size:12px;">'.$company->email.'</label><img style="margin-top:2px;" src="assets/images/icon-mail.png" width="14" height="12" /><br>
+      <label style="font-size:12px;">'.$company->website.'</label><img style="margin-top:2px;" src="assets/images/icon-space.png" width="14" height="12" /><br>
     </div>
   </div>
   <br><br><br><br>
@@ -801,6 +873,7 @@ class JobController extends Controller
     {
       $job = DataJobs::where('job_id',$job_id)->first();
       $client = Client::find($job->client_id);
+      $company = CompanyInfo::find(1);
       $output = '
       <!DOCTYPE HTML>
       <html lang="en">
@@ -870,11 +943,11 @@ class JobController extends Controller
         <div>
           <img align="left" src="assets/images/logo-icon4.png" width="280" height="80" />
           <div align="right">
-            <b><label style="font-size:12px;">#108, First Floor, Azaiba Mall</label><br>
-            <label style="font-size:12px;">Azaba, Muscat, Oman</label><br></b>
-            <label style="font-size:12px;">+968 963 12346 /47 </label><img style="margin-top:2px;" src="assets/images/icon-tel.png" width="14" height="12" /><br>
-            <label style="font-size:12px;">info@spacedatarecovery.com</label><img style="margin-top:2px;" src="assets/images/icon-mail.png" width="14" height="12" /><br>
-            <label style="font-size:12px;">www.spacedatarecovery.com</label><img style="margin-top:2px;" src="assets/images/icon-space.png" width="14" height="12" /><br>
+            <b><label style="font-size:12px;">'.$company->address.'</label><br>
+            <label style="font-size:12px;">'.$company->city.', '.$company->country.'</label><br></b>
+            <label style="font-size:12px;">'.$company->phone.'</label><img style="margin-top:2px;" src="assets/images/icon-tel.png" width="14" height="12" /><br>
+            <label style="font-size:12px;">'.$company->email.'</label><img style="margin-top:2px;" src="assets/images/icon-mail.png" width="14" height="12" /><br>
+            <label style="font-size:12px;">'.$company->website.'</label><img style="margin-top:2px;" src="assets/images/icon-space.png" width="14" height="12" /><br>
           </div>
         </div>
         <br><br><br><br>
@@ -981,6 +1054,7 @@ class JobController extends Controller
       $job = DataJobs::where('job_id',$job_id)->first();
       $invoice = Invoice::where('job_id', $job_id)->first();
       $backup = Backup::where('job_id', $job_id)->first();
+      $company = CompanyInfo::find(1);
       $client = Client::find($job->client_id);
       $total_price = $invoice->item_total_price + ($backup ? $backup->total_price : 0);
       $output = '
@@ -1052,11 +1126,11 @@ class JobController extends Controller
         <div>
           <img align="left" src="assets/images/logo-icon4.png" width="280" height="80" />
           <div align="right">
-            <b><label style="font-size:12px;">#108, First Floor, Azaiba Mall</label><br>
-            <label style="font-size:12px;">Azaba, Muscat, Oman</label><br></b>
-            <label style="font-size:12px;">+968 963 12346 /47 </label><img style="margin-top:2px;" src="assets/images/icon-tel.png" width="14" height="12" /><br>
-            <label style="font-size:12px;">info@spacedatarecovery.com</label><img style="margin-top:2px;" src="assets/images/icon-mail.png" width="14" height="12" /><br>
-            <label style="font-size:12px;">www.spacedatarecovery.com</label><img style="margin-top:2px;" src="assets/images/icon-space.png" width="14" height="12" /><br>
+            <b><label style="font-size:12px;">'.$company->address.'</label><br>
+            <label style="font-size:12px;">'.$company->city.', '.$company->country.'</label><br></b>
+            <label style="font-size:12px;">'.$company->phone.'</label><img style="margin-top:2px;" src="assets/images/icon-tel.png" width="14" height="12" /><br>
+            <label style="font-size:12px;">'.$company->email.'</label><img style="margin-top:2px;" src="assets/images/icon-mail.png" width="14" height="12" /><br>
+            <label style="font-size:12px;">'.$company->website.'</label><img style="margin-top:2px;" src="assets/images/icon-space.png" width="14" height="12" /><br>
           </div>
         </div>
         <br><br><br><br>
@@ -1190,6 +1264,7 @@ class JobController extends Controller
     {
       $job = DataJobs::where('job_id',$job_id)->first();
       $invoice = Quote::where('job_id', $job_id)->first();
+      $company = CompanyInfo::find(1);
       $client = Client::find($job->client_id);
       $output = '
       <!DOCTYPE HTML>
@@ -1260,11 +1335,11 @@ class JobController extends Controller
       <div>
         <img align="left" src="assets/images/logo-icon4.png" width="280" height="80" />
         <div align="right">
-          <b><label style="font-size:12px;">#108, First Floor, Azaiba Mall</label><br>
-          <label style="font-size:12px;">Azaba, Muscat, Oman</label><br></b>
-          <label style="font-size:12px;">+968 963 12346 /47 </label><img style="margin-top:2px;" src="assets/images/icon-tel.png" width="14" height="12" /><br>
-          <label style="font-size:12px;">info@spacedatarecovery.com</label><img style="margin-top:2px;" src="assets/images/icon-mail.png" width="14" height="12" /><br>
-          <label style="font-size:12px;">www.spacedatarecovery.com</label><img style="margin-top:2px;" src="assets/images/icon-space.png" width="14" height="12" /><br>
+          <b><label style="font-size:12px;">'.$company->address.'</label><br>
+          <label style="font-size:12px;">'.$company->city.', '.$company->country.'</label><br></b>
+          <label style="font-size:12px;">'.$company->phone.'</label><img style="margin-top:2px;" src="assets/images/icon-tel.png" width="14" height="12" /><br>
+          <label style="font-size:12px;">'.$company->email.'</label><img style="margin-top:2px;" src="assets/images/icon-mail.png" width="14" height="12" /><br>
+          <label style="font-size:12px;">'.$company->website.'</label><img style="margin-top:2px;" src="assets/images/icon-space.png" width="14" height="12" /><br>
         </div>
       </div>
       <br><br><br><br>
@@ -1374,6 +1449,7 @@ class JobController extends Controller
         $job = DataJobs::where('job_id',$job_id)->first();
         $client = Client::find($job->client_id);
         $device = DataDevices::where('job_id', $job_id)->first();
+        $company = CompanyInfo::find(1);
         $output = '
   <!DOCTYPE HTML>
   <html lang="en">
@@ -1438,11 +1514,11 @@ class JobController extends Controller
     <div>
       <img align="left" src="assets/images/logo-icon4.png" width="280" height="80" />
       <div align="right">
-        <b><label style="font-size:12px;">#108, First Floor, Azaiba Mall</label><br>
-        <label style="font-size:12px;">Azaba, Muscat, Oman</label><br></b>
-        <label style="font-size:12px;">+968 963 12346 /47 </label><img style="margin-top:2px;" src="assets/images/icon-tel.png" width="14" height="12" /><br>
-        <label style="font-size:12px;">info@spacedatarecovery.com</label><img style="margin-top:2px;" src="assets/images/icon-mail.png" width="14" height="12" /><br>
-        <label style="font-size:12px;">www.spacedatarecovery.com</label><img style="margin-top:2px;" src="assets/images/icon-space.png" width="14" height="12" /><br>
+        <b><label style="font-size:12px;">'.$company->address.'</label><br>
+        <label style="font-size:12px;">'.$company->city.', '.$company->country.'</label><br></b>
+        <label style="font-size:12px;">'.$company->phone.'</label><img style="margin-top:2px;" src="assets/images/icon-tel.png" width="14" height="12" /><br>
+        <label style="font-size:12px;">'.$company->email.'</label><img style="margin-top:2px;" src="assets/images/icon-mail.png" width="14" height="12" /><br>
+        <label style="font-size:12px;">'.$company->website.'</label><img style="margin-top:2px;" src="assets/images/icon-space.png" width="14" height="12" /><br>
       </div>
     </div>
     <br><br><br>

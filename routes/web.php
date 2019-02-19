@@ -65,6 +65,7 @@ Route::group(
         Route::post('/sendComment', 'JobController@sendComment')->name('send_comment');
         Route::post('/updateDevice', 'JobController@updateDevice')->name('update_device');
         Route::post('/updateMedia', 'JobController@updateMedia')->name('update_media_info');
+        Route::post('/uploadAttach', 'JobController@uploadAttach')->name('upload_attach');
         Route::post('/addDevice', 'JobController@addDevice')->name('add_device');
         Route::post('/addCloneDevice', 'JobController@addCloneDevice')->name('add_clone_device');
         Route::post('/updateService', 'JobController@updateServcie')->name('update_service');
@@ -76,13 +77,16 @@ Route::group(
         Route::get('/checkoutForm/{id}', 'JobController@checkoutForm')->name('checkout_form');
         Route::get('/generateInvoice/{id}', 'JobController@generateInvoice')->name('generate_invoice');
         Route::get('/generateInvoiceTemplate/{id}/{item_price}/{item_vat}/{discount}/{item_total_price}/{backup_brand}/{backup_serial}/{backup_capacity}/{backup_price}/{backup_vat}/{backup_discount}/{backup_total_price}', 'JobController@generateInvoiceTemplate')->name('generate_invoice_template');
+        Route::get('/generateInvoiceViewTemplate/{id}/{item_price}/{item_vat}/{discount}/{item_total_price}/{backup_brand}/{backup_serial}/{backup_capacity}/{backup_price}/{backup_vat}/{backup_discount}/{backup_total_price}', 'JobController@generateInvoiceViewTemplate')->name('generate_invoice_view_template');
         Route::get('/generateQuote/{id}', 'JobController@generateQuote')->name('generate_quote');
         Route::get('/generateQuoteTemplate/{id}/{price}/{discount}/{total}/{brand}/{serial}', 'JobController@generateQuoteTemplate')->name('generate_quote_template');
+        Route::get('/generateQuoteViewTemplate/{id}/{price}/{discount}/{total}/{brand}/{serial}', 'JobController@generateQuoteViewTemplate')->name('generate_quote_view_template');
         Route::get('/generateMediaReport/{id}', 'JobController@generateMediaReport')->name('generate_media_report');
         Route::get('/viewUrgent', 'JobController@viewUrgent')->name('view_urgent');
         Route::get('/viewCompleted', 'JobController@viewCompleted')->name('view_completed');
         Route::get('/viewPaymentPending', 'JobController@viewPaymentPending')->name('view_payment_pending');
         Route::get('/viewPaid', 'JobController@viewPaid')->name('view_paid');
+        Route::get('/downloadUploadFile/{id}', 'JobController@downloadUploadFile')->name('download_upload_file');
     }
 );
 
@@ -138,8 +142,12 @@ Route::group(
         Route::post('/lists/services/createAction','SystemSetting\Lists\ServicesController@store');
         Route::get('/lists/services/deleteAction','SystemSetting\Lists\ServicesController@destroy');
         Route::get('/lists/services/edit/{id}','SystemSetting\Lists\ServicesController@edit')->name('editService');
-        Route::post('/lists/services/updateAction','SystemSetting\Lists\ServicesController@update')->name('updateService');               
-    }    
+        Route::post('/lists/services/updateAction','SystemSetting\Lists\ServicesController@update')->name('updateService');      
+        
+        Route::get('/generalSettings/showSettings','GeneralSettingsController@showSettings')->name('showGeneralSettings');               
+        Route::post('/generalSettings/SaveCompanyInfo','GeneralSettingsController@SaveCompanyInfo')->name('SaveCompanyInfo');               
+        
+    }
 );
 //stock part
 Route::group(

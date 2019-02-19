@@ -97,7 +97,7 @@
                 <li>
                     <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-settings"></i><span class="hide-menu">System settings </span></a>
                     <ul aria-expanded="false" class="collapse">
-                        <li><a href="#">General settings </a></li>
+                        <li><a href="{{ route('showGeneralSettings') }}">General settings </a></li>
                         <li><a href="#">Mailing settings </a></li>
                         <li><a href="#">Languages </a></li>
                         <li><a href="#" class="has-arrow">Lists </a>

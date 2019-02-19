@@ -125,7 +125,7 @@
                 <button type="button" class="btn btn-success" id="jobPost"><i class="fa fa-check"></i> Save</button>
 
                     <a href="{{URL::to('quote/resetAction')}}"><button type="button" class="btn btn-warning">Reset</button></a>
-                    <a href = "#"><button type="button" class="btn btn-danger">Preview</button></a>
+                    <button type="button" class="btn btn-danger" id="generateView">Preview</button>
                     <button type="button" class="btn btn-info" id="generate">Generate</button>
                     <a href = "#"><button type="button" class="btn btn-success">Send Quote</button></a>
                 </div>
@@ -637,6 +637,25 @@
             }
         });
     
+        $("#generateView").on('click', function (e) {
+            var job_id = $("#jobSelected").val();
+            var item_price = $("#item_price").text();
+            var item_discount = $("#item_disaccount").text();
+            var item_total_price = $("#item_total_price").text();
+            var item_brand = $("#item_brand").text();
+            var item_serial = $("#item_serial").text();
+            if (job_id == '0')
+            {
+                alert("No Job Selected!");
+            }
+            else
+            {
+                console.log(job_id);
+                var link = "http://localhost:8000/job/generateQuoteViewTemplate/"+job_id+"/"+item_price+"/"+item_discount+"/"+item_total_price+"/"+item_brand+"/"+item_serial;
+                console.log(link);
+                location.href = link;
+            }
+        });
   
     });        
 </script>

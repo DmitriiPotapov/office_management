@@ -173,9 +173,9 @@
                 <div class="form-actions">
                     <button type="button" class="btn btn-success" id="jobPost"><i class="fa fa-check"></i> Save</button>
                     <a href="{{URL::to('invoice/resetAction')}}"><button type="button" class="btn btn-warning">Reset</button></a>
-                    <a href = "#"><button type="button" class="btn btn-danger">Preview</button></a>
+                    <button type="button" class="btn btn-danger" id="generateView">Preview</button>
                     <button type="button" class="btn btn-info" id="generate">Generate</button>
-                    <a href = "#"><button type="button" class="btn btn-success">Send Quote</button></a>
+                    <a href = "#"><button type="button" class="btn btn-success">Send Invoice</button></a>
                     <button type="button" onclick="removeBackup()" class="btn btn-danger">Delete Backup</button>
                 </div>
 
@@ -786,6 +786,35 @@
             {
                 console.log(job_id);
                 var link = "http://localhost:8000/job/generateInvoiceTemplate/"+job_id+"/"+item_price+"/"+vat+"/"+item_discount+"/"+item_total_price
+                                +"/"+backup_brand+"/"+backup_serial+"/"+backup_capacity+"/"+backup_price+"/"+backup_vat+"/"+backup_discount+"/"+backup_total_price;
+                console.log(link);
+                console.log(backup_type);
+               location.href = link;
+            }
+        });
+
+        $("#generateView").on('click', function (e) {
+            var job_id = $("#jobSelected").val();
+            var item_price = $("#item_price").text() ? $("#item_price").text() : '0';
+            var vat = $("#vat").val() ? $("#vat").val() : '0';
+            var item_discount = $("#item_disaccount").text() ? $("#item_disaccount").text() : '0';
+            var item_total_price = $("#item_total_price").text() ? $("#item_total_price").text() : '0';
+            var backup_brand = $("#backup_brand").text() ? $("#backup_brand").text() : '0';
+            var backup_type = $("#backup_type").text() ? $("#backup_type").text() : '0';
+            var backup_serial = $("#backup_serial").text() ? $("#backup_serial").text() : '0' ;
+            var backup_capacity = $("#backup_capacity").text() ? $("#backup_capacity").text() : '0' ;
+            var backup_price = $("#backup_price").text() ? $("#backup_price").text() : '0' ;
+            var backup_vat = $("#vat").val() ? $("#vat").val() : '0';
+            var backup_discount = $("#backup_disaccount").text() ? $("#backup_disaccount").text() : '0';
+            var backup_total_price = $("#backup_total_price").text() ? $("#backup_total_price").text() : '0';
+            if (job_id == '0')
+            {
+                alert("No Job Selected!");
+            }
+            else
+            {
+                console.log(job_id);
+                var link = "http://localhost:8000/job/generateInvoiceViewTemplate/"+job_id+"/"+item_price+"/"+vat+"/"+item_discount+"/"+item_total_price
                                 +"/"+backup_brand+"/"+backup_serial+"/"+backup_capacity+"/"+backup_price+"/"+backup_vat+"/"+backup_discount+"/"+backup_total_price;
                 console.log(link);
                 console.log(backup_type);

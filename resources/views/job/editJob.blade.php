@@ -614,7 +614,7 @@
                                                         <td>{{ $item['note'] }}</td>
                                                         <td class="text-nowrap">
                                                             <!--<a href="#" data-toggle="tooltip" data-original-title="Edit"> <i class="fa fa-pencil text-inverse m-r-10"></i> </a>-->
-                                                            <a href="{{ route('delete_clone_device', ['id' => $item['id']]) }}" data-toggle="tooltip" data-original-title="Delete"> <i class="fa fa-close text-danger"></i> </a>
+                                                            <a href="{{ route('delete_clone_device', ['id' => $job['job_id']]) }}" data-toggle="tooltip" data-original-title="Delete"> <i class="fa fa-close text-danger"></i> </a>
                                                         </td>
                                                     </tr>
                                                     @endforeach
@@ -1050,7 +1050,6 @@
                                             <table class="table color-bordered-table info-bordered-table">
                                                 <thead>
                                                     <tr>
-                                                        <th></th>
                                                         <th>File Name</th>
                                                         <th>Size</th>
                                                         <th>Date Uploaded</th>
@@ -1059,29 +1058,32 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                @foreach ($fileLists as $file)
                                                     <tr>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td></td>
+                                                        <td><a href="{{ route('download_upload_file', ['id' => $file['id']]) }}">{{$file['file_name']}}</a></td>
+                                                        <td>{{$file['size']}} KB</td>
+                                                        <td>{{$file['created_at']}}</td>
+                                                        <td>{{$file['uploaded_by']}}</td>
                                                         <td></td>
                                                     </tr>
+                                                @endforeach
                                                 </tbody>
                                             </table>
                                         </div>
                                         <br>
-                                        <form action="" method="POST">
+                                        <form action="{{ route('upload_attach') }}" method="POST" enctype="multipart/form-data">
+                                            @csrf
+                                            <input type="hidden" name="attachJobId" value="{{ $job['job_id'] }}">
                                             <h4 class="card-title" style="margin-bottom:15px;">Upload new</h4>
                                             <div class="card" style="margin-left:0px;">
                                                 <div >
-                                                    <input type="file" id="input-file-now" class="dropify" />
+                                                    <input type="file" id="input-file-now" name="attach" class="dropify" />
                                                 </div>
                                             </div>
                                             <div class="card">
                                                 <div class="col-md-2 offset-md-5">
                                                     <div class="card-body" >
-                                                        <button class="btn btn-success waves-effect waves-light" type="button"><span class="btn-label"><i class="fa fa-upload"></i></span>Upload</button>
+                                                        <button class="btn btn-success waves-effect waves-light" type="submit"><span class="btn-label"><i class="fa fa-upload"></i></span>Upload</button>
                                                     </div>
                                                 </div>
                                             </div>
